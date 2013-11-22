@@ -43,17 +43,15 @@ import org.thingml.rtsync.core.TimeSynchronizerPrintLogger;
  *
  * @author ffl
  */
-public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverListener, BitRateListemer {
+public class DliverMainFrame2 extends javax.swing.JFrame implements DliverListener, BitRateListemer {
 
     Dliver belt = null;
-   // protected GraphBuffer becg = new GraphBuffer(1000);
+    protected GraphBuffer becg = new GraphBuffer(1000);
     BitRateCounter counter = null;
-    
-    protected GraphBuffer brmsa = new GraphBuffer(500);
     
   
     /** Creates new form MainFrame */
-    public EMGPrototypeMainFrame() {
+    public DliverMainFrame2() {
         initComponents();
         setLocationRelativeTo(null);
         
@@ -76,7 +74,7 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
                 serialPort = d.getSerialPort();
                 return new Dliver(serialPort.getInputStream(), serialPort.getOutputStream());
             } catch (IOException ex) {
-                Logger.getLogger(EMGPrototypeMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(DliverMainFrame2.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return null;    
@@ -127,6 +125,18 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jProgressBarT = new javax.swing.JProgressBar();
+        jTextFieldTTime = new javax.swing.JTextField();
+        jButton6 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jProgressBarHR = new javax.swing.JProgressBar();
+        jTextFieldHRTime = new javax.swing.JTextField();
+        jButton5 = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        jTextFieldPostTime = new javax.swing.JTextField();
+        jLabelPosture = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jTextFieldActTime = new javax.swing.JTextField();
         jLabelActivity = new javax.swing.JLabel();
@@ -158,6 +168,7 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
         jRadioButtonSBy = new javax.swing.JRadioButton();
         jRadioButtonCh = new javax.swing.JRadioButton();
         jRadioButtonSW = new javax.swing.JRadioButton();
+        jPanelECG = new LineGraphPanel(becg, "ECG (Raw ADC value)", 0, 4096, 1024, new java.awt.Color(255, 104, 104));
         jPanel1 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jTextFieldRefTime = new javax.swing.JTextField();
@@ -165,7 +176,8 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
         jButton7 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
-        jPanelEMG = new LineGraphPanel(brmsa, "EMG RMS Value (Belt Channel A)", 0, 1024, 512, new java.awt.Color(0, 204, 51));
+        jComboBoxAlertLevel = new javax.swing.JComboBox();
+        jButtonAlert = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItemUDPConnect = new javax.swing.JMenuItem();
@@ -173,7 +185,7 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("EMG Sensor Test Application");
+        setTitle("Dliver Test Application");
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("IMU"));
 
@@ -225,28 +237,28 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextFieldIMUTime, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
                         .addComponent(jButton2))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(32, 32, 32)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jProgressBarAx, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jProgressBarAy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jProgressBarAz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jProgressBarAx, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                            .addComponent(jProgressBarAy, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                            .addComponent(jProgressBarAz, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(35, 35, 35)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jProgressBarGz, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jProgressBarGy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jProgressBarGx, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jProgressBarGz, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                            .addComponent(jProgressBarGy, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                            .addComponent(jProgressBarGx, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
+                .addContainerGap(24, Short.MAX_VALUE)
                 .addComponent(jProgressBarAx, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -271,6 +283,113 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
                         .addComponent(jTextFieldIMUTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel7))
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Temperature"));
+
+        jProgressBarT.setForeground(new java.awt.Color(0, 153, 255));
+        jProgressBarT.setMaximum(450);
+        jProgressBarT.setMinimum(250);
+        jProgressBarT.setValue(370);
+        jProgressBarT.setString("");
+        jProgressBarT.setStringPainted(true);
+
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/chart-1.png"))); // NOI18N
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jProgressBarT, javax.swing.GroupLayout.DEFAULT_SIZE, 685, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextFieldTTime, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton6)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jProgressBarT, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldTTime, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Heart Rate"));
+
+        jProgressBarHR.setForeground(new java.awt.Color(255, 51, 51));
+        jProgressBarHR.setMaximum(2200);
+        jProgressBarHR.setValue(750);
+        jProgressBarHR.setString("");
+        jProgressBarHR.setStringPainted(true);
+
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/chart-1.png"))); // NOI18N
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jProgressBarHR, javax.swing.GroupLayout.DEFAULT_SIZE, 685, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextFieldHRTime, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton5)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jProgressBarHR, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldHRTime, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Posture"));
+
+        jLabelPosture.setIcon(new javax.swing.ImageIcon(getClass().getResource("/upright.png"))); // NOI18N
+
+        jLabel19.setText("Timestamp :");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(jLabel19)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldPostTime, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelPosture))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addComponent(jLabelPosture, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel19)
+                    .addComponent(jTextFieldPostTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Activity"));
@@ -299,7 +418,7 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelActivity, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
+                .addComponent(jLabelActivity, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
@@ -360,7 +479,7 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldOver, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel20)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldBitRate, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -433,12 +552,12 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBoxMode, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jComboBoxMode, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 273, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBoxBTInt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -466,22 +585,18 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
         jProgressBarBatt.setString("");
         jProgressBarBatt.setStringPainted(true);
 
-        jRadioButtonOn.setBackground(new java.awt.Color(204, 204, 204));
         buttonGroupStatus.add(jRadioButtonOn);
         jRadioButtonOn.setText("On Body");
         jRadioButtonOn.setEnabled(false);
 
-        jRadioButtonOff.setBackground(new java.awt.Color(204, 204, 204));
         buttonGroupStatus.add(jRadioButtonOff);
         jRadioButtonOff.setText("Off Body");
         jRadioButtonOff.setEnabled(false);
 
-        jRadioButtonSBy.setBackground(new java.awt.Color(204, 204, 204));
         buttonGroupStatus.add(jRadioButtonSBy);
         jRadioButtonSBy.setText("Standby");
         jRadioButtonSBy.setEnabled(false);
 
-        jRadioButtonCh.setBackground(new java.awt.Color(204, 204, 204));
         buttonGroupStatus.add(jRadioButtonCh);
         jRadioButtonCh.setText("Charging");
         jRadioButtonCh.setEnabled(false);
@@ -491,7 +606,6 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
             }
         });
 
-        jRadioButtonSW.setBackground(new java.awt.Color(204, 204, 204));
         buttonGroupStatus.add(jRadioButtonSW);
         jRadioButtonSW.setText("SW Update");
         jRadioButtonSW.setEnabled(false);
@@ -504,7 +618,7 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
                 .addContainerGap()
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jProgressBarBatt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jProgressBarBatt, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jRadioButtonOn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -571,16 +685,36 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
             }
         });
 
+        jComboBoxAlertLevel.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2" }));
+        jComboBoxAlertLevel.setSelectedIndex(2);
+        jComboBoxAlertLevel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxAlertLevelActionPerformed(evt);
+            }
+        });
+
+        jButtonAlert.setText("Alert");
+        jButtonAlert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAlertActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel5)
-                .addGap(3, 3, 3)
-                .addComponent(jTextFieldRefTime, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextFieldRefTime, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jCheckBox1)
+                .addGap(49, 49, 49)
+                .addComponent(jButtonAlert)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBoxAlertLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -594,15 +728,17 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonAlert)
+                        .addComponent(jComboBoxAlertLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jCheckBox1)
+                        .addComponent(jTextFieldRefTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jLabel5)
-                            .addComponent(jTextFieldRefTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCheckBox1)
-                            .addComponent(jButton7)))
-                    .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton7)))
                 .addContainerGap())
         );
 
@@ -637,16 +773,21 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanelEMG, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelECG, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 881, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -658,12 +799,17 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelEMG, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelECG, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -675,7 +821,7 @@ public class EMGPrototypeMainFrame extends javax.swing.JFrame implements DliverL
     public void do_connect(Dliver b) {
             belt = b;
             belt.addDliverListener(this);
-            ((GraphPanel)jPanelEMG).start();
+            ((GraphPanel)jPanelECG).start();
             counter = new BitRateCounter(belt);
             counter.addDliverListener(this);
             counter.start();
@@ -722,6 +868,18 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     imuform.setSize(600, 800);
     imuform.setVisible(true);
 }//GEN-LAST:event_jButton2ActionPerformed
+
+private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    ECGGraphForm ecgform = new ECGGraphForm(belt);
+    ecgform.setSize(600, 300);
+    ecgform.setVisible(true);
+}//GEN-LAST:event_jButton5ActionPerformed
+
+private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    SkinTempGraphFrame tempform = new SkinTempGraphFrame(belt);
+    tempform.setSize(600, 200);
+    tempform.setVisible(true);
+}//GEN-LAST:event_jButton6ActionPerformed
 
 private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
     BitRateGraphFrame tempform = new BitRateGraphFrame(counter);
@@ -782,7 +940,7 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
         if (d.getResult() != null) {
             belt = d.getResult();
             belt.addDliverListener(this);
-            ((GraphPanel)jPanelEMG).start();
+            ((GraphPanel)jPanelECG).start();
             counter = new BitRateCounter(belt);
             counter.addDliverListener(this);
             counter.start();
@@ -799,15 +957,15 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
     }//GEN-LAST:event_jMenuItemUDPConnectActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        EMGGraphForm emgform = new EMGGraphForm(belt);
-        emgform.setSize(600, 600);
-        emgform.setVisible(true);
+        //EMGGraphForm emgform = new EMGGraphForm(belt);
+        //emgform.setSize(600, 600);
+        //emgform.setVisible(true);
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        EMGGraphPCForm emgform = new EMGGraphPCForm(belt);
-        emgform.setSize(800, 500);
-        emgform.setVisible(true);
+        //EMGGraphPCForm emgform = new EMGGraphPCForm(belt);
+        //emgform.setSize(800, 500);
+        //emgform.setVisible(true);
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
@@ -817,6 +975,17 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
             f.setVisible(true);
         }
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButtonAlertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlertActionPerformed
+        int level = Integer.parseInt(jComboBoxAlertLevel.getSelectedItem().toString());
+        if (belt != null) {
+            belt.sendAlert(level);
+        }
+    }//GEN-LAST:event_jButtonAlertActionPerformed
+
+    private void jComboBoxAlertLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxAlertLevelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxAlertLevelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -844,7 +1013,7 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new EMGPrototypeMainFrame().setVisible(true);
+                new DliverMainFrame2().setVisible(true);
             }
         });
     }
@@ -856,10 +1025,14 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
+    private javax.swing.JButton jButtonAlert;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JComboBox jComboBoxAlertLevel;
     private javax.swing.JComboBox jComboBoxBTInt;
     private javax.swing.JComboBox jComboBoxMode;
     private javax.swing.JLabel jLabel1;
@@ -867,6 +1040,7 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
@@ -875,6 +1049,7 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelActivity;
+    private javax.swing.JLabel jLabelPosture;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -882,11 +1057,14 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
     private javax.swing.JMenuItem jMenuItemUDPConnect;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JPanel jPanelEMG;
+    private javax.swing.JPanel jPanelECG;
     private javax.swing.JProgressBar jProgressBarAx;
     private javax.swing.JProgressBar jProgressBarAy;
     private javax.swing.JProgressBar jProgressBarAz;
@@ -894,6 +1072,8 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
     private javax.swing.JProgressBar jProgressBarGx;
     private javax.swing.JProgressBar jProgressBarGy;
     private javax.swing.JProgressBar jProgressBarGz;
+    private javax.swing.JProgressBar jProgressBarHR;
+    private javax.swing.JProgressBar jProgressBarT;
     private javax.swing.JRadioButton jRadioButtonCh;
     private javax.swing.JRadioButton jRadioButtonOff;
     private javax.swing.JRadioButton jRadioButtonOn;
@@ -901,17 +1081,20 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
     private javax.swing.JRadioButton jRadioButtonSW;
     private javax.swing.JTextField jTextFieldActTime;
     private javax.swing.JTextField jTextFieldBitRate;
+    private javax.swing.JTextField jTextFieldHRTime;
     private javax.swing.JTextField jTextFieldIMUTime;
     private javax.swing.JTextField jTextFieldOver;
+    private javax.swing.JTextField jTextFieldPostTime;
     private javax.swing.JTextField jTextFieldRefTime;
     private javax.swing.JTextField jTextFieldSFW;
     private javax.swing.JTextField jTextFieldSID;
+    private javax.swing.JTextField jTextFieldTTime;
     // End of variables declaration//GEN-END:variables
 
         @Override
 	public void cUSerialNumber(long value, int timestamp) {
             jTextFieldSID.setText(""+value);
-            setTitle("EMG Single Channel [" + value + "]");
+             setTitle("Dliver [" + value + "]");
 	}
 
 	@Override
@@ -941,7 +1124,6 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
 	public void indication(int value, int timestamp) {
             
             if (value >= 1 && value <= 6) { // This is orientation
-               /*
                 switch (value) {
                     case 1 : jLabelPosture.setIcon(UPRIGHT);break;
                     case 2 : jLabelPosture.setIcon(PRONE);break;
@@ -951,8 +1133,7 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
                     case 6 : jLabelPosture.setIcon(null);break;
                     default:break;     
                 }
-                jTextFieldPostTime.setText("" + timestamp); 
-                */
+                jTextFieldPostTime.setText("" + timestamp);     
             }
             else if (value >=20 && value <=24) { // This is activity
                 switch (value) {
@@ -968,7 +1149,7 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
                 jLabelActivity.setIcon(ACTIVITY[value-10]);
                 jTextFieldActTime.setText("" + timestamp);  
             }
-            else if (value >=29 && value <=34) {
+            else if (value >=28 && value <=34) {
                 //jComboBoxMode.setSelectedItem(ChestBeltMode.fromCode(value));
                 System.out.println("Indication : " + value);
             }
@@ -1003,7 +1184,10 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
 
 	@Override
 	public void heartRate(int value, int timestamp) {
-		
+		//System.out.println("Heart Rate = " + (value/10) + " (t=" + timestamp + ")" );
+                jProgressBarHR.setString(""+new DecimalFormat("##.0").format((double)value/10.0) + " BPM");
+                jProgressBarHR.setValue(value);
+                jTextFieldHRTime.setText("" + timestamp);
                 
 	}
 
@@ -1014,7 +1198,8 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
 
 	@Override
 	public void eCGData(int value) {
-	
+		//System.out.println("ECG Data = " + value );
+            becg.insertData(value);
 
 	}
 
@@ -1104,7 +1289,11 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
 
 	@Override
 	public void skinTemperature(int value, int timestamp) {
-		
+		//System.out.println("Skin Temp = " + (value/10) + " (t=" + timestamp + ")" );
+                
+                jProgressBarT.setString(""+new DecimalFormat("##.0").format((double)value/10.0) + " °C");
+                jProgressBarT.setValue(value);
+                jTextFieldTTime.setText("" + timestamp);
 
 	}
 
@@ -1177,7 +1366,7 @@ static {
 
     @Override
     public void eMGRMS(int channelA, int channelB, int timestamp) {
-         brmsa.insertData(channelA);
+        
     }
     
     @Override
@@ -1185,4 +1374,48 @@ static {
         
     }
 
+    @Override
+    public void pPGData(int value) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void pPGSignalQuality(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void pPGRaw(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void iCGData(int value) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void iCGSignalQuality(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void iCGRaw(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void quaternion(int w, int x, int y, int z, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void magnetometer(int x, int y, int z, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void pTT(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

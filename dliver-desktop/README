@@ -2,10 +2,10 @@ Compile:
 mvn clean install
 
 Execute with maven (native lib problem with linux);
-mvn exec:java -Dexec.mainClass="org.thingml.chestbelt.desktop.ChestBeltMainFrame"
+mvn exec:java -Dexec.mainClass="org.thingml.dliver.desktop.DliverMainFrame"
 
 Package executable JAR:
 mvn assembly:single
 
 Run the executable JAR:
-java -Djava.library.path="." -jar target/ChestBelt-0.0.6-SNAPSHOT-jar-with-dependencies.jar
+java -Djava.library.path="." -jar target/Dliver-0.0.6-SNAPSHOT-jar-with-dependencies.jar

@@ -19,33 +19,37 @@
  */
 
 /*
- * SkinTempGraphFrame.java
+ * ECGGraphForm.java
  *
- * Created on 1 juil. 2012, 17:21:18
+ * Created on 1 juil. 2012, 16:48:35
  */
 package org.thingml.dliver.desktop;
 
 import org.thingml.dliver.driver.Dliver;
 import org.thingml.dliver.driver.DliverListener;
+import java.awt.Color;
 import org.thingml.rtcharts.swing.*;
 
 /**
  *
  * @author franck
  */
-public class SkinTempGraphFrame extends javax.swing.JFrame implements DliverListener {
+public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
 
-    protected GraphBuffer btemp = new GraphBuffer(200);
     
-    protected Dliver belt;
+    protected GraphBuffer becg = new GraphBuffer(1000);
+    protected GraphBuffer bppg = new GraphBuffer(1000);
+    protected GraphBuffer bicg = new GraphBuffer(1000);
     
-    /** Creates new form SkinTempGraphFrame */
-    public SkinTempGraphFrame(Dliver b) {
+     protected Dliver belt;
+    
+    /** Creates new form ECGGraphForm */
+    public PTTGraphForm(Dliver b) {
         this.belt = b;
         if (b != null) b.addDliverListener(this);
         initComponents();
         ((GraphPanel)jPanel1).start();
-        
+        ((GraphPanel)jPanel2).start();
     }
 
     /** This method is called from within the constructor to
@@ -57,37 +61,34 @@ public class SkinTempGraphFrame extends javax.swing.JFrame implements DliverList
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new LineGraphPanel(btemp, "Skin Temperature (x 0.1°C)", 250, 450, 50, new java.awt.Color(0, 102, 255));
+        jPanel1 = new LineGraphPanel(becg, "ECG (Raw ADC value)", 0, 4096, 512, new java.awt.Color(255, 0, 51));
+        jPanel2 = new LineGraphPanel(bppg, "PPG (Raw ADC value)", 0, 4096, 512, new java.awt.Color(255, 0, 51));
+        jPanel3 = new LineGraphPanel(bicg, "ICG (Raw ADC value)", 0, 4096, 512, new java.awt.Color(255, 0, 51));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Dliver Skin Temperature Graph");
+        setTitle("Dliver Blood Pressure Graphs");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
-                SkinTempGraphFrame.this.windowClosed(evt);
+                PTTGraphForm.this.windowClosed(evt);
             }
         });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-        );
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
+        getContentPane().add(jPanel1);
+        getContentPane().add(jPanel2);
+        getContentPane().add(jPanel3);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_windowClosed
-     if (belt != null) belt.removeDliverListener(this);
+    if (belt != null) belt.removeDliverListener(this);
     ((GraphPanel)jPanel1).stop();
+    ((GraphPanel)jPanel2).stop();
 }//GEN-LAST:event_windowClosed
 
     
-      @Override
+    
+    @Override
     public void cUSerialNumber(long value, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -129,7 +130,6 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
 
     @Override
     public void heartRate(int value, int timestamp) {
-       
     }
 
     @Override
@@ -139,7 +139,7 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
 
     @Override
     public void eCGData(int value) {
-       
+        becg.insertData(value);
     }
 
     @Override
@@ -149,7 +149,7 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
 
     @Override
     public void eCGRaw(int value, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet.");
+        becg.insertData(value);
     }
 
     @Override
@@ -194,16 +194,18 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
 
     @Override
     public void skinTemperature(int value, int timestamp) {
-        btemp.insertData(value);
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void connectionLost() {
-       
+        
     }
 
     @Override
@@ -218,21 +220,20 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
 
     @Override
     public void eMGRaw(int value, int timestamp) {
-       
+        
     }
 
     @Override
     public void eMGRMS(int channelA, int channelB, int timestamp) {
-       
+        
     }
-    
     @Override
     public void referenceClockTimeSync(int timeSyncSeqNum, long value) {
         
     }
     @Override
     public void pPGData(int value) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        bppg.insertData(value);
     }
 
     @Override
@@ -242,12 +243,12 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
 
     @Override
     public void pPGRaw(int value, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        bppg.insertData(value);
     }
 
     @Override
     public void iCGData(int value) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        bicg.insertData(value);
     }
 
     @Override
@@ -257,7 +258,7 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
 
     @Override
     public void iCGRaw(int value, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        bicg.insertData(value);
     }
 
     @Override
@@ -274,5 +275,6 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     public void pTT(int value, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
+    
 }

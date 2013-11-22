@@ -30,7 +30,7 @@ public class ConnectDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(parent);
-        jTextFieldPort.setText(prefs.get("ChestbeltSerial", "COM1"));
+        jTextFieldPort.setText(prefs.get("DliverSerial", "COM1"));
     }
 
     /**
@@ -120,7 +120,7 @@ public class ConnectDialog extends javax.swing.JDialog {
         try {
     		
             String portName = jTextFieldPort.getText().trim();
-            prefs.put("ChestbeltSerial", portName);
+            prefs.put("DliverSerial", portName);
             CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
             
             if (portIdentifier.isCurrentlyOwned()) {
@@ -128,7 +128,7 @@ public class ConnectDialog extends javax.swing.JDialog {
             } 
             else {
                 
-                CommPort commPort = portIdentifier.open("ChestBelt", 2000);
+                CommPort commPort = portIdentifier.open("Dliver", 2000);
                 System.out.println("port = " + commPort);
 
                 if (commPort instanceof SerialPort) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012 SINTEF <franck.fleurey@sintef.no>
+ * Copyright (C) 2013 SINTEF <steffen.dalgard@sintef.no>
  *
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE, Version 3, 29 June 2007;
  * you may not use this file except in compliance with the License.
@@ -36,11 +36,23 @@ public interface DliverListener {
 		void eCGSignalQuality(int value, int timestamp);//  	@code "102";
 		void eCGRaw(int value, int timestamp);//  				@code "103"; // Not sure which data type
 		
+                // PPG Messages
+                void pPGData(int value);
+		void pPGSignalQuality(int value, int timestamp);
+		void pPGRaw(int value, int timestamp);
+
+                // ICG Messages
+                void iCGData(int value);
+		void iCGSignalQuality(int value, int timestamp);
+		void iCGRaw(int value, int timestamp);
+
                 // EMG Messages
                 void eMGData(int value);
 		void eMGSignalQuality(int value, int timestamp);
 		void eMGRaw(int value, int timestamp);
                 void eMGRMS(int channelA, int channelB, int timestamp);
+
+		void pTT(int value, int timestamp);
                 
                 
 		// Gyroscope messages
@@ -55,11 +67,16 @@ public interface DliverListener {
 		void rawActivityLevel(int value, int timestamp);//  		@code "97";
 		
 		void combinedIMU(int ax, int ay, int az, int gx, int gy, int gz, int timestamp);//  		@code "120";
+
+                void quaternion(int w, int x, int y, int z, int timestamp);
 		
+                void magnetometer(int x, int y, int z, int timestamp);
+                
 		// IR Temperature sensor messages
 		void skinTemperature(int value, int timestamp);//  	@code "116";
 		
                 void connectionLost();
                 
-                void referenceClockTimeSync(int timeSyncSeqNum, long value); // @code "107"; as well as fullClockTimeSync but with the timesync bit set
+                // @code "107"; as well as fullClockTimeSync but with the timesync bit set
+                void referenceClockTimeSync(int timeSyncSeqNum, long value); 
 }

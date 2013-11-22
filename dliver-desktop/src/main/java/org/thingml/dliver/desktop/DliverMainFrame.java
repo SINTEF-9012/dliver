@@ -46,7 +46,7 @@ import org.thingml.rtsync.core.TimeSynchronizerPrintLogger;
 public class DliverMainFrame extends javax.swing.JFrame implements DliverListener, BitRateListemer {
 
     Dliver belt = null;
-    protected GraphBuffer becg = new GraphBuffer(1000);
+    //protected GraphBuffer becg = new GraphBuffer(1000);
     BitRateCounter counter = null;
     
   
@@ -114,17 +114,6 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
 
         buttonGroupStatus = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
-        jProgressBarAx = new javax.swing.JProgressBar();
-        jProgressBarAy = new javax.swing.JProgressBar();
-        jProgressBarAz = new javax.swing.JProgressBar();
-        jProgressBarGx = new javax.swing.JProgressBar();
-        jProgressBarGy = new javax.swing.JProgressBar();
-        jProgressBarGz = new javax.swing.JProgressBar();
-        jLabel7 = new javax.swing.JLabel();
-        jTextFieldIMUTime = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jProgressBarT = new javax.swing.JProgressBar();
         jTextFieldTTime = new javax.swing.JTextField();
@@ -141,6 +130,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jTextFieldActTime = new javax.swing.JTextField();
         jLabelActivity = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel20 = new javax.swing.JLabel();
@@ -168,16 +158,14 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jRadioButtonSBy = new javax.swing.JRadioButton();
         jRadioButtonCh = new javax.swing.JRadioButton();
         jRadioButtonSW = new javax.swing.JRadioButton();
-        jPanelECG = new LineGraphPanel(becg, "ECG (Raw ADC value)", 0, 4096, 1024, new java.awt.Color(255, 104, 104));
         jPanel1 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        jTextFieldRefTime = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
         jButton7 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
         jComboBoxAlertLevel = new javax.swing.JComboBox();
         jButtonAlert = new javax.swing.JButton();
+        jPanel10 = new javax.swing.JPanel();
+        jProgressBarPTT = new javax.swing.JProgressBar();
+        jTextFieldPTTTime = new javax.swing.JTextField();
+        jButton12 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItemUDPConnect = new javax.swing.JMenuItem();
@@ -185,104 +173,19 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("ChestBelt Test Application");
+        setTitle("Dliver Test Application");
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("IMU"));
-
-        jProgressBarAx.setForeground(new java.awt.Color(255, 204, 0));
-        jProgressBarAx.setMaximum(500);
-        jProgressBarAx.setMinimum(-500);
-
-        jProgressBarAy.setForeground(new java.awt.Color(255, 204, 0));
-        jProgressBarAy.setMaximum(500);
-        jProgressBarAy.setMinimum(-500);
-
-        jProgressBarAz.setForeground(new java.awt.Color(255, 204, 0));
-        jProgressBarAz.setMaximum(500);
-        jProgressBarAz.setMinimum(-500);
-
-        jProgressBarGx.setForeground(new java.awt.Color(255, 153, 0));
-        jProgressBarGx.setMaximum(2500);
-        jProgressBarGx.setMinimum(-2500);
-
-        jProgressBarGy.setForeground(new java.awt.Color(255, 153, 0));
-        jProgressBarGy.setMaximum(2500);
-        jProgressBarGy.setMinimum(-2500);
-
-        jProgressBarGz.setForeground(new java.awt.Color(255, 153, 0));
-        jProgressBarGz.setMaximum(2500);
-        jProgressBarGz.setMinimum(-2500);
-
-        jLabel7.setText("Timestamp :");
-
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/chart-1.png"))); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Accel");
-
-        jLabel2.setText("Gyro");
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Dliver"));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldIMUTime, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
-                        .addComponent(jButton2))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(32, 32, 32)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jProgressBarAx, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
-                            .addComponent(jProgressBarAy, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
-                            .addComponent(jProgressBarAz, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(35, 35, 35)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jProgressBarGz, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                            .addComponent(jProgressBarGy, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                            .addComponent(jProgressBarGx, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE))))
-                .addContainerGap())
+            .addGap(0, 318, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
-                .addComponent(jProgressBarAx, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jProgressBarAy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jProgressBarAz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel1))
-                .addGap(28, 28, 28)
-                .addComponent(jProgressBarGx, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(jProgressBarGy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jProgressBarGz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextFieldIMUTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel7))
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGap(0, 229, Short.MAX_VALUE)
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Temperature"));
@@ -319,8 +222,8 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jProgressBarT, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldTTime, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jProgressBarT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldTTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -345,7 +248,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBarHR, javax.swing.GroupLayout.DEFAULT_SIZE, 685, Short.MAX_VALUE)
+                .addComponent(jProgressBarHR, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldHRTime, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -356,10 +259,10 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jProgressBarHR, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldHRTime, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jProgressBarHR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldHRTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Posture"));
@@ -385,7 +288,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addComponent(jLabelPosture, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                .addComponent(jLabelPosture, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
@@ -397,6 +300,13 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jLabelActivity.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Activity_1.png"))); // NOI18N
 
         jLabel9.setText("Timestamp :");
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/chart-1.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -411,18 +321,22 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldActTime, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(42, 42, 42))
+                        .addComponent(jTextFieldActTime, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2)))
+                .addGap(1, 1, 1))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelActivity, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                .addComponent(jLabelActivity, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jTextFieldActTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel9)
+                        .addComponent(jTextFieldActTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jPanel5.setBackground(new java.awt.Color(204, 204, 204));
@@ -557,7 +471,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 273, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBoxBTInt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -566,7 +480,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(21, 21, 21)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jComboBoxMode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -648,40 +562,10 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel5.setText("Reference Time :");
-
-        jTextFieldRefTime.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldRefTimeActionPerformed(evt);
-            }
-        });
-
-        jCheckBox1.setSelected(true);
-        jCheckBox1.setText("4ms resolution");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
-            }
-        });
-
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/file-3.png"))); // NOI18N
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
-            }
-        });
-
-        jButton9.setText("EMG Raw...");
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
-            }
-        });
-
-        jButton10.setText("EMG Proc...");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
             }
         });
 
@@ -704,22 +588,12 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldRefTime, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBox1)
-                .addGap(49, 49, 49)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonAlert)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jComboBoxAlertLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(124, 124, 124)
                 .addComponent(jButton7)
                 .addContainerGap())
         );
@@ -727,18 +601,49 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonAlert)
                         .addComponent(jComboBoxAlertLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jCheckBox1)
-                        .addComponent(jTextFieldRefTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton7)))
+                        .addComponent(jButtonAlert))
+                    .addComponent(jButton7))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Blood Pressure Change (PTT)"));
+
+        jProgressBarPTT.setForeground(new java.awt.Color(255, 153, 0));
+        jProgressBarPTT.setMaximum(2200);
+        jProgressBarPTT.setValue(750);
+        jProgressBarPTT.setString("");
+        jProgressBarPTT.setStringPainted(true);
+
+        jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/chart-1.png"))); // NOI18N
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jProgressBarPTT, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextFieldPTTTime, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton12)
+                .addContainerGap())
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jProgressBarPTT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldPTTTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -776,7 +681,6 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanelECG, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 881, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -787,13 +691,14 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -806,14 +711,15 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelECG, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+
+        jPanel10.getAccessibleContext().setAccessibleName("Blood Pressure Change (PTT)");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -821,7 +727,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
     public void do_connect(Dliver b) {
             belt = b;
             belt.addDliverListener(this);
-            ((GraphPanel)jPanelECG).start();
+            //((GraphPanel)jPanelECG).start();
             counter = new BitRateCounter(belt);
             counter.addDliverListener(this);
             counter.start();
@@ -830,7 +736,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             belt.getSerialNumber();
             belt.getCUFWRevision(0);
             belt.setBTUpdateInterval(1);
-            jCheckBox1.setSelected(false);
+            //jCheckBox1.setSelected(false);
             total_overrun = 0;
             jTextFieldOver.setText("" + total_overrun + " (0)");
     }
@@ -910,24 +816,9 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 }//GEN-LAST:event_jButton7ActionPerformed
 
-private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-    if (belt != null) {
-        if (jCheckBox1.isSelected()) {
-            belt.requestCUTime(1);
-        }
-        else {
-            belt.requestCUTime(0);
-        }
-    }
-}//GEN-LAST:event_jCheckBox1ActionPerformed
-
 private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
     belt.connectionRestored();
 }//GEN-LAST:event_jButton3ActionPerformed
-
-private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldRefTimeActionPerformed
-// TODO add your handling code here:
-}//GEN-LAST:event_jTextFieldRefTimeActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
@@ -940,7 +831,7 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
         if (d.getResult() != null) {
             belt = d.getResult();
             belt.addDliverListener(this);
-            ((GraphPanel)jPanelECG).start();
+            //((GraphPanel)jPanelECG).start();
             counter = new BitRateCounter(belt);
             counter.addDliverListener(this);
             counter.start();
@@ -949,24 +840,12 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
             //belt.getSerialNumber();
             //belt.getCUFWRevision(0);
             //belt.setBTUpdateInterval(1);
-            jCheckBox1.setSelected(false);
+            //jCheckBox1.setSelected(false);
             total_overrun = 0;
             jTextFieldOver.setText("" + total_overrun + " (0)");
         }
         
     }//GEN-LAST:event_jMenuItemUDPConnectActionPerformed
-
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        EMGGraphForm emgform = new EMGGraphForm(belt);
-        emgform.setSize(600, 600);
-        emgform.setVisible(true);
-    }//GEN-LAST:event_jButton9ActionPerformed
-
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        EMGGraphPCForm emgform = new EMGGraphPCForm(belt);
-        emgform.setSize(800, 500);
-        emgform.setVisible(true);
-    }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         if (belt != null) {
@@ -986,6 +865,12 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
     private void jComboBoxAlertLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxAlertLevelActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxAlertLevelActionPerformed
+
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        PTTGraphForm pttform = new PTTGraphForm(belt);
+        pttform.setSize(600, 450);
+        pttform.setVisible(true);
+    }//GEN-LAST:event_jButton12ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1020,8 +905,8 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupStatus;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -1029,24 +914,18 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JButton jButtonAlert;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBoxAlertLevel;
     private javax.swing.JComboBox jComboBoxBTInt;
     private javax.swing.JComboBox jComboBoxMode;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelActivity;
     private javax.swing.JLabel jLabelPosture;
@@ -1056,6 +935,7 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItemUDPConnect;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1064,15 +944,9 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JPanel jPanelECG;
-    private javax.swing.JProgressBar jProgressBarAx;
-    private javax.swing.JProgressBar jProgressBarAy;
-    private javax.swing.JProgressBar jProgressBarAz;
     private javax.swing.JProgressBar jProgressBarBatt;
-    private javax.swing.JProgressBar jProgressBarGx;
-    private javax.swing.JProgressBar jProgressBarGy;
-    private javax.swing.JProgressBar jProgressBarGz;
     private javax.swing.JProgressBar jProgressBarHR;
+    private javax.swing.JProgressBar jProgressBarPTT;
     private javax.swing.JProgressBar jProgressBarT;
     private javax.swing.JRadioButton jRadioButtonCh;
     private javax.swing.JRadioButton jRadioButtonOff;
@@ -1082,10 +956,9 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
     private javax.swing.JTextField jTextFieldActTime;
     private javax.swing.JTextField jTextFieldBitRate;
     private javax.swing.JTextField jTextFieldHRTime;
-    private javax.swing.JTextField jTextFieldIMUTime;
     private javax.swing.JTextField jTextFieldOver;
+    private javax.swing.JTextField jTextFieldPTTTime;
     private javax.swing.JTextField jTextFieldPostTime;
-    private javax.swing.JTextField jTextFieldRefTime;
     private javax.swing.JTextField jTextFieldSFW;
     private javax.swing.JTextField jTextFieldSID;
     private javax.swing.JTextField jTextFieldTTime;
@@ -1170,9 +1043,9 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
 
 	@Override
 	public void referenceClockTime(long value, boolean seconds) {
-		jTextFieldRefTime.setText("" + value);
-                jCheckBox1.setSelected(!seconds);
-		System.out.println("[ReferenceClockTimeSync] " + value + " (" + seconds + ")");
+		//jTextFieldRefTime.setText("" + value);
+                //jCheckBox1.setSelected(!seconds);
+		//System.out.println("[ReferenceClockTimeSync] " + value + " (" + seconds + ")");
 
 	}
 
@@ -1199,7 +1072,7 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
 	@Override
 	public void eCGData(int value) {
 		//System.out.println("ECG Data = " + value );
-            becg.insertData(value);
+            //becg.insertData(value);
 
 	}
 
@@ -1219,39 +1092,39 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
 	@Override
 	public void gyroPitch(int value, int timestamp) {
             //jTextFieldGy.setText(""+value);
-            jProgressBarGy.setValue(value);
+            //jProgressBarGy.setValue(value);
 	}
 
 	@Override
 	public void gyroRoll(int value, int timestamp) {
            //jTextFieldGx.setText(""+value);
-            jProgressBarGx.setValue(value);
+            //jProgressBarGx.setValue(value);
 	}
 
 	@Override
 	public void gyroYaw(int value, int timestamp) {
             //jTextFieldGz.setText(""+value);
-            jProgressBarGz.setValue(value);
+            //jProgressBarGz.setValue(value);
 
 	}
 
 	@Override
 	public void accLateral(int value, int timestamp) {
            // jTextFieldAy.setText(""+value);
-            jProgressBarAy.setValue(value);
+            //jProgressBarAy.setValue(value);
 	}
 
 	@Override
 	public void accLongitudinal(int value, int timestamp) {
             //jTextFieldAz.setText(""+value);
-            jProgressBarAz.setValue(value);
+            //jProgressBarAz.setValue(value);
 
 	}
 
 	@Override
 	public void accVertical(int value, int timestamp) {
             //jTextFieldAx.setText(""+value);
-            jProgressBarAx.setValue(value);
+            //jProgressBarAx.setValue(value);
 
 	}
 
@@ -1267,24 +1140,24 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
 	public void combinedIMU(int ax, int ay, int az, int gx, int gy, int gz, int timestamp) {
 		//System.out.println("IMU: " + ax + "\t" + ay + "\t" + az + "\t" + gx + "\t" + gy + "\t" + gz + "\t" + "(" + timestamp + ")");
                 //jTextFieldAx.setText(""+ax);
-                jProgressBarAx.setValue(ax);
+                //jProgressBarAx.setValue(ax);
                 
                 //jTextFieldAy.setText(""+ay);
-                jProgressBarAy.setValue(ay);
+                //jProgressBarAy.setValue(ay);
                 
                 //jTextFieldAz.setText(""+az);
-                jProgressBarAz.setValue(az);
+                //jProgressBarAz.setValue(az);
                 
                 //jTextFieldGx.setText(""+gx);
-                jProgressBarGx.setValue(gx);
+                //jProgressBarGx.setValue(gx);
                 
                 //jTextFieldGy.setText(""+gy);
-                jProgressBarGy.setValue(gy);
+                //jProgressBarGy.setValue(gy);
                 
                 //jTextFieldGz.setText(""+gz);
-                jProgressBarGz.setValue(gz);
+                //jProgressBarGz.setValue(gz);
                 
-                jTextFieldIMUTime.setText(""+timestamp);
+                //jTextFieldIMUTime.setText(""+timestamp);
 	}
 
 	@Override
@@ -1374,4 +1247,51 @@ static {
         
     }
 
+    @Override
+    public void pPGData(int value) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void pPGSignalQuality(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void pPGRaw(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void iCGData(int value) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void iCGSignalQuality(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void iCGRaw(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void quaternion(int w, int x, int y, int z, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void magnetometer(int x, int y, int z, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void pTT(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       jProgressBarPTT.setString(""+new DecimalFormat("##.0").format((double)value/10.0) + " msec");
+       jProgressBarPTT.setValue(value);
+       jTextFieldPTTTime.setText("" + timestamp);
+    }
 }

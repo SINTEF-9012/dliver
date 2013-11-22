@@ -88,7 +88,7 @@ public class IMUGraphForm extends javax.swing.JFrame implements DliverListener {
         jPanel6 = new BarGraphPanel(bgz, "Gyroscope Z", -GMAX, GMAX, GMINOR, GCOLOR);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("ChestBelt IMU Graphs");
+        setTitle("Dliver IMU Graphs");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 IMUGraphForm.this.windowClosed(evt);
@@ -276,6 +276,50 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     @Override
     public void referenceClockTimeSync(int timeSyncSeqNum, long value) {
         
+    }
+    @Override
+    public void pPGData(int value) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void pPGSignalQuality(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void pPGRaw(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void iCGData(int value) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void iCGSignalQuality(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void iCGRaw(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void quaternion(int w, int x, int y, int z, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void magnetometer(int x, int y, int z, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void pTT(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
