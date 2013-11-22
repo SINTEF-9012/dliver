@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012 SINTEF <franck.fleurey@sintef.no>
+ * Copyright (C) 2013 SINTEF <steffen.dalgard@sintef.no>
  *
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE, Version 3, 29 June 2007;
  * you may not use this file except in compliance with the License.

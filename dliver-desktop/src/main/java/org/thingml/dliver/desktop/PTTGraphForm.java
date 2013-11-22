@@ -50,6 +50,7 @@ public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
         initComponents();
         ((GraphPanel)jPanel1).start();
         ((GraphPanel)jPanel2).start();
+        ((GraphPanel)jPanel3).start();
     }
 
     /** This method is called from within the constructor to
@@ -84,6 +85,7 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     if (belt != null) belt.removeDliverListener(this);
     ((GraphPanel)jPanel1).stop();
     ((GraphPanel)jPanel2).stop();
+    ((GraphPanel)jPanel3).stop();
 }//GEN-LAST:event_windowClosed
 
     

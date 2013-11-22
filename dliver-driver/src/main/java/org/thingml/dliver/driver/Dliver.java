@@ -53,7 +53,7 @@ public class Dliver implements Runnable, TimeSynchronizable {
         this.out = out;
         rxthread = new Thread(this);
         rxthread.start();
-        rtsync.start_timesync();
+        //rtsync.start_timesync(); Do not start timesync by default
     }
 
     private int msg_size(byte code) {

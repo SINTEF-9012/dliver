@@ -57,7 +57,7 @@ public class SkinTempGraphFrame extends javax.swing.JFrame implements DliverList
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new LineGraphPanel(btemp, "Skin Temperature (x 0.1°C)", 250, 450, 50, new java.awt.Color(0, 102, 255));
+        jPanel1 = new LineGraphPanel(btemp, "Skin Temperature (x 0.1°C)", 200, 450, 50, new java.awt.Color(0, 102, 255));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Dliver Skin Temperature Graph");
@@ -230,6 +230,7 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     public void referenceClockTimeSync(int timeSyncSeqNum, long value) {
         
     }
+
     @Override
     public void pPGData(int value) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
