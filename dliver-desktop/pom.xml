@@ -5,6 +5,7 @@
   <artifactId>dliver-desktop</artifactId>
   <version>1.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
+  
 
   <name>Dliver :: Desktop</name>
 
@@ -25,18 +26,6 @@
 			<target>1.6</target>
 		</configuration>
 	</plugin>
-        <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                  <archive>
-                    <manifest>
-                      <mainClass>org.thingml.dliver.desktop.DliverMainFrame</mainClass>
-                    </manifest>
-                  </archive>
-                </configuration>
-      </plugin>
  
     </plugins>
 </build>
