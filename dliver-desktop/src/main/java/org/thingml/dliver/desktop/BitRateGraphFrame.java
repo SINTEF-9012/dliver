@@ -59,7 +59,7 @@ public class BitRateGraphFrame extends javax.swing.JFrame implements BitRateList
         jPanel1 = new BarGraphPanel(brate, "Bandwidth Usage (bytes/sec)", 0, 12000, 2000, Color.red);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Dliver Bluetooth Bandwidth Usage");
+        setTitle("d-LIVER Bluetooth Bandwidth Usage");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 BitRateGraphFrame.this.windowClosed(evt);

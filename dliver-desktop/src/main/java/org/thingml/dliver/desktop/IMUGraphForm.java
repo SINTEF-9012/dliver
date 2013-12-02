@@ -88,7 +88,7 @@ public class IMUGraphForm extends javax.swing.JFrame implements DliverListener {
         jPanel6 = new BarGraphPanel(bgz, "Gyroscope Z", -GMAX, GMAX, GMINOR, GCOLOR);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Dliver IMU Graphs");
+        setTitle("d-LIVER IMU Graphs");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 IMUGraphForm.this.windowClosed(evt);

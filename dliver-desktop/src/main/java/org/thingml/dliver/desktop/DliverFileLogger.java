@@ -87,28 +87,28 @@ public class DliverFileLogger implements DliverListener {
     public void startLoggingInFolder(File sFolder) {
         imu_data_reset();
        try {
-           log = new PrintWriter(new FileWriter(new File(sFolder, "Dliver_log.txt")));
-           log.println("# This file contains one line per message received from the Dliver.");
+           log = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_log.txt")));
+           log.println("# This file contains one line per message received from the d-LIVER.");
            
-           ecg = new PrintWriter(new FileWriter(new File(sFolder, "Dliver_ecg.txt")));
+           ecg = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ecg.txt")));
            if (!eCGEpoch)
                ecg.println("# ECG Data, Raw 12bits ADC values, 250Hz.");
            else
                ecg.println("Value" + SEPARATOR + "RXTime" + SEPARATOR + "Corrtime" + SEPARATOR + "RawTime" + SEPARATOR + "Update");
            
-           emg = new PrintWriter(new FileWriter(new File(sFolder, "Dliver_emg.txt")));
+           emg = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_emg.txt")));
            if (!eCGEpoch)
                emg.println("# EMG Data, Raw 12bits ADC values, 1kHz.");
            else
                emg.println("Value" + SEPARATOR + "RXTime" + SEPARATOR + "Corrtime" + SEPARATOR + "RawTime" + SEPARATOR + "Update");
            
-           rms = new PrintWriter(new FileWriter(new File(sFolder, "Dliver_emg_rms.txt")));
+           rms = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_emg_rms.txt")));
            rms.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "RmsChA" + SEPARATOR + "RmsChB");
            
-           imu = new PrintWriter(new FileWriter(new File(sFolder, "Dliver_imu.txt")));
+           imu = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_imu.txt")));
            imu.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "AX" + SEPARATOR + "AY" + SEPARATOR + "AZ" + SEPARATOR + "GX" + SEPARATOR + "GY" + SEPARATOR + "GZ");
            
-           phi = new PrintWriter(new FileWriter(new File(sFolder, "DLiver_phi.txt")));
+           phi = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_phi.txt")));
            phi.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
            
        } catch (IOException ex) {

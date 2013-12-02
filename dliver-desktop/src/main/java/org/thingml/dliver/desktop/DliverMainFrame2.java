@@ -185,7 +185,7 @@ public class DliverMainFrame2 extends javax.swing.JFrame implements DliverListen
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Dliver Test Application");
+        setTitle("d-LIVER Test Application");
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("IMU"));
 
@@ -1094,7 +1094,7 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
         @Override
 	public void cUSerialNumber(long value, int timestamp) {
             jTextFieldSID.setText(""+value);
-             setTitle("Dliver [" + value + "]");
+             setTitle("d-LIVER [" + value + "]");
 	}
 
 	@Override

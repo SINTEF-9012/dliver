@@ -57,10 +57,10 @@ public class SkinTempGraphFrame extends javax.swing.JFrame implements DliverList
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new LineGraphPanel(btemp, "Skin Temperature (x 0.1°C)", 200, 450, 50, new java.awt.Color(0, 102, 255));
+        jPanel1 = new LineGraphPanel(btemp, "Skin Temperature (°C)", 200, 450, 50, new java.awt.Color(0, 102, 255), 0.1, "0.0", "Avg: ", "Last: ");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Dliver Skin Temperature Graph");
+        setTitle("d-LIVER Skin Temperature Graph");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 SkinTempGraphFrame.this.windowClosed(evt);

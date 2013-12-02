@@ -114,6 +114,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
 
         buttonGroupStatus = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
+        jLabelPosture1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jProgressBarT = new javax.swing.JProgressBar();
         jTextFieldTTime = new javax.swing.JTextField();
@@ -173,19 +174,27 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Dliver Test Application");
+        setTitle("d-LIVER Test Application");
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Dliver"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Project"));
+
+        jLabelPosture1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/D-LIVER rgb.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 318, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelPosture1)
+                .addGap(32, 32, 32))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 229, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelPosture1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(58, 58, 58))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Temperature"));
@@ -719,7 +728,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanel10.getAccessibleContext().setAccessibleName("Blood Pressure Change (PTT)");
+        jPanel2.getAccessibleContext().setAccessibleName("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -929,6 +938,7 @@ private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelActivity;
     private javax.swing.JLabel jLabelPosture;
+    private javax.swing.JLabel jLabelPosture1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -967,7 +977,7 @@ private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         @Override
 	public void cUSerialNumber(long value, int timestamp) {
             jTextFieldSID.setText(""+value);
-             setTitle("Dliver [" + value + "]");
+             setTitle("d-LIVER [" + value + "]");
 	}
 
 	@Override

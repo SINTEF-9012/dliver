@@ -60,11 +60,11 @@ public class ECGGraphForm extends javax.swing.JFrame implements DliverListener {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new BarGraphPanel(bhr, "Heart rate (BPM)", 0, 160, 30, new java.awt.Color(255, 0, 51));
-        jPanel2 = new LineGraphPanel(becg, "ECG (Raw ADC value)", 0, 4096, 512, new java.awt.Color(255, 0, 51));
+        jPanel1 = new LineGraphPanel(bhr, "Heart rate (BPM)", 0, 160, 30, new java.awt.Color(255, 0, 51), 1.0, "0", "Avg: ", "Last: ");
+        jPanel2 = new LineGraphPanel(becg, "ECG (Raw ADC value)", 0, 4096, 512, new java.awt.Color(255, 0, 51), 1.0, "0", "Avg: ", "Last: ");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Dliver Heart Rate and ECG Graphs");
+        setTitle("d-LIVER Heart Rate and ECG Graphs");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 ECGGraphForm.this.windowClosed(evt);
