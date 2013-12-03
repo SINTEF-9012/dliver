@@ -178,7 +178,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Project"));
 
-        jLabelPosture1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/D-LIVER rgb.png"))); // NOI18N
+        jLabelPosture1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/D-LIVER rgb_bg.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
