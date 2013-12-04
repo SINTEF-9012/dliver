@@ -39,7 +39,9 @@ public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
     
     protected GraphBuffer becg = new GraphBuffer(1000);
     protected GraphBuffer bppg = new GraphBuffer(1000);
-    protected GraphBuffer bicg = new GraphBuffer(1000);
+    protected GraphBuffer bicgq = new GraphBuffer(1000);
+    protected GraphBuffer bicgi = new GraphBuffer(1000);
+    protected GraphBuffer bicgabs = new GraphBuffer(1000);
     
      protected Dliver belt;
     
@@ -51,6 +53,8 @@ public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
         ((GraphPanel)jPanel1).start();
         ((GraphPanel)jPanel2).start();
         ((GraphPanel)jPanel3).start();
+        ((GraphPanel)jPanel4).start();
+        ((GraphPanel)jPanel5).start();
     }
 
     /** This method is called from within the constructor to
@@ -63,8 +67,10 @@ public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
     private void initComponents() {
 
         jPanel1 = new LineGraphPanel(becg, "ECG (Raw ADC value)", 0, 4096, 512, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
-        jPanel2 = new LineGraphPanel(bppg, "PPG (Raw ADC value)", 0, 4096, 512, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
-        jPanel3 = new LineGraphPanel(bicg, "ICG (Raw ADC value)", 0, 4096, 512, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
+        jPanel2 = new LineGraphPanel(bppg, "PPG (Raw ADC value)", -32767, 32767, 512, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
+        jPanel3 = new LineGraphPanel(bicgq, "ICG_Q (Raw ADC value)", -32767, 32767, 512, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
+        jPanel4 = new LineGraphPanel(bicgi, "ICG_I (Raw ADC value)", -32767, 32767, 512, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
+        jPanel5 = new LineGraphPanel(bicgabs, "ICG_ABS (Raw ADC value)", 0, 65535, 512, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("d-LIVER Blood Pressure Graphs");
@@ -77,6 +83,8 @@ public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
         getContentPane().add(jPanel1);
         getContentPane().add(jPanel2);
         getContentPane().add(jPanel3);
+        getContentPane().add(jPanel4);
+        getContentPane().add(jPanel5);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -203,6 +211,8 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -249,21 +259,6 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     }
 
     @Override
-    public void iCGData(int value) {
-        bicg.insertData(value);
-    }
-
-    @Override
-    public void iCGSignalQuality(int value, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void iCGRaw(int value, int timestamp) {
-        bicg.insertData(value);
-    }
-
-    @Override
     public void quaternion(int w, int x, int y, int z, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -275,6 +270,25 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
 
     @Override
     public void pTT(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void combinedICG(int icgq, int icgi, int icgabs, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        bicgq.insertData(icgq);
+        bicgi.insertData(icgi);
+        bicgabs.insertData(icgabs);
+    }
+
+    @Override
+    public void ppg(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        bppg.insertData(value);
+    }
+
+    @Override
+    public void btPutChar(int value) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

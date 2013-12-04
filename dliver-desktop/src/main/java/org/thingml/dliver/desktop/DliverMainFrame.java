@@ -1273,21 +1273,6 @@ static {
     }
 
     @Override
-    public void iCGData(int value) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void iCGSignalQuality(int value, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void iCGRaw(int value, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void quaternion(int w, int x, int y, int z, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -1303,5 +1288,20 @@ static {
        jProgressBarPTT.setString(""+new DecimalFormat("##.0").format((double)value/10.0) + " msec");
        jProgressBarPTT.setValue(value);
        jTextFieldPTTTime.setText("" + timestamp);
+    }
+
+    @Override
+    public void combinedICG(int icgq, int icgi, int icgabs, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void ppg(int value, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void btPutChar(int value) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -42,9 +42,7 @@ public interface DliverListener {
 		void pPGRaw(int value, int timestamp);
 
                 // ICG Messages
-                void iCGData(int value);
-		void iCGSignalQuality(int value, int timestamp);
-		void iCGRaw(int value, int timestamp);
+		void combinedICG(int icgq, int icgi, int icgabs, int timestamp);//  		@code "102";
 
                 // EMG Messages
                 void eMGData(int value);
@@ -53,6 +51,10 @@ public interface DliverListener {
                 void eMGRMS(int channelA, int channelB, int timestamp);
 
 		void pTT(int value, int timestamp);
+
+		void ppg(int value, int timestamp);      //  			@code "121";
+                
+                void btPutChar(int value); // 123
                 
                 
 		// Gyroscope messages

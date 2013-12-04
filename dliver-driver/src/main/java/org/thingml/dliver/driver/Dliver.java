@@ -57,14 +57,16 @@ public class Dliver implements Runnable, TimeSynchronizable {
     }
 
     private int msg_size(byte code) {
-        if (code == 101 || code == 122) {
+        if (code == 101 || code == 122 || code == 123) {
             return 3;
         } else if (code == 106 || code == 107 || code == 110 || code == 112 || code == 114 || code == 117 || code == 121) {
             return 6;
         } else if (code == 125) {
             return 15;
         }
-        else if (code == 120) {
+        else if (code == 102) {
+            return 12;
+        } else if (code == 120) {
             return 18;
         } else {
             return 5; // default value for other messages
@@ -174,28 +176,37 @@ public class Dliver implements Runnable, TimeSynchronizable {
                                         eCGData(message);
                                         break;
                                     case 102:
-                                        eCGSignalQuality(message);
+                                        combinedICG(message);
+                                        // Not supported by d-LIVER    
+                                        //eCGSignalQuality(message);
                                         break;
                                     case 103:
                                         eCGRaw(message);
                                         break;
                                     case 112:
-                                        gyroPitch(message);
+                                        // Not supported by d-LIVER    
+                                        //gyroPitch(message);
                                         break;
                                     case 114:
-                                        gyroRoll(message);
+                                        // Not supported by d-LIVER    
+                                        //gyroRoll(message);
                                         break;
                                     case 121:
-                                        gyroYaw(message);
+                                        ppg(message);
+                                        // Not supported by d-LIVER    
+                                        //gyroYaw(message);
                                         break;
                                     case 115:
-                                        accLateral(message);
+                                        // Not supported by d-LIVER    
+                                        //accLateral(message);
                                         break;
                                     case 119:
-                                        accLongitudinal(message);
+                                        // Not supported by d-LIVER    
+                                        //accLongitudinal(message);
                                         break;
                                     case 118:
-                                        accVertical(message);
+                                        // Not supported by d-LIVER    
+                                        //accVertical(message);
                                         break;
                                     case 97:
                                         rawActivityLevel(message);
@@ -207,16 +218,21 @@ public class Dliver implements Runnable, TimeSynchronizable {
                                         combinedIMU(message);
                                         break;
                                     case 122:
-                                        eMGData(message);
+                                        // Not supported by d-LIVER    
+                                        //eMGData(message);
                                         break;
                                     case 123:
-                                        eMGSignalQuality(message);
+                                        btPutChar(message);
+                                        // Not supported by d-LIVER    
+                                        //eMGSignalQuality(message);
                                         break;
                                     case 124:
-                                        eMGRaw(message);
+                                        // Not supported by d-LIVER    
+                                        //eMGRaw(message);
                                         break;
                                     case 125:
-                                        eMGRMS(message);
+                                        // Not supported by d-LIVER    
+                                        //eMGRMS(message);
                                         break;
                                      
                                     default:
@@ -379,13 +395,14 @@ public class Dliver implements Runnable, TimeSynchronizable {
         }
     }
 
-    synchronized void eCGSignalQuality(byte[] message) {
-        int value = ((message[1] - 32) * 64 + (message[2] - 32));
-        int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
-        for (DliverListener l : listeners) {
-            l.eCGSignalQuality(value, timestamp);
-        }
-    }
+// Not supported by d-LIVER    
+//    synchronized void eCGSignalQuality(byte[] message) {
+//        int value = ((message[1] - 32) * 64 + (message[2] - 32));
+//        int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
+//        for (DliverListener l : listeners) {
+//            l.eCGSignalQuality(value, timestamp);
+//        }
+//    }
 
     synchronized void eCGRaw(byte[] message) {
         int value = ((message[1] - 32) * 64 + (message[2] - 32));
@@ -394,88 +411,113 @@ public class Dliver implements Runnable, TimeSynchronizable {
             l.eCGRaw(value, timestamp);
         }
     }
-    
-    // EMG Messages
-    synchronized void eMGSignalQuality(byte[] message) {
-        int value = ((message[1] - 32) * 64 + (message[2] - 32));
-        int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
+
+    synchronized void ppg(byte[] message) {
+        int value = decodeGyro(message[1], message[2], message[3]);
+        int timestamp = ((message[4] - 32) * 64 + (message[5] - 32));
         for (DliverListener l : listeners) {
-            l.eMGSignalQuality(value, timestamp);
+            l.ppg(value, timestamp);
         }
     }
 
-    synchronized void eMGRaw(byte[] message) {
+    synchronized void btPutChar(byte[] message) {
         int value = ((message[1] - 32) * 64 + (message[2] - 32));
-        int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
         for (DliverListener l : listeners) {
-            l.eMGRaw(value, timestamp);
+            l.btPutChar(value);
         }
     }
     
-    synchronized void eMGData(byte[] message) {
-        int value = ((message[1] - 32) * 64 + (message[2] - 32));
-        for (DliverListener l : listeners) {
-            l.eMGData(value);
-        }
-    }
+    // EMG Messages
+// Not supported by d-LIVER    
+//    synchronized void eMGSignalQuality(byte[] message) {
+//        int value = ((message[1] - 32) * 64 + (message[2] - 32));
+//        int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
+//        for (DliverListener l : listeners) {
+//            l.eMGSignalQuality(value, timestamp);
+//        }
+//    }
+
+// Not supported by d-LIVER    
+//    synchronized void eMGRaw(byte[] message) {
+//        int value = ((message[1] - 32) * 64 + (message[2] - 32));
+//        int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
+//        for (DliverListener l : listeners) {
+//            l.eMGRaw(value, timestamp);
+//        }
+//    }
     
-    synchronized void eMGRMS(byte[] message) {
-        long channelA = decode6byteLong(message[1], message[2], message[3], message[4], message[5], message[6]);
-        long channelB = decode6byteLong(message[7], message[8], message[9], message[10], message[11], message[12]);
-        int timestamp = ((message[13] - 32) * 64 + (message[14] - 32));
-        for (DliverListener l : listeners) {
-            l.eMGRMS((int)Math.sqrt(channelA), (int)Math.sqrt(channelB), timestamp);
-        }
-    }
+// Not supported by d-LIVER    
+//    synchronized void eMGData(byte[] message) {
+//        int value = ((message[1] - 32) * 64 + (message[2] - 32));
+//        for (DliverListener l : listeners) {
+//            l.eMGData(value);
+//        }
+//    }
+    
+// Not supported by d-LIVER    
+//    synchronized void eMGRMS(byte[] message) {
+//        long channelA = decode6byteLong(message[1], message[2], message[3], message[4], message[5], message[6]);
+//        long channelB = decode6byteLong(message[7], message[8], message[9], message[10], message[11], message[12]);
+//        int timestamp = ((message[13] - 32) * 64 + (message[14] - 32));
+//        for (DliverListener l : listeners) {
+//            l.eMGRMS((int)Math.sqrt(channelA), (int)Math.sqrt(channelB), timestamp);
+//        }
+//    }
 
     // Gyroscope messages
-    synchronized void gyroPitch(byte[] message) {
-        int value = decodeGyro(message[1], message[2], message[3]);
-        int timestamp = ((message[4] - 32) * 64 + (message[5] - 32));
-        for (DliverListener l : listeners) {
-            l.gyroPitch(value, timestamp);
-        }
-    }
+                                        // Not supported by d-LIVER    
+//    synchronized void gyroPitch(byte[] message) {
+//        int value = decodeGyro(message[1], message[2], message[3]);
+//        int timestamp = ((message[4] - 32) * 64 + (message[5] - 32));
+//        for (DliverListener l : listeners) {
+//            l.gyroPitch(value, timestamp);
+//        }
+//    }
 
-    synchronized void gyroRoll(byte[] message) {
-        int value = decodeGyro(message[1], message[2], message[3]);
-        int timestamp = ((message[4] - 32) * 64 + (message[5] - 32));
-        for (DliverListener l : listeners) {
-            l.gyroRoll(value, timestamp);
-        }
-    }
+// Not supported by d-LIVER    
+//    synchronized void gyroRoll(byte[] message) {
+//        int value = decodeGyro(message[1], message[2], message[3]);
+//        int timestamp = ((message[4] - 32) * 64 + (message[5] - 32));
+//        for (DliverListener l : listeners) {
+//            l.gyroRoll(value, timestamp);
+//        }
+//    }
 
-    synchronized void gyroYaw(byte[] message) {
-        int value = decodeGyro(message[1], message[2], message[3]);
-        int timestamp = ((message[4] - 32) * 64 + (message[5] - 32));
-        for (DliverListener l : listeners) {
-            l.gyroYaw(value, timestamp);
-        }
-    }
+// Not supported by d-LIVER    
+//    synchronized void gyroYaw(byte[] message) {
+//        int value = decodeGyro(message[1], message[2], message[3]);
+//        int timestamp = ((message[4] - 32) * 64 + (message[5] - 32));
+//        for (DliverListener l : listeners) {
+//            l.gyroYaw(value, timestamp);
+//        }
+//    }
     // Accelerometer and activity messages
-    synchronized void accLateral(byte[] message) {
-        int value = decodeAcc(message[1], message[2]);
-        int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
-        for (DliverListener l : listeners) {
-            l.accLateral(value, timestamp);
-        }
-    }
+// Not supported by d-LIVER    
+//    synchronized void accLateral(byte[] message) {
+//        int value = decodeAcc(message[1], message[2]);
+//        int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
+//        for (DliverListener l : listeners) {
+//            l.accLateral(value, timestamp);
+//        }
+//    }
 
-    synchronized void accLongitudinal(byte[] message) {
-        int value = decodeAcc(message[1], message[2]);
-        int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
-        for (DliverListener l : listeners) {
-            l.accLongitudinal(value, timestamp);
-        }
-    }
+// Not supported by d-LIVER    
+//    synchronized void accLongitudinal(byte[] message) {
+//        int value = decodeAcc(message[1], message[2]);
+//        int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
+//        for (DliverListener l : listeners) {
+//            l.accLongitudinal(value, timestamp);
+//        }
+//    }
 
-    synchronized void accVertical(byte[] message) {
-        int value = decodeAcc(message[1], message[2]);
-        int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
-        for (DliverListener l : listeners) {
-            l.accVertical(value, timestamp);
-        }
-    }
+// Not supported by d-LIVER    
+//    synchronized void accVertical(byte[] message) {
+//        int value = decodeAcc(message[1], message[2]);
+//        int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
+//        for (DliverListener l : listeners) {
+//            l.accVertical(value, timestamp);
+//        }
+//    }
 
     synchronized void rawActivityLevel(byte[] message) {
         int value = ((message[1] - 32) * 64 + (message[2] - 32));
@@ -516,6 +558,15 @@ public class Dliver implements Runnable, TimeSynchronizable {
         return result;
     }
 
+    synchronized void combinedICG(byte[] message) {
+        int icgq = decodeGyro(message[1], message[2], message[3]);
+        int icgi = decodeGyro(message[4], message[5], message[6]);
+        int icgabs = decodeGyro(message[7], message[8], message[9]);
+        int timestamp = ((message[10] - 32) * 64 + (message[11] - 32));
+        for (DliverListener l : listeners) {
+            l.combinedICG(icgq, icgi, icgabs, timestamp);
+        }
+    }
     synchronized void combinedIMU(byte[] message) {
         int ax = decodeAcc(message[1], message[2]);
         int ay = decodeAcc(message[3], message[4]);
@@ -591,15 +642,22 @@ public class Dliver implements Runnable, TimeSynchronizable {
         sendData(97, 32 + level);
     }
     
-    public void sendRmsWinPramsCh1(int size, int rate) {
-        int param = (size*8) + rate;
-        sendData(118, 32 + param);
+    public void sendBtGetChar(int ch) {
+        sendData(100, 32 + ((ch >> 6) & 0x3f));
+        sendData(99, 32 + (ch & 0x3f));
     }
     
-    public void sendRmsWinPramsCh2(int size, int rate) {
-        int param = (size*8) + rate;
-        sendData(119, 32 + param);
-    }
+// Not supported by d-LIVER    
+//    public void sendRmsWinPramsCh1(int size, int rate) {
+//        int param = (size*8) + rate;
+//        sendData(118, 32 + param);
+//    }
+    
+// Not supported by d-LIVER    
+//    public void sendRmsWinPramsCh2(int size, int rate) {
+//        int param = (size*8) + rate;
+//        sendData(119, 32 + param);
+//    }
     
     protected void sendData(int code, int value) {
         try {
