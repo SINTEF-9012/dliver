@@ -163,6 +163,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jButton7 = new javax.swing.JButton();
         jComboBoxAlertLevel = new javax.swing.JComboBox();
         jButtonAlert = new javax.swing.JButton();
+        jButtonConsole = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jProgressBarPTT = new javax.swing.JProgressBar();
         jTextFieldPTTTime = new javax.swing.JTextField();
@@ -593,16 +594,28 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             }
         });
 
+        jButtonConsole.setText("Console");
+        jButtonConsole.setActionCommand("Console");
+        jButtonConsole.setMaximumSize(new java.awt.Dimension(57, 33));
+        jButtonConsole.setMinimumSize(new java.awt.Dimension(57, 33));
+        jButtonConsole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConsoleActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(592, Short.MAX_VALUE)
                 .addComponent(jButtonAlert)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jComboBoxAlertLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(124, 124, 124)
+                .addGap(31, 31, 31)
+                .addComponent(jButtonConsole, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jButton7)
                 .addContainerGap())
         );
@@ -610,12 +623,16 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jComboBoxAlertLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButtonAlert))
-                    .addComponent(jButton7))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonConsole, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jComboBoxAlertLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonAlert))
+                            .addComponent(jButton7))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Blood Pressure Change (PTT)"));
@@ -877,9 +894,17 @@ private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         PTTGraphForm pttform = new PTTGraphForm(belt);
-        pttform.setSize(600, 450);
+        pttform.setSize(600, 750);
         pttform.setVisible(true);
     }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jButtonConsoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsoleActionPerformed
+        if (belt != null) {
+            ConsoleFrame form = new ConsoleFrame(belt);
+            form.setSize(600, 750);
+            form.setVisible(true);
+        }
+    }//GEN-LAST:event_jButtonConsoleActionPerformed
 
     /**
      * @param args the command line arguments
@@ -924,6 +949,7 @@ private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButtonAlert;
+    private javax.swing.JButton jButtonConsole;
     private javax.swing.JComboBox jComboBoxAlertLevel;
     private javax.swing.JComboBox jComboBoxBTInt;
     private javax.swing.JComboBox jComboBoxMode;
