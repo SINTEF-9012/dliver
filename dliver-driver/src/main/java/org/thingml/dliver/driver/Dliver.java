@@ -570,12 +570,12 @@ public class Dliver implements Runnable, TimeSynchronizable {
     }
 
     synchronized void combinedICG(byte[] message) {
-        int icgq = decodeGyro(message[1], message[2], message[3]);
-        int icgi = decodeGyro(message[4], message[5], message[6]);
-        int icgabs = decodeGyro(message[7], message[8], message[9]);
+        int icgAbs = decodeGyro(message[1], message[2], message[3]);
+        int icgAbsDer = decodeGyro(message[4], message[5], message[6]);
+        int icgAbsAc = decodeGyro(message[7], message[8], message[9]);
         int timestamp = ((message[10] - 32) * 64 + (message[11] - 32));
         for (DliverListener l : listeners) {
-            l.combinedICG(icgq, icgi, icgabs, timestamp);
+            l.combinedICG(icgAbs, icgAbsDer, icgAbsAc, timestamp);
         }
     }
     synchronized void combinedIMU(byte[] message) {

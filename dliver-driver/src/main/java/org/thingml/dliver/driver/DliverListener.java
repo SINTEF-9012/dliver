@@ -42,7 +42,7 @@ public interface DliverListener {
 		void pPGRaw(int value, int timestamp);
 
                 // ICG Messages
-		void combinedICG(int icgq, int icgi, int icgabs, int timestamp);//  		@code "102";
+		void combinedICG(int icgAbs, int icgAbsDer, int icgAbsAc, int timestamp);//  		@code "102";
 
                 // EMG Messages
                 void eMGData(int value);

@@ -38,28 +38,28 @@
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel2">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new LineGraphPanel(bppg, &quot;ICG_ABS (AC value with gain)&quot;, -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, &quot;0&quot;, &quot;Avg: &quot;, &quot;Last: &quot;);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new LineGraphPanel(bppg, &quot;PPG&quot;, -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, &quot;0&quot;, &quot;Avg: &quot;, &quot;Last: &quot;);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel3">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new LineGraphPanel(bicgq, &quot;ICG_Q (Raw ADC value)&quot;, -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, &quot;0&quot;, &quot;Avg: &quot;, &quot;Last: &quot;);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new LineGraphPanel(bicgAbs, &quot;ICG_ABS (Raw ADC value)&quot;, -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, &quot;0&quot;, &quot;Avg: &quot;, &quot;Last: &quot;);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel4">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new LineGraphPanel(bicgi, &quot;ICG_I (Raw ADC value)&quot;, -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, &quot;0&quot;, &quot;Avg: &quot;, &quot;Last: &quot;);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new LineGraphPanel(bicgAbsAc, &quot;ICG_ABS (AC value with gain)&quot;, -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, &quot;0&quot;, &quot;Avg: &quot;, &quot;Last: &quot;);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel5">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new LineGraphPanel(bicgabs, &quot;ICG_ABS (Derived after gain)&quot;, -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, &quot;0&quot;, &quot;Avg: &quot;, &quot;Last: &quot;);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new LineGraphPanel(bicgAbsDer, &quot;ICG_ABS (Derived after gain)&quot;, -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, &quot;0&quot;, &quot;Avg: &quot;, &quot;Last: &quot;);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>

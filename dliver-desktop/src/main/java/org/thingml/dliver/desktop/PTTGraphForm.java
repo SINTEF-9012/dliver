@@ -39,9 +39,9 @@ public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
     
     protected GraphBuffer becg = new GraphBuffer(1000);
     protected GraphBuffer bppg = new GraphBuffer(1000);
-    protected GraphBuffer bicgq = new GraphBuffer(1000);
-    protected GraphBuffer bicgi = new GraphBuffer(1000);
-    protected GraphBuffer bicgabs = new GraphBuffer(1000);
+    protected GraphBuffer bicgAbs = new GraphBuffer(1000);
+    protected GraphBuffer bicgAbsDer = new GraphBuffer(1000);
+    protected GraphBuffer bicgAbsAc = new GraphBuffer(1000);
     
      protected Dliver belt;
     
@@ -67,10 +67,10 @@ public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
     private void initComponents() {
 
         jPanel1 = new LineGraphPanel(becg, "ECG (Raw ADC value)", 0, 4096, 512, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
-        jPanel2 = new LineGraphPanel(bppg, "ICG_ABS (AC value with gain)", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
-        jPanel3 = new LineGraphPanel(bicgq, "ICG_Q (Raw ADC value)", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
-        jPanel4 = new LineGraphPanel(bicgi, "ICG_I (Raw ADC value)", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
-        jPanel5 = new LineGraphPanel(bicgabs, "ICG_ABS (Derived after gain)", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
+        jPanel2 = new LineGraphPanel(bppg, "PPG", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
+        jPanel3 = new LineGraphPanel(bicgAbs, "ICG_ABS (Raw ADC value)", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
+        jPanel4 = new LineGraphPanel(bicgAbsAc, "ICG_ABS (AC value with gain)", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
+        jPanel5 = new LineGraphPanel(bicgAbsDer, "ICG_ABS (Derived after gain)", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("d-LIVER Blood Pressure Graphs");
@@ -274,11 +274,11 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     }
 
     @Override
-    public void combinedICG(int icgq, int icgi, int icgabs, int timestamp) {
+    public void combinedICG(int icgAbs, int icgAbsDer, int icgAbsAc, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        bicgq.insertData(icgq);
-        bicgi.insertData(icgi);
-        bicgabs.insertData(icgabs);
+        bicgAbs.insertData(icgAbs);
+        bicgAbsDer.insertData(icgAbsDer);
+        bicgAbsAc.insertData(icgAbsAc);
     }
 
     @Override

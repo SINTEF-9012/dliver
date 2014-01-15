@@ -308,7 +308,7 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     }
 
     @Override
-    public void combinedICG(int icgq, int icgi, int icgabs, int timestamp) {
+    public void combinedICG(int icgAbs, int icgAbsDer, int icgAbsAc, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
