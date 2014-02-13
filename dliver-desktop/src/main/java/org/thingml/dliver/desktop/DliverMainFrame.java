@@ -72,7 +72,8 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         if (d.getSerialPort() != null) {
             try {
                 serialPort = d.getSerialPort();
-                return new Dliver(serialPort.getInputStream(), serialPort.getOutputStream());
+                
+                return new Dliver(serialPort.getInputStream(), serialPort.getOutputStream(), jCheckBoxBTtrace.isSelected());
             } catch (IOException ex) {
                 Logger.getLogger(DliverMainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -151,6 +152,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jButton3 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jComboBoxBTInt = new javax.swing.JComboBox();
+        jCheckBoxBTtrace = new javax.swing.JCheckBox();
         jPanel9 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jProgressBarBatt = new javax.swing.JProgressBar();
@@ -468,6 +470,13 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             }
         });
 
+        jCheckBoxBTtrace.setText("BT-trace");
+        jCheckBoxBTtrace.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxBTtraceActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -482,6 +491,8 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jCheckBoxBTtrace)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBoxBTInt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -497,7 +508,8 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                     .addComponent(jButton4)
                     .addComponent(jButton3)
                     .addComponent(jComboBoxBTInt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel4)
+                    .addComponent(jCheckBoxBTtrace))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -595,7 +607,6 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         });
 
         jButtonConsole.setText("Console");
-        jButtonConsole.setActionCommand("Console");
         jButtonConsole.setMaximumSize(new java.awt.Dimension(57, 33));
         jButtonConsole.setMinimumSize(new java.awt.Dimension(57, 33));
         jButtonConsole.addActionListener(new java.awt.event.ActionListener() {
@@ -767,6 +778,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             jTextFieldOver.setText("" + total_overrun + " (0)");
     }
     
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (belt == null) { // Connect
             belt = connectDliver();
@@ -906,6 +918,11 @@ private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }//GEN-LAST:event_jButtonConsoleActionPerformed
 
+    private void jCheckBoxBTtraceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxBTtraceActionPerformed
+        if (jCheckBoxBTtrace.isSelected())
+            belt.OpenTrace();
+    }//GEN-LAST:event_jCheckBoxBTtraceActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -950,6 +967,7 @@ private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButtonAlert;
     private javax.swing.JButton jButtonConsole;
+    private javax.swing.JCheckBox jCheckBoxBTtrace;
     private javax.swing.JComboBox jComboBoxAlertLevel;
     private javax.swing.JComboBox jComboBoxBTInt;
     private javax.swing.JComboBox jComboBoxMode;

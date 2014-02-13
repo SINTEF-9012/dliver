@@ -28,6 +28,7 @@ public class Dliver implements Runnable, TimeSynchronizable {
     protected OutputStream out;
     
     private Thread rxthread = null;
+    private boolean activeTrace = false;
     
     // 12 bits timestamps with a 4ms resolution -> 14bits timestamps in ms -> Max value = 0x3FFF
     private TimeSynchronizer rtsync = new TimeSynchronizer(this, 0x3FFF);
@@ -53,7 +54,21 @@ public class Dliver implements Runnable, TimeSynchronizable {
         this.out = out;
         rxthread = new Thread(this);
         rxthread.start();
+        activeTrace = false;
         //rtsync.start_timesync(); Do not start timesync by default
+    }
+
+    public Dliver(InputStream in, OutputStream out, boolean openTrace) {
+        this.in = in;
+        this.out = out;
+        rxthread = new Thread(this);
+        rxthread.start();
+        this.activeTrace = openTrace;
+        //rtsync.start_timesync(); Do not start timesync by default
+    }
+
+    public void OpenTrace() {
+        this.activeTrace = true;
     }
 
     private int msg_size(byte code) {
@@ -115,15 +130,31 @@ public class Dliver implements Runnable, TimeSynchronizable {
 
         byte[] last_message = new byte[32];
         int last_target_length = 0;
+        
+        TraceConsole traceCons = null;
 
         try {
             while (!terminate && ((len = this.in.read(buffer)) > -1)) {
                 receivedBytes += len;
                 //System.out.println("len = " + len);
+
+                if (traceCons == null ) {
+                    if (activeTrace == true) {
+                        traceCons = new TraceConsole();
+                        traceCons.setSize(600, 750);
+                        traceCons.setVisible(true);
+                        traceCons.putString("Open trace console\n");
+                    }
+                }
+
                 for (int i = 0; i < len; i++) {
                     byte c = buffer[i];
                     // Check if this is the code for the start of a message
                     if (c > 95) {
+                        if (traceCons != null) {
+                            traceCons.putChar('\n');
+                            traceCons.putInt(c);
+                        }
                         // check if it was something in the buffer
                         if (msg_index != 0) {
                             System.err.println("Dliver: Received incomplete message (code = " + code + " len = " + msg_index + ") Expected len = " + target_length);
@@ -140,6 +171,9 @@ public class Dliver implements Runnable, TimeSynchronizable {
                         target_length = msg_size(c);
                         message[msg_index++] = c;
                     } else {
+                        if (traceCons != null) {
+                            traceCons.putInt(c);
+                        }
                         if (msg_index > 0 && msg_index < target_length) {
                             message[msg_index++] = c;
                             if (msg_index == target_length) {
@@ -266,6 +300,9 @@ public class Dliver implements Runnable, TimeSynchronizable {
         }
         finally {
             System.err.println("Dliver: Receiver thread stopped.");
+            if (traceCons != null) {
+                traceCons.putString("\nClose trace console\n");
+            }
             if (!terminate) {
                 for (DliverListener l : listeners) {
                     l.connectionLost();
@@ -656,6 +693,10 @@ public class Dliver implements Runnable, TimeSynchronizable {
     public void sendBtGetChar(int ch) {
         sendData(100, 32 + ((ch >> 6) & 0x3f));
         sendData(99, 32 + (ch & 0x3f));
+    }
+    
+    public void sendBtConStart() {
+        sendBtGetChar(0x0f00);
     }
     
 // Not supported by d-LIVER    

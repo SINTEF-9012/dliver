@@ -41,7 +41,10 @@ public class ConsoleFrame extends javax.swing.JFrame implements DliverListener {
      * @param b */
     public ConsoleFrame(Dliver b) {
         this.belt = b;
-        if (b != null) b.addDliverListener(this);
+        if (b != null) {
+            b.addDliverListener(this);
+            b.sendBtConStart();
+        }
         initComponents();
         
         DefaultCaret caret = (DefaultCaret)jTextArea1.getCaret();

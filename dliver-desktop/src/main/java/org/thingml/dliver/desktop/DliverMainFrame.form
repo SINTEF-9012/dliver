@@ -565,6 +565,8 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButton3" min="-2" max="-2" attributes="1"/>
                   <EmptySpace max="32767" attributes="0"/>
+                  <Component id="jCheckBoxBTtrace" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jComboBoxBTInt" min="-2" max="-2" attributes="0"/>
@@ -583,6 +585,7 @@
                       <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jComboBoxBTInt" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jCheckBoxBTtrace" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -642,6 +645,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBoxBTIntActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="jCheckBoxBTtrace">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="BT-trace"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBoxBTtraceActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -840,7 +851,6 @@
         <Component class="javax.swing.JButton" name="jButtonConsole">
           <Properties>
             <Property name="text" type="java.lang.String" value="Console"/>
-            <Property name="actionCommand" type="java.lang.String" value="Console"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[57, 33]"/>
             </Property>
