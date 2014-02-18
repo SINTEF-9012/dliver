@@ -151,10 +151,6 @@ public class Dliver implements Runnable, TimeSynchronizable {
                     byte c = buffer[i];
                     // Check if this is the code for the start of a message
                     if (c > 95) {
-                        if (traceCons != null) {
-                            traceCons.putChar('\n');
-                            traceCons.putInt(c);
-                        }
                         // check if it was something in the buffer
                         if (msg_index != 0) {
                             System.err.println("Dliver: Received incomplete message (code = " + code + " len = " + msg_index + ") Expected len = " + target_length);
@@ -162,8 +158,17 @@ public class Dliver implements Runnable, TimeSynchronizable {
                             for (int ix = 0; ix < msg_index; ix++) {
                                 System.err.print(message[ix] + " ");
                             }
+                            if (traceCons != null) {
+                                traceCons.putString(" Too short message ");
+                                traceCons.putInt(target_length);
+                                traceCons.putInt(msg_index);
+                            }
                             System.err.println("]");
                             System.err.println("New message staring has code = " + c);
+                        }
+                        if (traceCons != null) {
+                            traceCons.putChar('\n');
+                            traceCons.putInt(c);
                         }
 
                         code = c;
@@ -171,10 +176,10 @@ public class Dliver implements Runnable, TimeSynchronizable {
                         target_length = msg_size(c);
                         message[msg_index++] = c;
                     } else {
-                        if (traceCons != null) {
-                            traceCons.putInt(c);
-                        }
                         if (msg_index > 0 && msg_index < target_length) {
+                            if (traceCons != null) {
+                                traceCons.putInt(c);
+                            }
                             message[msg_index++] = c;
                             if (msg_index == target_length) {
                                 last_message = message;  // For debug
@@ -286,6 +291,10 @@ public class Dliver implements Runnable, TimeSynchronizable {
                         } else {
                             System.err.println("Dliver: Received Corrupted Data.");
                             System.err.print("Last msg len = " + last_target_length + " data = ");
+                            if (traceCons != null) {
+                                traceCons.putString(" Additional");
+                                traceCons.putInt(c);
+                            }
                             int idx;
                             for (idx = 0; idx<last_target_length; idx++) {
                                 System.err.print("" + last_message[idx] + " ");
