@@ -148,8 +148,6 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jPanel8 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jComboBoxMode = new javax.swing.JComboBox(org.thingml.dliver.driver.DliverMode.values());
-        jButton4 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jComboBoxBTInt = new javax.swing.JComboBox();
         jCheckBoxBTtrace = new javax.swing.JCheckBox();
@@ -446,21 +444,6 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             }
         });
 
-        jButton4.setText("Live Data");
-        jButton4.setToolTipText("");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
-        jButton3.setText("Conn. Restored");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
         jLabel4.setText("Bluetooth update interval :");
 
         jComboBoxBTInt.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "3", "5", "10", "15", "30", "60", "120" }));
@@ -486,10 +469,6 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBoxMode, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jCheckBoxBTtrace)
                 .addGap(18, 18, 18)
@@ -505,12 +484,10 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jComboBoxMode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton3)
                     .addComponent(jComboBoxBTInt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
                     .addComponent(jCheckBoxBTtrace))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         jPanel9.setBackground(new java.awt.Color(204, 204, 204));
@@ -801,12 +778,6 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         else jButton1.setText("Connect...");
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        if (belt != null) {
-            belt.setLiveDataMode();
-        }
-    }//GEN-LAST:event_jButton4ActionPerformed
-
 private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
     IMUGraphForm imuform = new IMUGraphForm(belt);
     imuform.setSize(600, 800);
@@ -853,10 +824,6 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         form.setVisible(true);
     }
 }//GEN-LAST:event_jButton7ActionPerformed
-
-private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    belt.connectionRestored();
-}//GEN-LAST:event_jButton3ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
@@ -959,8 +926,6 @@ private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
