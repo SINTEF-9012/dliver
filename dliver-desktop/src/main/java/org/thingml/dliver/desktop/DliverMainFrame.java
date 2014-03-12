@@ -879,7 +879,7 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void jButtonConsoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsoleActionPerformed
         if (belt != null) {
-            ConsoleFrame form = new ConsoleFrame(belt);
+            ConsoleFrame form = new ConsoleFrame(belt, 50000, 1000);
             form.setSize(600, 750);
             form.setVisible(true);
         }

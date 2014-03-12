@@ -25,6 +25,8 @@
  */
 package org.thingml.dliver.desktop;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.text.DefaultCaret;
 import org.thingml.dliver.driver.Dliver;
 import org.thingml.dliver.driver.DliverListener;
@@ -35,11 +37,18 @@ import org.thingml.dliver.driver.DliverListener;
  */
 public class ConsoleFrame extends javax.swing.JFrame implements DliverListener {
 
+    int maxBuffer = 1000;
+    int reduceSize = 10;
+    int bytesInBuffer = 0;
+    DefaultCaret caret; 
     protected Dliver belt;
     
     /** Creates new form SkinTempGraphFrame
      * @param b */
-    public ConsoleFrame(Dliver b) {
+    public ConsoleFrame(Dliver b, int maxBuffer, int reduceSize) {
+        this.maxBuffer = maxBuffer;
+        this.reduceSize = reduceSize;
+        this.bytesInBuffer = 0;
         this.belt = b;
         if (b != null) {
             b.addDliverListener(this);
@@ -49,6 +58,46 @@ public class ConsoleFrame extends javax.swing.JFrame implements DliverListener {
         
         DefaultCaret caret = (DefaultCaret)jTextArea1.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        
+        jTextArea1.addKeyListener(new KeyListener()
+        {
+              //When any key is pressed and released then the 
+              //keyPressed and keyReleased methods are called respectively.
+              //The keyTyped method is called when a valid character is typed.
+              //The getKeyChar returns the character for the key used. If the key
+              //is a modifier key (e.g., SHIFT, CTRL) or action key (e.g., DELETE, ENTER)
+              //then the character will be a undefined symbol.
+              @Override 
+              public void keyPressed(KeyEvent e)
+              {
+                  e.consume();
+              }
+              @Override
+              public void keyReleased(KeyEvent e)
+              {
+                  e.consume();
+              }
+              
+              @Override
+              public void keyTyped(KeyEvent e)
+              {
+                  //The getKeyModifiers method is a handy
+                  //way to get a String representing the
+                  //modifier key.
+                  char ch = e.getKeyChar();
+                  if (ch == 0x0a) {
+                      belt.sendBtGetChar(0x0d);
+                      jTextArea1.setCaretPosition(jTextArea1.getDocument().getLength());
+                      System.out.println("Got CR ... reset caret to end of doc");
+                  }
+                  if (ch == 0x08) {
+                      jTextArea1.setCaretPosition(jTextArea1.getDocument().getLength());
+                      System.out.println("Got BS ... reset caret to end of doc");
+                  }
+                  belt.sendBtGetChar(ch);
+                  e.consume();
+              }
+        });
     }
 
     /** This method is called from within the constructor to
@@ -73,8 +122,10 @@ public class ConsoleFrame extends javax.swing.JFrame implements DliverListener {
 
         jScrollPane1.setAutoscrolls(true);
         jScrollPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jScrollPane1.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
 
         jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
@@ -296,8 +347,24 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     @Override
     public void btPutChar(int value) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        String txt = "" + ((char)value);
-        jTextArea1.append(txt);
+        if (value == 0x08) {
+            bytesInBuffer = jTextArea1.getDocument().getLength();
+            jTextArea1.replaceRange("", bytesInBuffer -2, bytesInBuffer -1);
+            bytesInBuffer -= 1;
+            System.out.println("Got BS ... remove last char in buff");
+        } else {
+            String txt = "" + ((char)value);
+            jTextArea1.append(txt);
+            bytesInBuffer += 1;
+            checkMaxBuffer();
+        }
     }
 
+    private void checkMaxBuffer() {
+        if (bytesInBuffer > maxBuffer) {
+            jTextArea1.replaceRange("", 0, reduceSize -1);
+            bytesInBuffer = jTextArea1.getDocument().getLength();
+        }
+    }
+    
 }

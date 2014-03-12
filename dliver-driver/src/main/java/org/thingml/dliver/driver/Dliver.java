@@ -140,7 +140,7 @@ public class Dliver implements Runnable, TimeSynchronizable {
 
                 if (traceCons == null ) {
                     if (activeTrace == true) {
-                        traceCons = new TraceConsole();
+                        traceCons = new TraceConsole(50000,1000);
                         traceCons.setSize(600, 750);
                         traceCons.setVisible(true);
                         traceCons.putString("Open trace console\n");
@@ -289,17 +289,20 @@ public class Dliver implements Runnable, TimeSynchronizable {
                                 target_length = 0;
                             }
                         } else {
+                            char ch = (char) c;
+                            
                             System.err.println("Dliver: Received Corrupted Data.");
                             System.err.print("Last msg len = " + last_target_length + " data = ");
                             if (traceCons != null) {
                                 traceCons.putString(" Additional");
                                 traceCons.putInt(c);
+                                traceCons.putString(" (" + ch + ")"); 
                             }
                             int idx;
                             for (idx = 0; idx<last_target_length; idx++) {
                                 System.err.print("" + last_message[idx] + " ");
                             }
-                            System.err.println("Additional received = " + c); 
+                            System.err.println("Additional received = " + c + " (" + ch + ")"); 
                         }
                     }
                 }
