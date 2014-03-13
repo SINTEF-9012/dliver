@@ -561,6 +561,8 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jComboBoxMode" min="-2" pref="177" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
+                  <Component id="jCheckBoxDebugCons" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jCheckBoxBTtrace" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
@@ -580,6 +582,7 @@
                       <Component id="jComboBoxBTInt" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jCheckBoxBTtrace" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jCheckBoxDebugCons" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="11" max="32767" attributes="0"/>
               </Group>
@@ -630,6 +633,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBoxBTtraceActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="jCheckBoxDebugCons">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Verify Test Mode"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBoxDebugConsActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

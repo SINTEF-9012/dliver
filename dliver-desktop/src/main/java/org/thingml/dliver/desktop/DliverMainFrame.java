@@ -64,6 +64,10 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
     
     private SerialPort serialPort = null;
     
+    private boolean activeVerifyTestMode = false;
+    private boolean activeTestMode = false;
+    DebugConsole VerifyTestMode = null;
+    
     public Dliver connectDliver() {
     	
         ConnectDialog d = new ConnectDialog(this, true);
@@ -151,6 +155,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jLabel4 = new javax.swing.JLabel();
         jComboBoxBTInt = new javax.swing.JComboBox();
         jCheckBoxBTtrace = new javax.swing.JCheckBox();
+        jCheckBoxDebugCons = new javax.swing.JCheckBox();
         jPanel9 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jProgressBarBatt = new javax.swing.JProgressBar();
@@ -460,6 +465,13 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             }
         });
 
+        jCheckBoxDebugCons.setText("Verify Test Mode");
+        jCheckBoxDebugCons.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxDebugConsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -470,6 +482,8 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBoxMode, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jCheckBoxDebugCons)
+                .addGap(18, 18, 18)
                 .addComponent(jCheckBoxBTtrace)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
@@ -486,7 +500,8 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                     .addComponent(jComboBoxMode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxBTInt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(jCheckBoxBTtrace))
+                    .addComponent(jCheckBoxBTtrace)
+                    .addComponent(jCheckBoxDebugCons))
                 .addContainerGap(11, Short.MAX_VALUE))
         );
 
@@ -805,6 +820,12 @@ private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 private void jComboBoxModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxModeActionPerformed
     if (belt != null) {
         belt.setDataMode(((DliverMode)jComboBoxMode.getSelectedItem()));
+        if (((DliverMode)jComboBoxMode.getSelectedItem()) == DliverMode.Test) {
+            activeTestMode = true;
+        }
+        else {
+            activeTestMode = false;
+        }
     }
 }//GEN-LAST:event_jComboBoxModeActionPerformed
 
@@ -890,6 +911,23 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             belt.OpenTrace();
     }//GEN-LAST:event_jCheckBoxBTtraceActionPerformed
 
+    private void jCheckBoxDebugConsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxDebugConsActionPerformed
+        if (jCheckBoxDebugCons.isSelected())
+        {
+            if (belt != null) {
+                        VerifyTestMode = new DebugConsole(50000,1000);
+                        VerifyTestMode.setSize(600, 750);
+                        VerifyTestMode.setTitle("Verify Test Mode");
+                        VerifyTestMode.setVisible(true);
+                        VerifyTestMode.putString("***Verify Test mode***\n***Select Test Mode***\n***Expected 4096 got 0 is OK***\n");
+                        activeVerifyTestMode = true;
+            }
+        }
+        else {
+            activeVerifyTestMode = false;
+        }
+    }//GEN-LAST:event_jCheckBoxDebugConsActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -933,6 +971,7 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JButton jButtonAlert;
     private javax.swing.JButton jButtonConsole;
     private javax.swing.JCheckBox jCheckBoxBTtrace;
+    private javax.swing.JCheckBox jCheckBoxDebugCons;
     private javax.swing.JComboBox jComboBoxAlertLevel;
     private javax.swing.JComboBox jComboBoxBTInt;
     private javax.swing.JComboBox jComboBoxMode;
@@ -1088,11 +1127,18 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
 	}
 
+        int ECG_test_value = 0;
+        int ECG_mismatch_cnt = 0;
 	@Override
 	public void eCGData(int value) {
-		//System.out.println("ECG Data = " + value );
-            //becg.insertData(value);
-
+            if (activeVerifyTestMode && activeTestMode) {
+                VerifyTestMode.putString("Value " + value + "\n");
+                if (value != ECG_test_value + 1) {
+                    ECG_mismatch_cnt++;
+                    VerifyTestMode.putString("ECG test data mismatch, expected " + (ECG_test_value + 1) + " got " + value + " (" + ECG_mismatch_cnt + ")\n");
+                }
+                ECG_test_value = value;
+            }
 	}
 
 	@Override
