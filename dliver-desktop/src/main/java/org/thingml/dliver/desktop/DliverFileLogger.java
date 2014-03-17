@@ -51,8 +51,9 @@ public class DliverFileLogger implements DliverListener {
     protected PrintWriter ecg;
     protected PrintWriter imu;
     protected PrintWriter phi;
-    protected PrintWriter emg;
-    protected PrintWriter rms;
+    protected PrintWriter icg;
+    protected PrintWriter ppg;
+    protected PrintWriter ptt;
     
     
     protected boolean eCGEpoch = false;
@@ -96,20 +97,20 @@ public class DliverFileLogger implements DliverListener {
            else
                ecg.println("Value" + SEPARATOR + "RXTime" + SEPARATOR + "Corrtime" + SEPARATOR + "RawTime" + SEPARATOR + "Update");
            
-           emg = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_emg.txt")));
-           if (!eCGEpoch)
-               emg.println("# EMG Data, Raw 12bits ADC values, 1kHz.");
-           else
-               emg.println("Value" + SEPARATOR + "RXTime" + SEPARATOR + "Corrtime" + SEPARATOR + "RawTime" + SEPARATOR + "Update");
-           
-           rms = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_emg_rms.txt")));
-           rms.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "RmsChA" + SEPARATOR + "RmsChB");
-           
            imu = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_imu.txt")));
            imu.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "AX" + SEPARATOR + "AY" + SEPARATOR + "AZ" + SEPARATOR + "GX" + SEPARATOR + "GY" + SEPARATOR + "GZ");
            
            phi = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_phi.txt")));
            phi.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
+           
+           icg = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_icg.txt")));
+           icg.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "ICG (Abs)" + SEPARATOR + "ICG (Ac)" + SEPARATOR + "ICG (Der)");
+           
+           icg = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_icg.txt")));
+           icg.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "ICG (Abs)" + SEPARATOR + "ICG (Ac)" + SEPARATOR + "ICG (Der)");
+           
+           ptt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ptt.txt")));
+           ptt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "PTT");
            
        } catch (IOException ex) {
            Logger.getLogger(DliverFileLogger.class.getName()).log(Level.SEVERE, null, ex);
@@ -144,14 +145,16 @@ public class DliverFileLogger implements DliverListener {
             ecg.close();
             imu.close();
             phi.close();
-            rms.close();
-            emg.close();
+            icg.close();
+            ppg.close();
+            ptt.close();
             log = null;
             ecg = null;
             imu = null;
             phi = null;
-            rms = null;
-            emg = null;
+            icg = null;
+            ppg = null;
+            ptt = null;
         }
     }
     
@@ -437,21 +440,8 @@ public class DliverFileLogger implements DliverListener {
 
     @Override
     public void eMGData(int value) {
-        emg_timestamp +=1;
-        if (logging) {
-            if (!eCGEpoch) {
-                // This can be used to log without timestamp for each sample to keep the file smaller.
-                emg.println(value);
-            } else {
-                // This can be used to log the timestamp for each sample but it makes the file really big.
-                long ts = belt.getEpochTimestampFromMs(emg_timestamp); 
-                emg.println(value + SEPARATOR + currentTimeStamp() + SEPARATOR + ts + SEPARATOR + emg_timestamp + SEPARATOR + 0);
-            }
-        }
     }
 
-    private int emg_timestamp = 0;
-    
     @Override
     public void eMGSignalQuality(int value, int timestamp) {
         
@@ -464,20 +454,11 @@ public class DliverFileLogger implements DliverListener {
      */
     @Override
     public void eMGRaw(int value, int timestamp) {
-        emg_timestamp = timestamp*4;
-        if (logging) {
-            long ts = belt.getEpochTimestampFromMs(emg_timestamp);
-            emg.println(value + SEPARATOR + currentTimeStamp() + SEPARATOR + ts + SEPARATOR + emg_timestamp + SEPARATOR + 1);
-        }
     }
 
     //int rmsCount = 0;
     @Override
     public void eMGRMS(int channelA, int channelB, int timestamp) {
-        if (logging) {
-            rms.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + channelA + SEPARATOR + channelB);
-        }
-        //System.err.println("eMGRMS(" + name + ") #" + rmsCount++ + logging);
     }
 
     @Override
@@ -513,16 +494,19 @@ public class DliverFileLogger implements DliverListener {
     @Override
     public void pTT(int value, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (logging) ptt.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
     }
 
     @Override
     public void combinedICG(int icgAbs, int icgAbsDer, int icgAbsAc, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (logging) icg.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + icgAbs + SEPARATOR + icgAbsAc + SEPARATOR + icgAbsDer);
     }
 
     @Override
     public void ppg(int value, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (logging) ppg.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
     }
 
     @Override
