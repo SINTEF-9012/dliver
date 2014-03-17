@@ -919,7 +919,7 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                         VerifyTestMode.setSize(600, 750);
                         VerifyTestMode.setTitle("Verify Test Mode");
                         VerifyTestMode.setVisible(true);
-                        VerifyTestMode.putString("***Verify Test mode***\n***Select Test Mode***\n***Expected 4096 got 0 is OK***\n");
+                        VerifyTestMode.putString("***Verify Test mode***\n***Select Test Mode***\n");
                         activeVerifyTestMode = true;
             }
         }
@@ -928,6 +928,25 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }//GEN-LAST:event_jCheckBoxDebugConsActionPerformed
 
+    int ECG_test_value = 0;
+    int ECG_mismatch_cnt = 0;
+    int ECG_wrap_cnt = 0;
+
+    private void VerifyCount(int value) {
+        if (activeVerifyTestMode && activeTestMode) {
+            //VerifyTestMode.putString("Value " + value + "\n");
+            if ((value == 0) &&(ECG_test_value == 4095)) {
+                ECG_wrap_cnt++;
+                VerifyTestMode.putString("ECG test wrap " + ECG_wrap_cnt + " (Error count = " + ECG_mismatch_cnt + ")\n");
+            } else if (value != ECG_test_value + 1) {
+                ECG_mismatch_cnt++;
+                VerifyTestMode.putString("ECG test data mismatch, expected " + (ECG_test_value + 1) + " got " + value + " (" + ECG_mismatch_cnt + ")\n");
+            }
+            ECG_test_value = value;
+        }
+    }
+
+    
     /**
      * @param args the command line arguments
      */
@@ -1127,18 +1146,9 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
 	}
 
-        int ECG_test_value = 0;
-        int ECG_mismatch_cnt = 0;
 	@Override
 	public void eCGData(int value) {
-            if (activeVerifyTestMode && activeTestMode) {
-                VerifyTestMode.putString("Value " + value + "\n");
-                if (value != ECG_test_value + 1) {
-                    ECG_mismatch_cnt++;
-                    VerifyTestMode.putString("ECG test data mismatch, expected " + (ECG_test_value + 1) + " got " + value + " (" + ECG_mismatch_cnt + ")\n");
-                }
-                ECG_test_value = value;
-            }
+            VerifyCount(value);
 	}
 
 	@Override
@@ -1150,8 +1160,7 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
 	@Override
 	public void eCGRaw(int value, int timestamp) {
-		//System.out.println("ECG Raw = " + value + " (t=" + timestamp + ")" );
-
+            VerifyCount(value);
 	}
 
 	@Override
