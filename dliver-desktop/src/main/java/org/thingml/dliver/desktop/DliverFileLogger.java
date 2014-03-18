@@ -106,8 +106,8 @@ public class DliverFileLogger implements DliverListener {
            icg = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_icg.txt")));
            icg.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "ICG (Abs)" + SEPARATOR + "ICG (Ac)" + SEPARATOR + "ICG (Der)");
            
-           icg = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_icg.txt")));
-           icg.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "ICG (Abs)" + SEPARATOR + "ICG (Ac)" + SEPARATOR + "ICG (Der)");
+           ppg = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ppg.txt")));
+           ppg.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "PPG (Raw)" + SEPARATOR + "PPG (Der)");
            
            ptt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ptt.txt")));
            ptt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "PTT");
