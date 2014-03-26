@@ -59,7 +59,7 @@
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel5">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new LineGraphPanel(bicgAbsDer, &quot;ICG_ABS (Derived after gain)&quot;, -2000, 2000, 8192, new java.awt.Color(255, 153, 0), 1.0, &quot;0&quot;, &quot;Avg: &quot;, &quot;Last: &quot;);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new LineGraphPanel(bicgAbsDer, &quot;ICG_ABS (Derived after gain)&quot;, -500, 500, 8192, new java.awt.Color(255, 153, 0), 1.0, &quot;0&quot;, &quot;Avg: &quot;, &quot;Last: &quot;);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
