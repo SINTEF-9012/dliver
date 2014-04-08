@@ -55,7 +55,7 @@ public class Dliver implements Runnable, TimeSynchronizable {
         rxthread = new Thread(this);
         rxthread.start();
         activeTrace = false;
-        //rtsync.start_timesync(); Do not start timesync by default
+        rtsync.start_timesync(); // Can be omitted if no timesync by default
     }
 
     public Dliver(InputStream in, OutputStream out, boolean openTrace) {

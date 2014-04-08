@@ -104,7 +104,7 @@ public class DliverFileLogger implements DliverListener {
            phi.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
            
            icg = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_icg.txt")));
-           icg.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "ICG (Abs)" + SEPARATOR + "ICG (Ac)" + SEPARATOR + "ICG (Der)");
+           icg.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "IMP (Abs)" + SEPARATOR + "IMP (Ac)" + SEPARATOR + "ICG (IMP Der)");
            
            ppg = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ppg.txt")));
            ppg.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "PPG (Raw)" + SEPARATOR + "PPG (Der)");
