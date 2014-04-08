@@ -101,7 +101,13 @@ public class FileLoggerForm extends javax.swing.JFrame {
             }
         });
 
-        jCheckBoxEpoch.setText("Log Epoch for ECG and EMG");
+        jCheckBoxEpoch.setSelected(true);
+        jCheckBoxEpoch.setText("Log Epoch for ECG");
+        jCheckBoxEpoch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxEpochActionPerformed(evt);
+            }
+        });
 
         jButtonOscLog.setText("OscLog");
         jButtonOscLog.addActionListener(new java.awt.event.ActionListener() {
@@ -211,6 +217,10 @@ private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event
         form.pack();
         form.setVisible(true);
     }//GEN-LAST:event_jButtonOscLogActionPerformed
+
+    private void jCheckBoxEpochActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxEpochActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBoxEpochActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
