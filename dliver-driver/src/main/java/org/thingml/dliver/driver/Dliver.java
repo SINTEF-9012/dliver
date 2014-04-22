@@ -19,10 +19,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import org.thingml.rtsync.core.TimeSynchronizable;
 import org.thingml.rtsync.core.TimeSynchronizer;
+import org.thingml.rtsync.core.TimeSynchronizableV2;
 
-public class Dliver implements Runnable, TimeSynchronizable {
+public class Dliver implements Runnable, TimeSynchronizableV2 {
 
     protected InputStream in;
     protected OutputStream out;
@@ -64,7 +64,7 @@ public class Dliver implements Runnable, TimeSynchronizable {
         rxthread = new Thread(this);
         rxthread.start();
         this.activeTrace = openTrace;
-        //rtsync.start_timesync(); Do not start timesync by default
+        rtsync.start_timesync(); // Can be omitted if no timesync by default
     }
 
     public void OpenTrace() {
@@ -83,6 +83,8 @@ public class Dliver implements Runnable, TimeSynchronizable {
             return 12;
         } else if (code == 120) {
             return 18;
+        } else if (code == 126) {
+            return 12;
         } else {
             return 5; // default value for other messages
         }
@@ -277,6 +279,9 @@ public class Dliver implements Runnable, TimeSynchronizable {
                                     case 125:
                                         // Not supported by d-LIVER    
                                         //eMGRMS(message);
+                                        break;
+                                    case 126:
+                                        epoch(message);
                                         break;
                                      
                                     default:
@@ -639,6 +644,32 @@ public class Dliver implements Runnable, TimeSynchronizable {
             l.combinedIMU(ax, ay, az, gx, gy, gz, timestamp);
         }
     }
+
+    synchronized long decodeEpoch(byte d1, byte d2, byte d3, byte d4, byte d5, byte d6, byte d7, byte d8, byte d9, byte d10, byte d11) {
+        long result = 0;
+        result += ((long)(d1  - 32) & 0x3F) << 60;
+        result += ((long)(d2  - 32) & 0x3F) << 54;
+        result += ((long)(d3  - 32) & 0x3F) << 48;
+        result += ((long)(d4  - 32) & 0x3F) << 42;
+        result += ((long)(d5  - 32) & 0x3F) << 36;
+        result += ((long)(d6  - 32) & 0x3F) << 30;
+        result += ((long)(d7  - 32) & 0x3F) << 24;
+        result += ((long)(d8  - 32) & 0x3F) << 18;
+        result += ((long)(d9  - 32) & 0x3F) << 12;
+        result += ((long)(d10 - 32) & 0x3F) <<  6;
+        result +=  (long)(d11 - 32) & 0x3F;
+
+        return result;
+    }
+
+
+    
+    synchronized void epoch(byte[] message) {
+        long epoch = decodeEpoch(message[1], message[2], message[3], message[4], message[5], message[6], message[7], message[8], message[9], message[10], message[11]);
+        
+        rtsync.receiveEpoch(epoch);
+    }
+
     private ArrayList<DliverListener> listeners = new ArrayList<DliverListener>();
 
     public synchronized void addDliverListener(DliverListener l) {
@@ -736,9 +767,41 @@ public class Dliver implements Runnable, TimeSynchronizable {
         }
     }
 
+    protected void sendDataArray(byte[] dataArray, int len) {
+        try {
+            out.write(dataArray, 0, len);
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void sendTimeRequest(int seq_num) {
         requestCUTime(seq_num+2);
+        //System.out.println("sendTimeRequest("+seq_num+")");
+    }
+
+    @Override
+    public void sendEpochCorr(long currentOffset) {
+        byte[] dataArray = new byte[32];
+        int    idx = 0;
+        
+        dataArray[idx++] = 101;
+        dataArray[idx++] = (byte) (32 + (int)((currentOffset >> 60) & 0x3f));
+        dataArray[idx++] = (byte) (32 + (int)((currentOffset >> 54) & 0x3f));
+        dataArray[idx++] = (byte) (32 + (int)((currentOffset >> 48) & 0x3f));
+        dataArray[idx++] = (byte) (32 + (int)((currentOffset >> 42) & 0x3f));
+        dataArray[idx++] = (byte) (32 + (int)((currentOffset >> 36) & 0x3f));
+        dataArray[idx++] = (byte) (32 + (int)((currentOffset >> 30) & 0x3f));
+        dataArray[idx++] = (byte) (32 + (int)((currentOffset >> 24) & 0x3f));
+        dataArray[idx++] = (byte) (32 + (int)((currentOffset >> 18) & 0x3f));
+        dataArray[idx++] = (byte) (32 + (int)((currentOffset >> 12) & 0x3f));
+        dataArray[idx++] = (byte) (32 + (int)((currentOffset >>  6) & 0x3f));
+        dataArray[idx++] = (byte) (32 + (int) (currentOffset        & 0x3f));
+        sendDataArray(dataArray, idx);
+        //System.out.println("sendEpochCorr("+currentOffset+")");
     }
 }
 
