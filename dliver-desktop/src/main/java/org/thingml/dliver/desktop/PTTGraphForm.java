@@ -39,7 +39,7 @@ public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
     
     protected GraphBuffer becg = new GraphBuffer(1000);
     protected GraphBuffer bppg = new GraphBuffer(1000);
-    protected GraphBuffer bicgAbs = new GraphBuffer(1000);
+    protected GraphBuffer bppgDer = new GraphBuffer(1000);
     protected GraphBuffer bicgAbsDer = new GraphBuffer(1000);
     protected GraphBuffer bicgAbsAc = new GraphBuffer(1000);
     
@@ -68,7 +68,7 @@ public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
 
         jPanel1 = new LineGraphPanel(becg, "ECG (Raw ADC value)", 0, 4096, 512, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
         jPanel2 = new LineGraphPanel(bppg, "PPG", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
-        jPanel3 = new LineGraphPanel(bicgAbs, "IMP_ABS (Raw ADC value)", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
+        jPanel3 = new LineGraphPanel(bppgDer, "PPG (Der)", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
         jPanel4 = new LineGraphPanel(bicgAbsAc, "IMP_ABS (AC value with gain)", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
         jPanel5 = new LineGraphPanel(bicgAbsDer, "ICG (IMP Derived after gain)", -500, 500, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
 
@@ -221,41 +221,8 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     }
 
     @Override
-    public void eMGData(int value) {
-        
-    }
-
-    @Override
-    public void eMGSignalQuality(int value, int timestamp) {
-        
-    }
-
-    @Override
-    public void eMGRaw(int value, int timestamp) {
-        
-    }
-
-    @Override
-    public void eMGRMS(int channelA, int channelB, int timestamp) {
-        
-    }
-    @Override
     public void referenceClockTimeSync(int timeSyncSeqNum, long value) {
         
-    }
-    @Override
-    public void pPGData(int value) {
-        bppg.insertData(value);
-    }
-
-    @Override
-    public void pPGSignalQuality(int value, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void pPGRaw(int value, int timestamp) {
-        bppg.insertData(value);
     }
 
     @Override
@@ -269,22 +236,26 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     }
 
     @Override
-    public void pTT(int value, int timestamp) {
+    public void ptt(int value, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void combinedICG(int icgAbs, int icgAbsDer, int icgAbsAc, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        bicgAbs.insertData(icgAbs);
+    public void iCGAbs(int icgAbs, int timestamp) {
+        //bicgAbs.insertData(icgAbs);
+    }
+
+    @Override
+    public void combinedICG(int icgAbsDer, int icgAbsAc, int timestamp) {
         bicgAbsDer.insertData(icgAbsDer);
         bicgAbsAc.insertData(icgAbsAc);
     }
 
     @Override
-    public void ppg(int value, int timestamp) {
+    public void ppg(int ppgRaw, int ppgDer, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        bppg.insertData(value);
+        bppg.insertData(ppgRaw);
+        bppgDer.insertData(ppgDer);
     }
 
     @Override

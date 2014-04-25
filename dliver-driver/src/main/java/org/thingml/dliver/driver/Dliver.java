@@ -72,15 +72,14 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     }
 
     private int msg_size(byte code) {
-        if (code == 101 || code == 122 || code == 123) {
+        if (code == 101 || code == 123 || code == 125) {
             return 3;
-        } else if (code == 106 || code == 107 || code == 110 || code == 112 || code == 114 || code == 117 || code == 121) {
+        } else if (code == 102 || code == 124) {
+            return 4;
+        } else if (code == 106 || code == 107 || code == 110 || code == 112 || code == 114 || code == 117) {
             return 6;
-        } else if (code == 125) {
-            return 15;
-        }
-        else if (code == 102) {
-            return 12;
+        } else if (code == 121 || code == 122) {
+            return 7;
         } else if (code == 120) {
             return 18;
         } else if (code == 126) {
@@ -222,7 +221,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
                                         eCGData(message);
                                         break;
                                     case 102:
-                                        combinedICG(message);
+                                        iCGAbs(message);
                                         // Not supported by d-LIVER    
                                         //eCGSignalQuality(message);
                                         break;
@@ -264,6 +263,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
                                         combinedIMU(message);
                                         break;
                                     case 122:
+                                        combinedICG(message);
                                         // Not supported by d-LIVER    
                                         //eMGData(message);
                                         break;
@@ -273,10 +273,12 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
                                         //eMGSignalQuality(message);
                                         break;
                                     case 124:
+                                        ptt(message);
                                         // Not supported by d-LIVER    
                                         //eMGRaw(message);
                                         break;
                                     case 125:
+                                        commonTimestamp(message);
                                         // Not supported by d-LIVER    
                                         //eMGRMS(message);
                                         break;
@@ -478,10 +480,12 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     }
 
     synchronized void ppg(byte[] message) {
-        int value = decodeGyro(message[1], message[2], message[3]);
-        int timestamp = ((message[4] - 32) * 64 + (message[5] - 32));
+        int ppgRaw = decodeGyro(message[1], message[2], message[3]);
+        int ppgDer = decodeGyro(message[4], message[5], message[6]);
+        int timestamp = lastCommonTimestamp;
+        //System.out.println("ppg() ts = "+ lastCommonTimestamp);
         for (DliverListener l : listeners) {
-            l.ppg(value, timestamp);
+            l.ppg(ppgRaw, ppgDer, timestamp);
         }
     }
 
@@ -623,15 +627,39 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         return result;
     }
 
-    synchronized void combinedICG(byte[] message) {
+    synchronized void iCGAbs(byte[] message) {
         int icgAbs = decodeGyro(message[1], message[2], message[3]);
-        int icgAbsDer = decodeGyro(message[4], message[5], message[6]);
-        int icgAbsAc = decodeGyro(message[7], message[8], message[9]);
-        int timestamp = ((message[10] - 32) * 64 + (message[11] - 32));
+        int timestamp = lastCommonTimestamp;
         for (DliverListener l : listeners) {
-            l.combinedICG(icgAbs, icgAbsDer, icgAbsAc, timestamp);
+            l.iCGAbs(icgAbs, timestamp);
         }
     }
+
+    synchronized void combinedICG(byte[] message) {
+        int icgAbsDer = decodeGyro(message[1], message[2], message[3]);
+        int icgAbsAc = decodeGyro(message[4], message[5], message[6]);
+        int timestamp = lastCommonTimestamp;
+        //System.out.println("combinedICG() ts = "+ lastCommonTimestamp);
+        for (DliverListener l : listeners) {
+            l.combinedICG(icgAbsDer, icgAbsAc, timestamp);
+        }
+    }
+    
+    synchronized void ptt(byte[] message) {
+        int ptt = decodeGyro(message[1], message[2], message[3]);
+        int timestamp = lastCommonTimestamp;
+        for (DliverListener l : listeners) {
+            l.ptt(ptt, timestamp);
+        }
+    }
+
+    int lastCommonTimestamp = 0;
+    synchronized void commonTimestamp(byte[] message) {
+        lastCommonTimestamp = ((message[1] - 32) * 64 + (message[2] - 32));
+        //System.out.println("commonTimestamp() ts = "+ lastCommonTimestamp);
+    }
+
+    
     synchronized void combinedIMU(byte[] message) {
         int ax = decodeAcc(message[1], message[2]);
         int ay = decodeAcc(message[3], message[4]);

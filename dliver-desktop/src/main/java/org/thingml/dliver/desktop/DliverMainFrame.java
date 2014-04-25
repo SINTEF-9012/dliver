@@ -19,6 +19,7 @@ package org.thingml.dliver.desktop;
 import org.thingml.dliver.driver.Dliver;
 import org.thingml.dliver.driver.DliverMode;
 import org.thingml.dliver.driver.DliverListener;
+//import org.thingml.dliver.driver.ReadVersionInfoDrvr;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.CommPort;
@@ -55,6 +56,11 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         initComponents();
         setLocationRelativeTo(null);
         
+        //ReadVersionInfo version = new ReadVersionInfo();
+        //ReadVersionInfoDrvr version2 = new org.thingml.dliver.driver.ReadVersionInfoDrvr();
+        //System.out.println("Version string  => " + version.GetVersionString());
+        //System.out.println("Version string2 => " + version2.GetVersionString());
+        //System.out.println("All version strings => \n" + version.GetAllVersionStrings());
     }
     
     public void disableConnection() {
@@ -1297,43 +1303,8 @@ static {
     }
 
     @Override
-    public void eMGData(int value) {
-       
-    }
-
-    @Override
-    public void eMGSignalQuality(int value, int timestamp) {
-        
-    }
-
-    @Override
-    public void eMGRaw(int value, int timestamp) {
-        
-    }
-
-    @Override
-    public void eMGRMS(int channelA, int channelB, int timestamp) {
-        
-    }
-    
-    @Override
     public void referenceClockTimeSync(int timeSyncSeqNum, long value) {
         
-    }
-
-    @Override
-    public void pPGData(int value) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void pPGSignalQuality(int value, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void pPGRaw(int value, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -1347,7 +1318,7 @@ static {
     }
 
     @Override
-    public void pTT(int value, int timestamp) {
+    public void ptt(int value, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
        jProgressBarPTT.setString(""+new DecimalFormat("##.0").format((double)value/10.0) + " msec");
        jProgressBarPTT.setValue(value);
@@ -1355,12 +1326,17 @@ static {
     }
 
     @Override
-    public void combinedICG(int icgAbs, int icgAbsDer, int icgAbsAc, int timestamp) {
+    public void iCGAbs(int icgAbs, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void ppg(int value, int timestamp) {
+    public void combinedICG(int icgAbsDer, int icgAbsAc, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void ppg(int ppgRaw, int ppgDer, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -19,6 +19,8 @@
  */
 package org.thingml.dliver.desktop;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import org.thingml.dliver.driver.DliverListener;
 import java.io.File;
 import java.io.FileWriter;
@@ -32,12 +34,13 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.thingml.dliver.driver.Dliver;
+import javax.swing.Timer;
 
 /**
  *
  * @author ffl
  */
-public class DliverFileLogger implements DliverListener {
+public class DliverFileLogger implements DliverListener, ActionListener {
     
     private SimpleDateFormat timestampFormat = new SimpleDateFormat("HH:mm:ss.SSS");
     private String SEPARATOR = "\t";
@@ -54,6 +57,8 @@ public class DliverFileLogger implements DliverListener {
     protected PrintWriter icg;
     protected PrintWriter ppg;
     protected PrintWriter ptt;
+
+    protected Timer startTimer = null;
     
     
     protected boolean eCGEpoch = false;
@@ -104,7 +109,7 @@ public class DliverFileLogger implements DliverListener {
            phi.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
            
            icg = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_icg.txt")));
-           icg.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "IMP (Abs)" + SEPARATOR + "IMP (Ac)" + SEPARATOR + "ICG (IMP Der)");
+           icg.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "IMP (Ac)" + SEPARATOR + "ICG (IMP Der)");
            
            ppg = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ppg.txt")));
            ppg.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "PPG (Raw)" + SEPARATOR + "PPG (Der)");
@@ -118,7 +123,6 @@ public class DliverFileLogger implements DliverListener {
        temperature = 0;
        heartrate = 0;
        //request_start = true;
-       logging = true;
     }
     
     public void startLogging() {
@@ -134,7 +138,19 @@ public class DliverFileLogger implements DliverListener {
        
        sFolder.mkdir();
        startLoggingInFolder(sFolder);
+       startTimer = new Timer(2000, this);
+       startTimer.setRepeats(false);
+       startTimer.start();
+       System.out.println("DliverFileLogger.class - Starting timer");
+       
     }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+       System.out.println("DliverFileLogger.class - Starting logger");
+       logging = true;
+    }
+    
     
     public void stopLogging() {
         //if (logging || request_start) {
@@ -439,46 +455,8 @@ public class DliverFileLogger implements DliverListener {
     }
 
     @Override
-    public void eMGData(int value) {
-    }
-
-    @Override
-    public void eMGSignalQuality(int value, int timestamp) {
-        
-    }
-
-    /**
-     *
-     * @param value
-     * @param timestamp
-     */
-    @Override
-    public void eMGRaw(int value, int timestamp) {
-    }
-
-    //int rmsCount = 0;
-    @Override
-    public void eMGRMS(int channelA, int channelB, int timestamp) {
-    }
-
-    @Override
     public void referenceClockTimeSync(int timeSyncSeqNum, long value) {
         
-    }
-
-    @Override
-    public void pPGData(int value) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void pPGSignalQuality(int value, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void pPGRaw(int value, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -492,27 +470,34 @@ public class DliverFileLogger implements DliverListener {
     }
 
     @Override
-    public void pTT(int value, int timestamp) {
+    public void ptt(int value, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         if (logging) ptt.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
     }
 
     @Override
-    public void combinedICG(int icgAbs, int icgAbsDer, int icgAbsAc, int timestamp) {
+    public void iCGAbs(int icgAbs, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        if (logging) icg.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + icgAbs + SEPARATOR + icgAbsAc + SEPARATOR + icgAbsDer);
+        if (logging) log.println("[ICG Abs]" + SEPARATOR + currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + icgAbs);
     }
 
     @Override
-    public void ppg(int value, int timestamp) {
+    public void combinedICG(int icgAbsDer, int icgAbsAc, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        if (logging) ppg.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
+        if (logging) icg.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + icgAbsAc + SEPARATOR + icgAbsDer);
+    }
+
+    @Override
+    public void ppg(int ppgRaw, int ppgDer, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (logging) ppg.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + ppgRaw + SEPARATOR + ppgDer);
     }
 
     @Override
     public void btPutChar(int value) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
     
     
 }

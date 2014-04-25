@@ -1,0 +1,1 @@
+Proj:${artifactId} Compiled:${my.build.date} OS:${env.OS} OS.name:${os.name} User:${env.USERNAME} Ver:${version} Org:${organization.name} 

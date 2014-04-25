@@ -37,22 +37,23 @@ public interface DliverListener {
 		void eCGRaw(int value, int timestamp);//  				@code "103"; // Not sure which data type
 		
                 // PPG Messages
-                void pPGData(int value);
-		void pPGSignalQuality(int value, int timestamp);
-		void pPGRaw(int value, int timestamp);
+                //void pPGData(int value);
+		//void pPGSignalQuality(int value, int timestamp);
+		//void pPGRaw(int value, int timestamp);
 
                 // ICG Messages
-		void combinedICG(int icgAbs, int icgAbsDer, int icgAbsAc, int timestamp);//  		@code "102";
+		void iCGAbs(int icgAbs, int timestamp);//  		@code "102";
+		void combinedICG(int icgAbsDer, int icgAbsAc, int timestamp);//  		@code "122";
 
                 // EMG Messages
-                void eMGData(int value);
-		void eMGSignalQuality(int value, int timestamp);
-		void eMGRaw(int value, int timestamp);
-                void eMGRMS(int channelA, int channelB, int timestamp);
+                //void eMGData(int value);
+		//void eMGSignalQuality(int value, int timestamp);
+		//void eMGRaw(int value, int timestamp);
+                //void eMGRMS(int channelA, int channelB, int timestamp);
 
-		void pTT(int value, int timestamp);
+		void ptt(int value, int timestamp);
 
-		void ppg(int value, int timestamp);      //  			@code "121";
+		void ppg(int ppgRaw, int ppgDer, int timestamp);      //  			@code "121";
                 
                 void btPutChar(int value); // 123
                 

@@ -206,43 +206,9 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     }
 
     @Override
-    public void eMGData(int value) {
-        
-    }
-
-    @Override
-    public void eMGSignalQuality(int value, int timestamp) {
-        
-    }
-
-    @Override
-    public void eMGRaw(int value, int timestamp) {
-        
-    }
-
-    @Override
-    public void eMGRMS(int channelA, int channelB, int timestamp) {
-        
-    }
-    @Override
     public void referenceClockTimeSync(int timeSyncSeqNum, long value) {
         
     }
-    @Override
-    public void pPGData(int value) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void pPGSignalQuality(int value, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void pPGRaw(int value, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     @Override
     public void quaternion(int w, int x, int y, int z, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -254,17 +220,22 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     }
 
     @Override
-    public void pTT(int value, int timestamp) {
+    public void ptt(int value, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void combinedICG(int icgAbs, int icgAbsDer, int icgAbsAc, int timestamp) {
+    public void iCGAbs(int icgAbs, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void ppg(int value, int timestamp) {
+    public void combinedICG(int icgAbsDer, int icgAbsAc, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void ppg(int ppgRaw, int ppgDer, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
