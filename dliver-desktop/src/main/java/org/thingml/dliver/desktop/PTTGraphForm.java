@@ -70,7 +70,7 @@ public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
         jPanel2 = new LineGraphPanel(bppg, "PPG", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
         jPanel3 = new LineGraphPanel(bppgDer, "PPG (Der)", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
         jPanel4 = new LineGraphPanel(bicgAbsAc, "IMP_ABS (AC value with gain)", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
-        jPanel5 = new LineGraphPanel(bicgAbsDer, "ICG (IMP Derived after gain)", -500, 500, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
+        jPanel5 = new LineGraphPanel(bicgAbsDer, "ICG (IMP Derived after gain)", -750, 750, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("d-LIVER Blood Pressure Graphs");
