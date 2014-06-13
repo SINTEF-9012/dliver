@@ -19,7 +19,6 @@ package org.thingml.dliver.desktop;
 import org.thingml.dliver.driver.Dliver;
 import org.thingml.dliver.driver.DliverMode;
 import org.thingml.dliver.driver.DliverListener;
-//import org.thingml.dliver.driver.ReadVersionInfoDrvr;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.CommPort;
@@ -27,7 +26,9 @@ import java.awt.Dialog;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.URISyntaxException;
 import java.text.DecimalFormat;
+import java.util.Properties;
 import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,14 +54,15 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
   
     /** Creates new form MainFrame */
     public DliverMainFrame() {
+        ReadVersionInfo version = new ReadVersionInfo();
+        Properties prop = null;
+        
         initComponents();
         setLocationRelativeTo(null);
         
-        //ReadVersionInfo version = new ReadVersionInfo();
-        //ReadVersionInfoDrvr version2 = new org.thingml.dliver.driver.ReadVersionInfoDrvr();
-        //System.out.println("Version string  => " + version.GetVersionString());
-        //System.out.println("Version string2 => " + version2.GetVersionString());
-        //System.out.println("All version strings => \n" + version.GetAllVersionStrings());
+        prop = version.GetVersionProperties("dliver-desktop");
+        jButtonVersion.setText("Ver: " + prop.getProperty("Compiled"));
+        
     }
     
     public void disableConnection() {
@@ -175,6 +177,9 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jComboBoxAlertLevel = new javax.swing.JComboBox();
         jButtonAlert = new javax.swing.JButton();
         jButtonConsole = new javax.swing.JButton();
+        jButtonVersion = new javax.swing.JButton();
+        jButtonRec = new javax.swing.JButton();
+        jButtonPlay = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jProgressBarPTT = new javax.swing.JProgressBar();
         jTextFieldPTTTime = new javax.swing.JTextField();
@@ -231,7 +236,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBarT, javax.swing.GroupLayout.DEFAULT_SIZE, 685, Short.MAX_VALUE)
+                .addComponent(jProgressBarT, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldTTime, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -487,11 +492,11 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBoxMode, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(95, 95, 95)
                 .addComponent(jCheckBoxDebugCons)
                 .addGap(18, 18, 18)
                 .addComponent(jCheckBoxBTtrace)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBoxBTInt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -552,7 +557,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                 .addContainerGap()
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jProgressBarBatt, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
+                .addComponent(jProgressBarBatt, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jRadioButtonOn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -613,12 +618,43 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             }
         });
 
+        jButtonVersion.setForeground(new java.awt.Color(102, 102, 102));
+        jButtonVersion.setText("Version ???");
+        jButtonVersion.setMaximumSize(new java.awt.Dimension(85, 33));
+        jButtonVersion.setMinimumSize(new java.awt.Dimension(85, 33));
+        jButtonVersion.setPreferredSize(new java.awt.Dimension(85, 33));
+        jButtonVersion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVersionActionPerformed(evt);
+            }
+        });
+
+        jButtonRec.setText("Record");
+        jButtonRec.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRecActionPerformed(evt);
+            }
+        });
+
+        jButtonPlay.setText("Playback");
+        jButtonPlay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPlayActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(592, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jButtonVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
+                .addComponent(jButtonRec)
+                .addGap(33, 33, 33)
+                .addComponent(jButtonPlay)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonAlert)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jComboBoxAlertLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -638,7 +674,10 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jComboBoxAlertLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButtonAlert))
+                                .addComponent(jButtonAlert)
+                                .addComponent(jButtonVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonRec)
+                                .addComponent(jButtonPlay))
                             .addComponent(jButton7))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -934,6 +973,55 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }//GEN-LAST:event_jCheckBoxDebugConsActionPerformed
 
+    private String addKeyInfo(String module[], String keyInfo) {
+        ReadVersionInfo version = new ReadVersionInfo();
+        Properties prop;
+
+        for(int i = 0; i < module.length; i++) {
+            prop = version.GetVersionProperties(module[i]);
+            keyInfo += "Module:" + prop.getProperty("Proj") + " Compiled:" + prop.getProperty("Compiled") + " Computer:" + prop.getProperty("Computer") + "\n";
+        }
+        
+        return(keyInfo);
+    }
+    
+    private String addDetailedInfo(String module[], String detailedInfo) {
+        ReadVersionInfo version = new ReadVersionInfo();
+
+        for(int i = 0; i < module.length; i++)
+            detailedInfo += version.GetVersionString(module[i]) + "\n";
+        
+        return(detailedInfo);
+    }
+    
+    private void jButtonVersionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVersionActionPerformed
+        DebugConsole verCons = new DebugConsole(5000,1000);
+        String keyInfo = "\nKey information\n";
+        String detailedInfo = "Detailed information\n";
+        String[] modules = {"dliver-desktop", 
+                            "dliver-driver", 
+                            "rtcharts-swing",
+                            "rtsync-core",
+                            "rtsync-ui"};
+
+        keyInfo = addKeyInfo(modules, keyInfo);
+        detailedInfo = addDetailedInfo(modules, detailedInfo);
+        
+        verCons.setSize(700, 200);
+        verCons.setTitle("Version information for jar-files");
+        verCons.setVisible(true);
+        verCons.putString(detailedInfo);
+        verCons.putString(keyInfo);
+     }//GEN-LAST:event_jButtonVersionActionPerformed
+
+    private void jButtonRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRecActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonRecActionPerformed
+
+    private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlayActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonPlayActionPerformed
+
     int ECG_test_value = 0;
     int ECG_mismatch_cnt = 0;
     int ECG_wrap_cnt = 0;
@@ -995,6 +1083,9 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButtonAlert;
     private javax.swing.JButton jButtonConsole;
+    private javax.swing.JButton jButtonPlay;
+    private javax.swing.JButton jButtonRec;
+    private javax.swing.JButton jButtonVersion;
     private javax.swing.JCheckBox jCheckBoxBTtrace;
     private javax.swing.JCheckBox jCheckBoxDebugCons;
     private javax.swing.JComboBox jComboBoxAlertLevel;
@@ -1091,7 +1182,7 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 }
                 jTextFieldPostTime.setText("" + timestamp);     
             }
-            else if (value >=20 && value <=24) { // This is activity
+            else if (value >=20 && value <=24) { // Device status
                 switch (value) {
                     case 20 : jRadioButtonOn.setSelected(true);break;
                     case 21 : jRadioButtonOff.setSelected(true);break;
@@ -1109,7 +1200,36 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 //jComboBoxMode.setSelectedItem(ChestBeltMode.fromCode(value));
                 System.out.println("Indication : " + value);
             }
+            else if (value >=60 && value <=63) { // Recorder status
+                switch (value) {
+                    case 60 : 
+                        setButtonColor(jButtonRec, new java.awt.Color(255, 51, 51));
+                        break;
+                    case 61 : 
+                        setButtonColor(jButtonRec, null);
+                        break;
+                    case 62 : 
+                        setButtonColor(jButtonPlay, new java.awt.Color(51, 255, 51));
+                        break;
+                    case 63 : 
+                        setButtonColor(jButtonPlay, null);
+                        break;
+                    default:break;     
+                }
+            }
 	}
+        
+        private void setButtonColor( javax.swing.JButton button, java.awt.Color color) {
+            if ( color == null ) {
+                button.setBackground(new java.awt.Color(240, 240, 240));
+                //button.setOpaque(false);
+                //button.setContentAreaFilled(true);
+            } else {
+                button.setBackground(color);
+                //button.setContentAreaFilled(false);
+                //button.setOpaque(true);
+            }
+        }
 
 	@Override
 	public void status(int value, int timestamp) {
@@ -1342,6 +1462,21 @@ static {
 
     @Override
     public void btPutChar(int value) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void eventEpoch(int eventNum, int val, long epoch) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void playStart(long epoch) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void playStop() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

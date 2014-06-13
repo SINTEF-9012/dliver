@@ -57,7 +57,26 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     protected PrintWriter icg;
     protected PrintWriter ppg;
     protected PrintWriter ptt;
+    protected PrintWriter event;
 
+    protected PrintWriter logRt;
+    protected PrintWriter ecgRt;
+    protected PrintWriter imuRt;
+    protected PrintWriter phiRt;
+    protected PrintWriter icgRt;
+    protected PrintWriter ppgRt;
+    protected PrintWriter pttRt;
+    protected PrintWriter eventRt;
+
+    protected PrintWriter logPb;
+    protected PrintWriter ecgPb;
+    protected PrintWriter imuPb;
+    protected PrintWriter phiPb;
+    protected PrintWriter icgPb;
+    protected PrintWriter ppgPb;
+    protected PrintWriter pttPb;
+    protected PrintWriter eventPb;
+    
     protected Timer startTimer = null;
     
     
@@ -93,29 +112,58 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     public void startLoggingInFolder(File sFolder) {
         imu_data_reset();
        try {
-           log = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_log.txt")));
-           log.println("# This file contains one line per message received from the d-LIVER.");
+           logRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_log.txt")));
+           logPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_log_playback.txt")));
+           logRt.println("# This file contains one line per message received from the d-LIVER.");
+           logPb.println("# This file contains one line per message received from the d-LIVER.");
+           log = logRt;
+
+           ecgRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ecg.txt")));
+           ecgPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ecg_playback.txt")));
+           if (!eCGEpoch) {
+               ecgRt.println("# ECG Data, Raw 12bits ADC values, 250Hz.");
+               ecgPb.println("# ECG Data, Raw 12bits ADC values, 250Hz.");
+           } else {
+               ecgRt.println("RXTime" + SEPARATOR + "Corrtime" + SEPARATOR + "RawTime" + SEPARATOR + "Update" + SEPARATOR + "Value");
+               ecgPb.println("RXTime" + SEPARATOR + "Corrtime" + SEPARATOR + "RawTime" + SEPARATOR + "Update" + SEPARATOR + "Value");
+           }
+           ecg = ecgRt;
            
-           ecg = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ecg.txt")));
-           if (!eCGEpoch)
-               ecg.println("# ECG Data, Raw 12bits ADC values, 250Hz.");
-           else
-               ecg.println("Value" + SEPARATOR + "RXTime" + SEPARATOR + "Corrtime" + SEPARATOR + "RawTime" + SEPARATOR + "Update");
+           imuRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_imu.txt")));
+           imuPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_imu_playback.txt")));
+           imuRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "AX" + SEPARATOR + "AY" + SEPARATOR + "AZ" + SEPARATOR + "GX" + SEPARATOR + "GY" + SEPARATOR + "GZ");
+           imuPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "AX" + SEPARATOR + "AY" + SEPARATOR + "AZ" + SEPARATOR + "GX" + SEPARATOR + "GY" + SEPARATOR + "GZ");
+           imu = imuRt;
            
-           imu = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_imu.txt")));
-           imu.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "AX" + SEPARATOR + "AY" + SEPARATOR + "AZ" + SEPARATOR + "GX" + SEPARATOR + "GY" + SEPARATOR + "GZ");
+           phiRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_phi.txt")));
+           phiPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_phi_playback.txt")));
+           phiRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
+           phiPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
+           phi = phiRt;
            
-           phi = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_phi.txt")));
-           phi.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
+           icgRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_icg.txt")));
+           icgPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_icg_playback.txt")));
+           icgRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "IMP (Ac)" + SEPARATOR + "ICG (IMP Der)");
+           icgPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "IMP (Ac)" + SEPARATOR + "ICG (IMP Der)");
+           icg = icgRt;
            
-           icg = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_icg.txt")));
-           icg.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "IMP (Ac)" + SEPARATOR + "ICG (IMP Der)");
+           ppgRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ppg.txt")));
+           ppgPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ppg_playback.txt")));
+           ppgRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "PPG (Raw)" + SEPARATOR + "PPG (Der)");
+           ppgPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "PPG (Raw)" + SEPARATOR + "PPG (Der)");
+           ppg = ppgRt;
            
-           ppg = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ppg.txt")));
-           ppg.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "PPG (Raw)" + SEPARATOR + "PPG (Der)");
+           pttRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ptt.txt")));
+           pttPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ptt_playback.txt")));
+           pttRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "PTT");
+           pttPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "PTT");
+           ptt = pttRt;
            
-           ptt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ptt.txt")));
-           ptt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "PTT");
+           eventRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_event.txt")));
+           eventPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_event_playback.txt")));
+           eventRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "EvNum" + SEPARATOR + "Value");
+           eventPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "EvNum" + SEPARATOR + "Value");
+           event = eventRt;
            
        } catch (IOException ex) {
            Logger.getLogger(DliverFileLogger.class.getName()).log(Level.SEVERE, null, ex);
@@ -157,13 +205,38 @@ public class DliverFileLogger implements DliverListener, ActionListener {
         if (logging) {
             logging = false;
             //request_start = false;
-            log.close();
-            ecg.close();
-            imu.close();
-            phi.close();
-            icg.close();
-            ppg.close();
-            ptt.close();
+            logRt.close();
+            ecgRt.close();
+            imuRt.close();
+            phiRt.close();
+            icgRt.close();
+            ppgRt.close();
+            pttRt.close();
+            eventRt.close();
+            logPb.close();
+            ecgPb.close();
+            imuPb.close();
+            phiPb.close();
+            icgPb.close();
+            ppgPb.close();
+            pttPb.close();
+            eventPb.close();
+            logRt = null;
+            ecgRt = null;
+            imuRt = null;
+            phiRt = null;
+            icgRt = null;
+            ppgRt = null;
+            pttRt = null;
+            eventRt = null;
+            logPb = null;
+            ecgPb = null;
+            imuPb = null;
+            phiPb = null;
+            icgPb = null;
+            ppgPb = null;
+            pttPb = null;
+            eventPb = null;
             log = null;
             ecg = null;
             imu = null;
@@ -171,6 +244,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             icg = null;
             ppg = null;
             ptt = null;
+            event = null;
         }
     }
     
@@ -271,7 +345,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             } else {
                 // This can be used to log the timestamp for each sample but it makes the file really big.
                 long ts = belt.getEpochTimestampFromMs(ecg_timestamp);
-                ecg.println(value + SEPARATOR + currentTimeStamp() + SEPARATOR + ts + SEPARATOR + ecg_timestamp + SEPARATOR + 0);
+                ecg.println(currentTimeStamp() + SEPARATOR + ts + SEPARATOR + ecg_timestamp + SEPARATOR + 0 + SEPARATOR + value);
             }
         }
 
@@ -286,8 +360,14 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     public void eCGRaw(int value, int timestamp) {
         ecg_timestamp = timestamp*4;
         if (logging) {
-            long ts = belt.getEpochTimestampFromMs(ecg_timestamp);
-            ecg.println(value + SEPARATOR + currentTimeStamp() + SEPARATOR + ts + SEPARATOR + ecg_timestamp + SEPARATOR + 1);
+            if(!eCGEpoch) {
+                // This can be used to log without timestamp for each sample to keep the file smaller.
+                ecg.println(value);
+            } else {
+                // This can be used to log the timestamp for each sample but it makes the file really big.
+                long ts = belt.getEpochTimestampFromMs(ecg_timestamp);
+                ecg.println(currentTimeStamp() + SEPARATOR + ts + SEPARATOR + ecg_timestamp + SEPARATOR + 1 + SEPARATOR + value);
+            }
         }
     }
     
@@ -496,6 +576,39 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     @Override
     public void btPutChar(int value) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void eventEpoch(int eventNum, int val, long epoch) {
+        if (logging) event.println(currentTimeStamp() + SEPARATOR + epoch + SEPARATOR + eventNum + SEPARATOR + val);
+    }
+
+    @Override
+    public void playStart(long epoch) {
+        if (logging) logRt.println("[PlayStart]" + SEPARATOR + currentTimeStamp() + SEPARATOR + epoch);
+        if (logging) logPb.println("[PlayStart]" + SEPARATOR + currentTimeStamp() + SEPARATOR + epoch);
+        log = logPb;
+        ecg = ecgPb;
+        imu = imuPb;
+        phi = phiPb;
+        icg = icgPb;
+        ppg = ppgPb;
+        ptt = pttPb;
+        event = eventPb;
+    }
+
+    @Override
+    public void playStop() {
+        if (logging) logRt.println("[PlayStop]" + SEPARATOR + currentTimeStamp());
+        if (logging) logPb.println("[PlayStop]" + SEPARATOR + currentTimeStamp());
+        log = logRt;
+        ecg = ecgRt;
+        imu = imuRt;
+        phi = phiRt;
+        icg = icgRt;
+        ppg = ppgRt;
+        ptt = pttRt;
+        event = eventRt;
     }
 
     

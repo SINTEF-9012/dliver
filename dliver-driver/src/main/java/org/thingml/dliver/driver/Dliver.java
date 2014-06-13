@@ -84,6 +84,8 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
             return 18;
         } else if (code == 126) {
             return 12;
+        } else if (code == 127) {
+            return 16;
         } else {
             return 5; // default value for other messages
         }
@@ -285,6 +287,9 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
                                     case 126:
                                         epoch(message);
                                         break;
+                                    case 127:
+                                        eventEpoch(message);
+                                        break;
                                      
                                     default:
                                         break;
@@ -368,6 +373,9 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         for (DliverListener l : listeners) {
             l.indication(value, timestamp);
         }
+        if ( value == 62) playStart();
+        if ( value == 63) playStop();
+
     }
 
     synchronized void status(byte[] message) {
@@ -697,6 +705,41 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         
         rtsync.receiveEpoch(epoch);
     }
+
+    boolean rcvPlayStart = false;
+    synchronized void playStart() {
+        rcvPlayStart = true;
+        rtsync.compareReceivedEpoch(false);
+    }
+    synchronized void playStop() {
+        rtsync.compareReceivedEpoch(true);
+        for (DliverListener l : listeners) {
+            l.playStop();
+        }
+    }
+    synchronized void eventEpoch(byte[] message) {
+        int eventNum = message[1]-32;
+        int val = decodeGyro(message[2], message[3], message[4]);
+        long epoch = decodeEpoch(message[5], message[6], message[7], message[8], message[9], message[10], message[11], message[12], message[13], message[14], message[15]);
+        
+        switch (eventNum) {
+            case 1:
+                rtsync.receiveEpoch(epoch);
+                if ( rcvPlayStart == true ) {
+                    rcvPlayStart = false;
+                    for (DliverListener l : listeners) {
+                        l.playStart(epoch);
+                    }
+                }
+                break;
+            default:
+                for (DliverListener l : listeners) {
+                    l.eventEpoch(eventNum, val, epoch);
+                }
+                break;
+        }
+    }
+    
 
     private ArrayList<DliverListener> listeners = new ArrayList<DliverListener>();
 

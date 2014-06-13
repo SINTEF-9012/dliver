@@ -82,4 +82,10 @@ public interface DliverListener {
                 
                 // @code "107"; as well as fullClockTimeSync but with the timesync bit set
                 void referenceClockTimeSync(int timeSyncSeqNum, long value); 
+                
+                void eventEpoch(int eventNum, int val, long epoch);
+
+                void playStart(long epoch);
+                void playStop();
+                
 }

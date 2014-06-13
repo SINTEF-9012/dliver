@@ -329,6 +329,21 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
         }
     }
 
+    @Override
+    public void eventEpoch(int eventNum, int val, long epoch) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void playStart(long epoch) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void playStop() {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     private void checkMaxBuffer() {
         if (bytesInBuffer > maxBuffer) {
             jTextArea1.replaceRange("", 0, reduceSize -1);

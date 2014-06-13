@@ -38,6 +38,7 @@ public class DliverUDPLogger  implements DliverListener {
     private UDPOscComm vOscGyrX;
     private UDPOscComm vOscGyrY;
     private UDPOscComm vOscGyrZ;
+    private UDPOscComm vOscEcgR;
     private boolean logging = false;
 
     
@@ -65,6 +66,8 @@ public class DliverUDPLogger  implements DliverListener {
            vOscGyrY.open_communication("127.0.0.1", this.probeName + ".GyrY");
            vOscGyrZ = new UDPOscComm();
            vOscGyrZ.open_communication("127.0.0.1", this.probeName + ".GyrZ");
+           vOscEcgR = new UDPOscComm();
+           vOscEcgR.open_communication("127.0.0.1", this.probeName + ".EcgR");
            logging = true;
     }
     
@@ -87,6 +90,8 @@ public class DliverUDPLogger  implements DliverListener {
             vOscGyrY = null;
             vOscGyrZ.close_communication();
             vOscGyrZ = null;
+            vOscEcgR.close_communication();
+            vOscEcgR = null;
         }
     }
     
@@ -256,6 +261,30 @@ public class DliverUDPLogger  implements DliverListener {
     public void btPutChar(int value) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    @Override
+    public void eventEpoch(int eventNum, int val, long epoch) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (logging) {
+            switch ( eventNum ) {
+                case 63:
+                    vOscEcgR.send_ts_data(epoch, 1);
+                    vOscEcgR.send_ts_data(epoch+10, 0);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void playStart(long epoch) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void playStop() {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
 
