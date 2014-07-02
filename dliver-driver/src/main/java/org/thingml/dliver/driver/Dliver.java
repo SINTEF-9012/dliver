@@ -72,11 +72,11 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     }
 
     private int msg_size(byte code) {
-        if (code == 101 || code == 123 || code == 125) {
+        if (code == 98 || code == 100 || code == 101 || code == 105 || code == 123 || code == 125) {
             return 3;
-        } else if (code == 102 || code == 124) {
+        } else if (code == 102 || code == 110 || code == 117 || code == 124) {
             return 4;
-        } else if (code == 106 || code == 107 || code == 110 || code == 112 || code == 114 || code == 117) {
+        } else if (code == 106 || code == 107 || code == 112 || code == 114) {
             return 6;
         } else if (code == 121 || code == 122) {
             return 7;
@@ -199,10 +199,10 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
                                         batteryStatus(message);
                                         break;
                                     case 105:
-                                        indication(message);
+                                        indicationDev(message);
                                         break;
                                     case 109:
-                                        status(message);
+                                        measurementPatient(message);
                                         break;
                                     case 100:
                                         messageOverrun(message);
@@ -217,7 +217,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
                                         heartRate(message);
                                         break;
                                     case 99:
-                                        heartRateConfidence(message);
+                                        heartRateInterval(message);
                                         break;
                                     case 101:
                                         eCGData(message);
@@ -345,52 +345,49 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
 
     synchronized void cUSerialNumber(byte[] message) {
         long value = decodeLong(message[1], message[2], message[3]);
-        int timestamp = ((message[4] - 32) * 64 + (message[5] - 32));
         for (DliverListener l : listeners) {
-            l.cUSerialNumber(value, timestamp);
+            l.cUSerialNumber(value);
         }
     }
 
     synchronized void cUFWRevision(byte[] message) {
         long value = decodeLong(message[1], message[2], message[3]);
-        int timestamp = ((message[4] - 32) * 64 + (message[5] - 32));
         for (DliverListener l : listeners) {
-            l.cUFWRevision(""+(message[1]-32) +"."+ (message[2]-32) +"."+ (message[3]-32), timestamp);
+            l.cUFWRevision(""+(message[1]-32) +"."+ (message[2]-32) +"."+ (message[3]-32));
         }
     }
 
     synchronized void batteryStatus(byte[] message) {
         int value = ((message[1] - 32) * 64 + (message[2] - 32));
-        int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
         for (DliverListener l : listeners) {
-            l.batteryStatus(value, timestamp);
+            l.batteryStatus(value);
         }
     }
 
-    synchronized void indication(byte[] message) {
+    synchronized void indicationDev(byte[] message) {
         int value = ((message[1] - 32) * 64 + (message[2] - 32));
-        int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
         for (DliverListener l : listeners) {
-            l.indication(value, timestamp);
+            l.indicationDev(value);
         }
+        if ( value == 58) btPause();
+        if ( value == 59) btNormal();
         if ( value == 62) playStart();
         if ( value == 63) playStop();
 
     }
 
-    synchronized void status(byte[] message) {
+    synchronized void measurementPatient(byte[] message) {
         int value = ((message[1] - 32) * 64 + (message[2] - 32));
         int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
         for (DliverListener l : listeners) {
-            l.status(value, timestamp);
+            l.measurementPatient(value, timestamp);
         }
     }
 
     synchronized void messageOverrun(byte[] message) {
         int value = ((message[1] - 32) * 64 + (message[2] - 32));
-        int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
         for (DliverListener l : listeners) {
-            l.messageOverrun(value, timestamp);
+            l.messageOverrun(value);
         }
     }
     
@@ -448,18 +445,18 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
 
     // ECG and Heart rate messages
     synchronized void heartRate(byte[] message) {
-        int value = ((message[1] - 32) * 64 + (message[2] - 32));
+        int valueHr = ((message[1] - 32) * 64 + (message[2] - 32));
         int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
         for (DliverListener l : listeners) {
-            l.heartRate(value, timestamp);
+            l.heartRate(valueHr, timestamp);
         }
     }
 
-    synchronized void heartRateConfidence(byte[] message) {
+    synchronized void heartRateInterval(byte[] message) {
         int value = ((message[1] - 32) * 64 + (message[2] - 32));
         int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
         for (DliverListener l : listeners) {
-            l.heartRateConfidence(value, timestamp);
+            l.heartRateInterval(value, timestamp);
         }
     }
 
@@ -706,6 +703,17 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         rtsync.receiveEpoch(epoch);
     }
 
+    boolean btPaused = false;
+    synchronized void btPause() {
+        rtsync.stop_ping();
+        btPaused = true;
+    }
+    
+    synchronized void btNormal(){
+        rtsync.start_ping();
+        btPaused = false;
+    }
+        
     boolean rcvPlayStart = false;
     synchronized void playStart() {
         rcvPlayStart = true;
@@ -826,25 +834,33 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
 //    }
     
     protected void sendData(int code, int value) {
-        try {
-            // send the code
-            out.write((int) code);
-            // send the value
-            out.write((int) value);
+        if ( btPaused == false) {
+            try {
+                // send the code
+                out.write((int) code);
+                // send the value
+                out.write((int) value);
 
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("btPaused - sendData(" + code + "," + value + ") discarded");
         }
     }
 
     protected void sendDataArray(byte[] dataArray, int len) {
-        try {
-            out.write(dataArray, 0, len);
+        if ( btPaused == false) {
+            try {
+                out.write(dataArray, 0, len);
 
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("btPaused - sendDataArray(" + dataArray[0] + "...) discarded");
         }
     }
 

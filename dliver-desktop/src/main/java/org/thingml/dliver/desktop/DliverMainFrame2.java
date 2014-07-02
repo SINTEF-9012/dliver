@@ -1092,18 +1092,18 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
     // End of variables declaration//GEN-END:variables
 
         @Override
-	public void cUSerialNumber(long value, int timestamp) {
+	public void cUSerialNumber(long value) {
             jTextFieldSID.setText(""+value);
              setTitle("d-LIVER [" + value + "]");
 	}
 
 	@Override
-	public void cUFWRevision(String value, int timestamp) {
+	public void cUFWRevision(String value) {
 	   jTextFieldSFW.setText(""+value);
 	}
 
 	@Override
-	public void batteryStatus(int value, int timestamp) {
+	public void batteryStatus(int value) {
            jProgressBarBatt.setString(""+value + " %");
            jProgressBarBatt.setValue(value);
 
@@ -1121,8 +1121,27 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
                 new javax.swing.ImageIcon(getClass().getResource("/Activity_3.png"))};
 
 	@Override
-	public void indication(int value, int timestamp) {
+	public void indicationDev(int value) {
             
+            if (value >=20 && value <=24) { // This is activity
+                switch (value) {
+                    case 20 : jRadioButtonOn.setSelected(true);break;
+                    case 21 : jRadioButtonOff.setSelected(true);break;
+                    case 22 : jRadioButtonSBy.setSelected(true);break;
+                    case 23 : jRadioButtonCh.setSelected(true);break;
+                    case 24 : jRadioButtonSW.setSelected(true);break;
+                    default:break;     
+                }
+            }
+            else if (value >=28 && value <=34) {
+                //jComboBoxMode.setSelectedItem(ChestBeltMode.fromCode(value));
+                System.out.println("Indication : " + value);
+            }
+	}
+
+	@Override
+	public void measurementPatient(int value, int timestamp) {
+
             if (value >= 1 && value <= 6) { // This is orientation
                 switch (value) {
                     case 1 : jLabelPosture.setIcon(UPRIGHT);break;
@@ -1135,35 +1154,16 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
                 }
                 jTextFieldPostTime.setText("" + timestamp);     
             }
-            else if (value >=20 && value <=24) { // This is activity
-                switch (value) {
-                    case 20 : jRadioButtonOn.setSelected(true);break;
-                    case 21 : jRadioButtonOff.setSelected(true);break;
-                    case 22 : jRadioButtonSBy.setSelected(true);break;
-                    case 23 : jRadioButtonCh.setSelected(true);break;
-                    case 24 : jRadioButtonSW.setSelected(true);break;
-                    default:break;     
-                }
-            }
             else if (value >=10 && value <=13) { // This is activity
                 jLabelActivity.setIcon(ACTIVITY[value-10]);
                 jTextFieldActTime.setText("" + timestamp);  
             }
-            else if (value >=28 && value <=34) {
-                //jComboBoxMode.setSelectedItem(ChestBeltMode.fromCode(value));
-                System.out.println("Indication : " + value);
-            }
-	}
-
-	@Override
-	public void status(int value, int timestamp) {
-		// TODO Auto-generated method stub
 
 	}
 
         int total_overrun = 0;
 	@Override
-	public void messageOverrun(int value, int timestamp) {
+	public void messageOverrun(int value) {
             total_overrun += value;
             jTextFieldOver.setText("" + total_overrun + " (" + value + ")");
 	}
@@ -1183,7 +1183,7 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
 	}
 
 	@Override
-	public void heartRate(int value, int timestamp) {
+	public void heartRate(int value,  int timestamp) {
 		//System.out.println("Heart Rate = " + (value/10) + " (t=" + timestamp + ")" );
                 jProgressBarHR.setString(""+new DecimalFormat("##.0").format((double)value/10.0) + " BPM");
                 jProgressBarHR.setValue(value);
@@ -1192,7 +1192,7 @@ private void jTextFieldRefTimeActionPerformed(java.awt.event.ActionEvent evt) {/
 	}
 
 	@Override
-	public void heartRateConfidence(int value, int timestamp) {
+	public void heartRateInterval(int value, int timestamp) {
 
 	}
 

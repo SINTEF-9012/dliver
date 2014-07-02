@@ -39,6 +39,7 @@ public class ECGGraphForm extends javax.swing.JFrame implements DliverListener {
     
     protected GraphBuffer becg = new GraphBuffer(1000);
     protected GraphBuffer bhr = new GraphBuffer(200);
+    protected GraphBuffer bhri = new GraphBuffer(200);
     
      protected Dliver belt;
     
@@ -49,6 +50,7 @@ public class ECGGraphForm extends javax.swing.JFrame implements DliverListener {
         initComponents();
         ((GraphPanel)jPanel1).start();
         ((GraphPanel)jPanel2).start();
+        ((GraphPanel)jPanel3).start();
     }
 
     /** This method is called from within the constructor to
@@ -61,6 +63,7 @@ public class ECGGraphForm extends javax.swing.JFrame implements DliverListener {
     private void initComponents() {
 
         jPanel1 = new LineGraphPanel(bhr, "Heart rate (BPM)", 0, 160, 30, new java.awt.Color(255, 0, 51), 1.0, "0", "Avg: ", "Last: ");
+        jPanel3 = new LineGraphPanel(bhri, "Heart beat interval (ms)", 600, 1100, 50, new java.awt.Color(255, 0, 51), 1.0, "0", "Avg: ", "Last: ");
         jPanel2 = new LineGraphPanel(becg, "ECG (Raw ADC value)", 0, 4096, 512, new java.awt.Color(255, 0, 51), 1.0, "0", "Avg: ", "Last: ");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -72,6 +75,7 @@ public class ECGGraphForm extends javax.swing.JFrame implements DliverListener {
         });
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
         getContentPane().add(jPanel1);
+        getContentPane().add(jPanel3);
         getContentPane().add(jPanel2);
 
         pack();
@@ -81,37 +85,38 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     if (belt != null) belt.removeDliverListener(this);
     ((GraphPanel)jPanel1).stop();
     ((GraphPanel)jPanel2).stop();
+    ((GraphPanel)jPanel3).stop();
 }//GEN-LAST:event_windowClosed
 
     
     
     @Override
-    public void cUSerialNumber(long value, int timestamp) {
+    public void cUSerialNumber(long value) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void cUFWRevision(String value, int timestamp) {
+    public void cUFWRevision(String value) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void batteryStatus(int value, int timestamp) {
+    public void batteryStatus(int value) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void indication(int value, int timestamp) {
+    public void indicationDev(int value) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void status(int value, int timestamp) {
+    public void measurementPatient(int value, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void messageOverrun(int value, int timestamp) {
+    public void messageOverrun(int value) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -126,13 +131,13 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     }
 
     @Override
-    public void heartRate(int value, int timestamp) {
-        bhr.insertData(value/10);
+    public void heartRate(int valueHr, int timestamp) {
+        bhr.insertData(valueHr/10);
     }
 
     @Override
-    public void heartRateConfidence(int value, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet.");
+    public void heartRateInterval(int valueHri, int timestamp) {
+        bhri.insertData(valueHri);
     }
 
     @Override
@@ -198,6 +203,7 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 
     @Override

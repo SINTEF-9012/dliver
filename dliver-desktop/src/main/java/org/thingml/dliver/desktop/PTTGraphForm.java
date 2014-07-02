@@ -99,32 +99,32 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     
     
     @Override
-    public void cUSerialNumber(long value, int timestamp) {
+    public void cUSerialNumber(long value) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void cUFWRevision(String value, int timestamp) {
+    public void cUFWRevision(String value) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void batteryStatus(int value, int timestamp) {
+    public void batteryStatus(int value) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void indication(int value, int timestamp) {
+    public void indicationDev(int value) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void status(int value, int timestamp) {
+    public void measurementPatient(int value, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void messageOverrun(int value, int timestamp) {
+    public void messageOverrun(int value) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -139,11 +139,11 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     }
 
     @Override
-    public void heartRate(int value, int timestamp) {
+    public void heartRate(int valueHr,int timestamp) {
     }
 
     @Override
-    public void heartRateConfidence(int value, int timestamp) {
+    public void heartRateInterval(int value, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 

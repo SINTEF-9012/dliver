@@ -54,27 +54,33 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     protected PrintWriter ecg;
     protected PrintWriter imu;
     protected PrintWriter phi;
+    protected PrintWriter hrv;
     protected PrintWriter icg;
     protected PrintWriter ppg;
     protected PrintWriter ptt;
+    protected PrintWriter meas;
     protected PrintWriter event;
 
     protected PrintWriter logRt;
     protected PrintWriter ecgRt;
     protected PrintWriter imuRt;
     protected PrintWriter phiRt;
+    protected PrintWriter hrvRt;
     protected PrintWriter icgRt;
     protected PrintWriter ppgRt;
     protected PrintWriter pttRt;
+    protected PrintWriter measRt;
     protected PrintWriter eventRt;
 
     protected PrintWriter logPb;
     protected PrintWriter ecgPb;
     protected PrintWriter imuPb;
     protected PrintWriter phiPb;
+    protected PrintWriter hrvPb;
     protected PrintWriter icgPb;
     protected PrintWriter ppgPb;
     protected PrintWriter pttPb;
+    protected PrintWriter measPb;
     protected PrintWriter eventPb;
     
     protected Timer startTimer = null;
@@ -141,6 +147,12 @@ public class DliverFileLogger implements DliverListener, ActionListener {
            phiPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
            phi = phiRt;
            
+           hrvRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_hrv.txt")));
+           hrvPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_hrv_playback.txt")));
+           hrvRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate Interval(ms)");
+           hrvPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate Interval(ms)");
+           hrv = hrvRt;
+           
            icgRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_icg.txt")));
            icgPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_icg_playback.txt")));
            icgRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "IMP (Ac)" + SEPARATOR + "ICG (IMP Der)");
@@ -158,6 +170,12 @@ public class DliverFileLogger implements DliverListener, ActionListener {
            pttRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "PTT");
            pttPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "PTT");
            ptt = pttRt;
+           
+           measRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_meas.txt")));
+           measPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_meas_playback.txt")));
+           measRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Value");
+           measPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Value");
+           meas = measRt;
            
            eventRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_event.txt")));
            eventPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_event_playback.txt")));
@@ -209,41 +227,51 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             ecgRt.close();
             imuRt.close();
             phiRt.close();
+            hrvRt.close();
             icgRt.close();
             ppgRt.close();
             pttRt.close();
+            measRt.close();
             eventRt.close();
             logPb.close();
             ecgPb.close();
             imuPb.close();
             phiPb.close();
+            hrvPb.close();
             icgPb.close();
             ppgPb.close();
             pttPb.close();
+            measPb.close();
             eventPb.close();
             logRt = null;
             ecgRt = null;
             imuRt = null;
             phiRt = null;
+            hrvRt = null;
             icgRt = null;
             ppgRt = null;
             pttRt = null;
+            measRt = null;
             eventRt = null;
             logPb = null;
             ecgPb = null;
             imuPb = null;
             phiPb = null;
+            hrvPb = null;
             icgPb = null;
             ppgPb = null;
             pttPb = null;
+            measPb = null;
             eventPb = null;
             log = null;
             ecg = null;
             imu = null;
             phi = null;
+            hrv = null;
             icg = null;
             ppg = null;
             ptt = null;
+            meas = null;
             event = null;
         }
     }
@@ -268,33 +296,33 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     }
 
     @Override
-    public void cUSerialNumber(long value, int timestamp) {
-        if (logging) log.println("[SerialNumber]" + SEPARATOR + currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
+    public void cUSerialNumber(long value) {
+        if (logging) log.println("[SerialNumber]" + SEPARATOR + currentTimeStamp() + SEPARATOR + value);
     }
 
     @Override
-    public void cUFWRevision(String value, int timestamp) {
-        if (logging) log.println("[FWRevision]" + SEPARATOR + currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
+    public void cUFWRevision(String value) {
+        if (logging) log.println("[FWRevision]" + SEPARATOR + currentTimeStamp() + SEPARATOR + value);
     }
 
     @Override
-    public void batteryStatus(int value, int timestamp) {
-        if (logging) log.println("[Battery]" + SEPARATOR + currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
+    public void batteryStatus(int value) {
+        if (logging) log.println("[Battery]" + SEPARATOR + currentTimeStamp() + SEPARATOR + value);
     }
 
     @Override
-    public void indication(int value, int timestamp) {
-        if (logging) log.println("[Indication]" + SEPARATOR + currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
+    public void indicationDev(int value) {
+        if (logging) log.println("[Indication]" + SEPARATOR + currentTimeStamp() + SEPARATOR + value);
     }
 
     @Override
-    public void status(int value, int timestamp) {
-        if (logging) log.println("[Status]" + SEPARATOR + currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
+    public void measurementPatient(int value, int timestamp) {
+        if (logging) meas.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
     }
 
     @Override
-    public void messageOverrun(int value, int timestamp) {
-        if (logging) log.println("[MsgOverrun]" + SEPARATOR + currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
+    public void messageOverrun(int value) {
+        if (logging) log.println("[MsgOverrun]" + SEPARATOR + currentTimeStamp() + SEPARATOR + value);
     }
     
     //protected long refTime = 0;
@@ -325,13 +353,13 @@ public class DliverFileLogger implements DliverListener, ActionListener {
 
     private int heartrate = 0;
     @Override
-    public void heartRate(int value, int timestamp) {
-        heartrate = value;
+    public void heartRate(int valueHR, int timestamp) {
+        heartrate = valueHR;
     }
 
     @Override
-    public void heartRateConfidence(int value, int timestamp) {
-        if (logging) log.println("[HeartRateConfidence]" + SEPARATOR + currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
+    public void heartRateInterval(int valueHri, int timestamp) {
+        if (logging) hrv.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + valueHri);
     }
 
     private int ecg_timestamp = 0;
@@ -591,9 +619,11 @@ public class DliverFileLogger implements DliverListener, ActionListener {
         ecg = ecgPb;
         imu = imuPb;
         phi = phiPb;
+        hrv = hrvPb;
         icg = icgPb;
         ppg = ppgPb;
         ptt = pttPb;
+        meas = measPb;
         event = eventPb;
     }
 
@@ -605,9 +635,11 @@ public class DliverFileLogger implements DliverListener, ActionListener {
         ecg = ecgRt;
         imu = imuRt;
         phi = phiRt;
+        hrv = hrvRt;
         icg = icgRt;
         ppg = ppgRt;
         ptt = pttRt;
+        meas = measRt;
         event = eventRt;
     }
 

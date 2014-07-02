@@ -39,6 +39,7 @@ public class DliverUDPLogger  implements DliverListener {
     private UDPOscComm vOscGyrY;
     private UDPOscComm vOscGyrZ;
     private UDPOscComm vOscEcgR;
+    private UDPOscComm vOscGen;
     private boolean logging = false;
 
     
@@ -68,6 +69,8 @@ public class DliverUDPLogger  implements DliverListener {
            vOscGyrZ.open_communication("127.0.0.1", this.probeName + ".GyrZ");
            vOscEcgR = new UDPOscComm();
            vOscEcgR.open_communication("127.0.0.1", this.probeName + ".EcgR");
+           vOscGen = new UDPOscComm();
+           vOscGen.open_communication("127.0.0.1", this.probeName + ".Gen");
            logging = true;
     }
     
@@ -92,32 +95,34 @@ public class DliverUDPLogger  implements DliverListener {
             vOscGyrZ = null;
             vOscEcgR.close_communication();
             vOscEcgR = null;
+            vOscGen.close_communication();
+            vOscGen = null;
         }
     }
     
     
     @Override
-    public void cUSerialNumber(long value, int timestamp) {
+    public void cUSerialNumber(long value) {
     }
 
     @Override
-    public void cUFWRevision(String value, int timestamp) {
+    public void cUFWRevision(String value) {
     }
 
     @Override
-    public void batteryStatus(int value, int timestamp) {
+    public void batteryStatus(int value) {
     }
 
     @Override
-    public void indication(int value, int timestamp) {
+    public void indicationDev(int value) {
     }
 
     @Override
-    public void status(int value, int timestamp) {
+    public void measurementPatient(int value, int timestamp) {
     }
 
     @Override
-    public void messageOverrun(int value, int timestamp) {
+    public void messageOverrun(int value) {
     }
 
     @Override
@@ -129,11 +134,11 @@ public class DliverUDPLogger  implements DliverListener {
     }
 
     @Override
-    public void heartRate(int value, int timestamp) {
+    public void heartRate(int valueHr, int timestamp) {
     }
 
     @Override
-    public void heartRateConfidence(int value, int timestamp) {
+    public void heartRateInterval(int value, int timestamp) {
     }
 
     
@@ -270,6 +275,12 @@ public class DliverUDPLogger  implements DliverListener {
                 case 63:
                     vOscEcgR.send_ts_data(epoch, 1);
                     vOscEcgR.send_ts_data(epoch+10, 0);
+                    vOscEcgR.send_ts_data(epoch+100, 0);
+                    break;
+                case 62:
+                    vOscGen.send_ts_data(epoch, 1);
+                    vOscGen.send_ts_data(epoch+10, 0);
+                    vOscGen.send_ts_data(epoch+100, 0);
                     break;
                 default:
                     break;

@@ -18,20 +18,21 @@ package org.thingml.dliver.driver;
 public interface DliverListener {
 	
 		// Control and status messages
-		void cUSerialNumber(long value, int timestamp);// 		@code "110"; 
-		void cUFWRevision(String value, int timestamp);// 			@code "117";
-		void batteryStatus(int value, int timestamp);// 		@code "98";
-		void indication(int value, int timestamp);// 			@code "105";
-		void status(int value, int timestamp);// 			@code "109";
-		void messageOverrun(int value, int timestamp);//  		@code "100";
+		void cUSerialNumber(long value);// 		@code "110"; 
+		void cUFWRevision(String value);// 			@code "117";
+		void batteryStatus(int value);// 		@code "98";
+		void indicationDev(int value);// 			@code "105";
+		void measurementPatient(int value, int timestamp);// 			@code "109";
+		void messageOverrun(int value);//  		@code "100";
 		
 		// Time and clock synchronization messages
 		void referenceClockTime(long value, boolean seconds);// 						@code "106";
 		void fullClockTimeSync(long value, boolean seconds);// 						@code "107";
 		
 		// ECG and Heart rate messages
-		void heartRate(int value, int timestamp);//  			@code "104"; //12 bit value in 0.1 bpm, ie 0.0-409.5 bpm
-		void heartRateConfidence(int value, int timestamp);//  	@code "99";
+		void heartRate(int valueHr, int timestamp);//  @code "104"; //12 bit value in 0.1 bpm, ie 0.0-409.5 bpm + HRV in ms
+		//void heartRateConfidence(int value, int timestamp);//  	@code "99";
+		void heartRateInterval(int valueHri, int timestamp);//  	@code "99";
 		void eCGData(int value);//  			@code "101";
 		void eCGSignalQuality(int value, int timestamp);//  	@code "102";
 		void eCGRaw(int value, int timestamp);//  				@code "103"; // Not sure which data type
