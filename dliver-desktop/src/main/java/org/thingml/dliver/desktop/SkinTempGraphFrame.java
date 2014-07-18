@@ -45,6 +45,7 @@ public class SkinTempGraphFrame extends javax.swing.JFrame implements DliverList
         if (b != null) b.addDliverListener(this);
         initComponents();
         ((GraphPanel)jPanel1).start();
+        ((GraphPanel)jPanel1).setAutoScale(true);
         
     }
 
@@ -261,4 +262,8 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public void stepCount(long step, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

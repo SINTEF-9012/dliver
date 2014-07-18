@@ -42,7 +42,7 @@ import javax.swing.Timer;
  */
 public class DliverFileLogger implements DliverListener, ActionListener {
     
-    private SimpleDateFormat timestampFormat = new SimpleDateFormat("HH:mm:ss.SSS");
+    private SimpleDateFormat timestampFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss.SSS"); // HH:mm:ss.SSS
     private String SEPARATOR = "\t";
     
     protected File folder;
@@ -130,57 +130,57 @@ public class DliverFileLogger implements DliverListener, ActionListener {
                ecgRt.println("# ECG Data, Raw 12bits ADC values, 250Hz.");
                ecgPb.println("# ECG Data, Raw 12bits ADC values, 250Hz.");
            } else {
-               ecgRt.println("RXTime" + SEPARATOR + "Corrtime" + SEPARATOR + "RawTime" + SEPARATOR + "Update" + SEPARATOR + "Value");
-               ecgPb.println("RXTime" + SEPARATOR + "Corrtime" + SEPARATOR + "RawTime" + SEPARATOR + "Update" + SEPARATOR + "Value");
+               ecgRt.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "Update" + SEPARATOR + "Value");
+               ecgPb.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "Update" + SEPARATOR + "Value");
            }
            ecg = ecgRt;
            
            imuRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_imu.txt")));
            imuPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_imu_playback.txt")));
-           imuRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "AX" + SEPARATOR + "AY" + SEPARATOR + "AZ" + SEPARATOR + "GX" + SEPARATOR + "GY" + SEPARATOR + "GZ");
-           imuPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "AX" + SEPARATOR + "AY" + SEPARATOR + "AZ" + SEPARATOR + "GX" + SEPARATOR + "GY" + SEPARATOR + "GZ");
+           imuRt.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "AX" + SEPARATOR + "AY" + SEPARATOR + "AZ" + SEPARATOR + "GX" + SEPARATOR + "GY" + SEPARATOR + "GZ");
+           imuPb.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "AX" + SEPARATOR + "AY" + SEPARATOR + "AZ" + SEPARATOR + "GX" + SEPARATOR + "GY" + SEPARATOR + "GZ");
            imu = imuRt;
            
            phiRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_phi.txt")));
            phiPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_phi_playback.txt")));
-           phiRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
-           phiPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
+           phiRt.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
+           phiPb.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
            phi = phiRt;
            
            hrvRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_hrv.txt")));
            hrvPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_hrv_playback.txt")));
-           hrvRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate Interval(ms)");
-           hrvPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate Interval(ms)");
+           hrvRt.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate Interval(ms)");
+           hrvPb.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate Interval(ms)");
            hrv = hrvRt;
            
            icgRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_icg.txt")));
            icgPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_icg_playback.txt")));
-           icgRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "IMP (Ac)" + SEPARATOR + "ICG (IMP Der)");
-           icgPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "IMP (Ac)" + SEPARATOR + "ICG (IMP Der)");
+           icgRt.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "IMP (Ac)" + SEPARATOR + "ICG (IMP Der)");
+           icgPb.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "IMP (Ac)" + SEPARATOR + "ICG (IMP Der)");
            icg = icgRt;
            
            ppgRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ppg.txt")));
            ppgPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ppg_playback.txt")));
-           ppgRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "PPG (Raw)" + SEPARATOR + "PPG (Der)");
-           ppgPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "PPG (Raw)" + SEPARATOR + "PPG (Der)");
+           ppgRt.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "PPG (Raw)" + SEPARATOR + "PPG (Der)");
+           ppgPb.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "PPG (Raw)" + SEPARATOR + "PPG (Der)");
            ppg = ppgRt;
            
            pttRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ptt.txt")));
            pttPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ptt_playback.txt")));
-           pttRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "PTT");
-           pttPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "PTT");
+           pttRt.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "PTT");
+           pttPb.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "PTT");
            ptt = pttRt;
            
            measRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_meas.txt")));
            measPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_meas_playback.txt")));
-           measRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Value");
-           measPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "RawTime" + SEPARATOR + "Value");
+           measRt.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "Posture" + SEPARATOR + "Activity" + SEPARATOR + "StepCount" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
+           measPb.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "Posture" + SEPARATOR + "Activity" + SEPARATOR + "StepCount" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
            meas = measRt;
            
            eventRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_event.txt")));
            eventPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_event_playback.txt")));
-           eventRt.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "EvNum" + SEPARATOR + "Value");
-           eventPb.println("RXTime" + SEPARATOR + "CorrTime" + SEPARATOR + "EvNum" + SEPARATOR + "Value");
+           eventRt.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "EvNum" + SEPARATOR + "Value");
+           eventPb.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "EvNum" + SEPARATOR + "Value");
            event = eventRt;
            
        } catch (IOException ex) {
@@ -281,10 +281,16 @@ public class DliverFileLogger implements DliverListener, ActionListener {
         return timestampFormat.format( Calendar.getInstance().getTime());
     }
     
-    public String currentTimeStamp() {
+    public String currentTimeStampEpoch() {
         //return timestampFormat.format( Calendar.getInstance().getTime());
         //return timestampFormat.format( Calendar.getInstance().getTime()) + SEPARATOR + (System.currentTimeMillis()-startTime);
         return "" + System.currentTimeMillis();
+    }
+    
+    public String currentTimeStampHms() {
+        //return timestampFormat.format( Calendar.getInstance().getTime());
+        //return timestampFormat.format( Calendar.getInstance().getTime()) + SEPARATOR + (System.currentTimeMillis()-startTime);
+        return "" + timestampFormat.format(System.currentTimeMillis());
     }
     
     public String calculatedAndRawTimeStamp(int belt_timestamp) {
@@ -292,37 +298,53 @@ public class DliverFileLogger implements DliverListener, ActionListener {
         //return (t+refTime-cbStartTime)*4;
         //long delta = System.currentTimeMillis() - belt.getEpochTimestamp(belt_timestamp);
         //if ((delta > 2000) || (delta < -2000)) System.out.println("Large delta detected: " + delta);
-        return "" + belt.getEpochTimestamp(belt_timestamp) + SEPARATOR + belt_timestamp*4;
+        long epochTimestamp = belt.getEpochTimestamp(belt_timestamp);
+        return "" + timestampFormat.format(epochTimestamp) + SEPARATOR + epochTimestamp + SEPARATOR + belt_timestamp*4;
     }
 
     @Override
     public void cUSerialNumber(long value) {
-        if (logging) log.println("[SerialNumber]" + SEPARATOR + currentTimeStamp() + SEPARATOR + value);
+        if (logging) log.println("[SerialNumber]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + currentTimeStampHms() + SEPARATOR + value);
     }
 
     @Override
     public void cUFWRevision(String value) {
-        if (logging) log.println("[FWRevision]" + SEPARATOR + currentTimeStamp() + SEPARATOR + value);
+        if (logging) log.println("[FWRevision]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + currentTimeStampHms() + SEPARATOR + value);
     }
 
     @Override
     public void batteryStatus(int value) {
-        if (logging) log.println("[Battery]" + SEPARATOR + currentTimeStamp() + SEPARATOR + value);
+        if (logging) log.println("[Battery]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + currentTimeStampHms() + SEPARATOR + value);
     }
 
     @Override
     public void indicationDev(int value) {
-        if (logging) log.println("[Indication]" + SEPARATOR + currentTimeStamp() + SEPARATOR + value);
+        if (logging) log.println("[Indication]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + currentTimeStampHms() + SEPARATOR + value);
     }
 
+    private int posture = 0;
+    private int activity = 0;
     @Override
     public void measurementPatient(int value, int timestamp) {
-        if (logging) meas.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
+        if (value >= 1 && value <= 6) { // This is orientation
+            posture = value;
+        }
+        else if (value >=10 && value <=13) { // This is activity
+            activity = value;  
+        }
+        
     }
 
+    private long stepCount = 0;
+    @Override
+    public void stepCount(long step, int timestamp) {
+        stepCount = stepCount;
+    }
+
+    
     @Override
     public void messageOverrun(int value) {
-        if (logging) log.println("[MsgOverrun]" + SEPARATOR + currentTimeStamp() + SEPARATOR + value);
+        if (logging) log.println("[MsgOverrun]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + currentTimeStampHms() + SEPARATOR + value);
     }
     
     //protected long refTime = 0;
@@ -343,12 +365,12 @@ public class DliverFileLogger implements DliverListener, ActionListener {
         //    cbStartTime = refTime;
         //    logging = true;
         //}
-        if (logging) log.println("[RefClock]" + SEPARATOR + currentTimeStamp() + SEPARATOR + value);
+        if (logging) log.println("[RefClock]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + currentTimeStampHms() + SEPARATOR + value);
     }
 
     @Override
     public void fullClockTimeSync(long value, boolean seconds) {
-        if (logging) log.println("[FullClock]" + SEPARATOR + currentTimeStamp() + SEPARATOR + value);
+        if (logging) log.println("[FullClock]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + currentTimeStampHms() + SEPARATOR + value);
     }
 
     private int heartrate = 0;
@@ -359,7 +381,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
 
     @Override
     public void heartRateInterval(int valueHri, int timestamp) {
-        if (logging) hrv.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + valueHri);
+        if (logging) hrv.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + valueHri);
     }
 
     private int ecg_timestamp = 0;
@@ -373,7 +395,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             } else {
                 // This can be used to log the timestamp for each sample but it makes the file really big.
                 long ts = belt.getEpochTimestampFromMs(ecg_timestamp);
-                ecg.println(currentTimeStamp() + SEPARATOR + ts + SEPARATOR + ecg_timestamp + SEPARATOR + 0 + SEPARATOR + value);
+                ecg.println(currentTimeStampEpoch() + SEPARATOR + timestampFormat.format(ts) + SEPARATOR + ts + SEPARATOR + ecg_timestamp + SEPARATOR + 0 + SEPARATOR + value);
             }
         }
 
@@ -381,7 +403,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
 
     @Override
     public void eCGSignalQuality(int value, int timestamp) {
-        if (logging) log.println("[ECGSignalQuality]" + SEPARATOR + currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
+        if (logging) log.println("[ECGSignalQuality]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
     }
 
     @Override
@@ -394,7 +416,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             } else {
                 // This can be used to log the timestamp for each sample but it makes the file really big.
                 long ts = belt.getEpochTimestampFromMs(ecg_timestamp);
-                ecg.println(currentTimeStamp() + SEPARATOR + ts + SEPARATOR + ecg_timestamp + SEPARATOR + 1 + SEPARATOR + value);
+                ecg.println(currentTimeStampEpoch() + SEPARATOR + timestampFormat.format(ts) + SEPARATOR + ts + SEPARATOR + ecg_timestamp + SEPARATOR + 1 + SEPARATOR + value);
             }
         }
     }
@@ -424,7 +446,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             if (gy == Integer.MIN_VALUE) {
                 gy = value;
                 if (imu_data_ready()) {
-                    imu.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + A(ax) + SEPARATOR + A(ay) + SEPARATOR + A(az) + SEPARATOR + G(gx) + SEPARATOR + G(gy) + SEPARATOR + G(gz));
+                    imu.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + A(ax) + SEPARATOR + A(ay) + SEPARATOR + A(az) + SEPARATOR + G(gx) + SEPARATOR + G(gy) + SEPARATOR + G(gz));
                     imu_data_reset();
                 }
             }
@@ -442,7 +464,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             if (gx == Integer.MIN_VALUE) {
                 gx = value;
                 if (imu_data_ready()) {
-                    imu.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + A(ax) + SEPARATOR + A(ay) + SEPARATOR + A(az) + SEPARATOR + G(gx) + SEPARATOR + G(gy) + SEPARATOR + G(gz));
+                    imu.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + A(ax) + SEPARATOR + A(ay) + SEPARATOR + A(az) + SEPARATOR + G(gx) + SEPARATOR + G(gy) + SEPARATOR + G(gz));
                     imu_data_reset();
                 }
             }
@@ -460,7 +482,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             if (gz == Integer.MIN_VALUE) {
                 gz = value;
                 if (imu_data_ready()) {
-                    imu.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + A(ax) + SEPARATOR + A(ay) + SEPARATOR + A(az) + SEPARATOR + G(gx) + SEPARATOR + G(gy) + SEPARATOR + G(gz));
+                    imu.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + A(ax) + SEPARATOR + A(ay) + SEPARATOR + A(az) + SEPARATOR + G(gx) + SEPARATOR + G(gy) + SEPARATOR + G(gz));
                     imu_data_reset();
                 }
             }
@@ -478,7 +500,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             if (ay == Integer.MIN_VALUE) {
                 ay = value;
                 if (imu_data_ready()) {
-                    imu.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + A(ax) + SEPARATOR + A(ay) + SEPARATOR + A(az) + SEPARATOR + G(gx) + SEPARATOR + G(gy) + SEPARATOR + G(gz));
+                    imu.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + A(ax) + SEPARATOR + A(ay) + SEPARATOR + A(az) + SEPARATOR + G(gx) + SEPARATOR + G(gy) + SEPARATOR + G(gz));
                     imu_data_reset();
                 }
             }
@@ -496,7 +518,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             if (az == Integer.MIN_VALUE) {
                 az = value;
                 if (imu_data_ready()) {
-                    imu.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + A(ax) + SEPARATOR + A(ay) + SEPARATOR + A(az) + SEPARATOR + G(gx) + SEPARATOR + G(gy) + SEPARATOR + G(gz));
+                    imu.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + A(ax) + SEPARATOR + A(ay) + SEPARATOR + A(az) + SEPARATOR + G(gx) + SEPARATOR + G(gy) + SEPARATOR + G(gz));
                     imu_data_reset();
                 }
             }
@@ -514,7 +536,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             if (ax == Integer.MIN_VALUE) {
                 ax = value;
                 if (imu_data_ready()) {
-                    imu.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + A(ax) + SEPARATOR + A(ay) + SEPARATOR + A(az) + SEPARATOR + G(gx) + SEPARATOR + G(gy) + SEPARATOR + G(gz));
+                    imu.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + A(ax) + SEPARATOR + A(ay) + SEPARATOR + A(az) + SEPARATOR + G(gx) + SEPARATOR + G(gy) + SEPARATOR + G(gz));
                     imu_data_reset();
                 }
             }
@@ -543,7 +565,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     @Override
     public void combinedIMU(int ax, int ay, int az, int gx, int gy, int gz, int timestamp) {
         if (logging) {
-            imu.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + A(ax) + SEPARATOR + A(ay) + SEPARATOR + A(az) + SEPARATOR + G(gx) + SEPARATOR + G(gy) + SEPARATOR + G(gz));
+            imu.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + A(ax) + SEPARATOR + A(ay) + SEPARATOR + A(az) + SEPARATOR + G(gx) + SEPARATOR + G(gy) + SEPARATOR + G(gz));
         }
     }
 
@@ -554,7 +576,11 @@ public class DliverFileLogger implements DliverListener, ActionListener {
         temperature = value;
         double hr = heartrate/10.0;
         double temp = temperature/10.0;
-        if (logging) phi.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + numFormat.format(hr) + SEPARATOR + numFormat.format(temp));
+        //System.out.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + numFormat.format(hr) + SEPARATOR + numFormat.format(temp));
+        if (logging) {
+            phi.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + numFormat.format(hr) + SEPARATOR + numFormat.format(temp));
+            meas.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + posture + SEPARATOR + activity + SEPARATOR + stepCount + SEPARATOR + numFormat.format(hr) + SEPARATOR + numFormat.format(temp));
+        }
     }
 
     @Override
@@ -580,25 +606,25 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     @Override
     public void ptt(int value, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        if (logging) ptt.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
+        if (logging) ptt.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
     }
 
     @Override
     public void iCGAbs(int icgAbs, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        if (logging) log.println("[ICG Abs]" + SEPARATOR + currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + icgAbs);
+        if (logging) log.println("[ICG Abs]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + icgAbs);
     }
 
     @Override
     public void combinedICG(int icgAbsDer, int icgAbsAc, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        if (logging) icg.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + icgAbsAc + SEPARATOR + icgAbsDer);
+        if (logging) icg.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + icgAbsAc + SEPARATOR + icgAbsDer);
     }
 
     @Override
     public void ppg(int ppgRaw, int ppgDer, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        if (logging) ppg.println(currentTimeStamp() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + ppgRaw + SEPARATOR + ppgDer);
+        if (logging) ppg.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + ppgRaw + SEPARATOR + ppgDer);
     }
 
     @Override
@@ -608,13 +634,13 @@ public class DliverFileLogger implements DliverListener, ActionListener {
 
     @Override
     public void eventEpoch(int eventNum, int val, long epoch) {
-        if (logging) event.println(currentTimeStamp() + SEPARATOR + epoch + SEPARATOR + eventNum + SEPARATOR + val);
+        if (logging) event.println(currentTimeStampEpoch() + SEPARATOR + timestampFormat.format(epoch) + SEPARATOR + epoch + SEPARATOR + eventNum + SEPARATOR + val);
     }
 
     @Override
     public void playStart(long epoch) {
-        if (logging) logRt.println("[PlayStart]" + SEPARATOR + currentTimeStamp() + SEPARATOR + epoch);
-        if (logging) logPb.println("[PlayStart]" + SEPARATOR + currentTimeStamp() + SEPARATOR + epoch);
+        if (logging) logRt.println("[PlayStart]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + timestampFormat.format(epoch) + SEPARATOR + epoch);
+        if (logging) logPb.println("[PlayStart]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + timestampFormat.format(epoch) + SEPARATOR + epoch);
         log = logPb;
         ecg = ecgPb;
         imu = imuPb;
@@ -629,8 +655,8 @@ public class DliverFileLogger implements DliverListener, ActionListener {
 
     @Override
     public void playStop() {
-        if (logging) logRt.println("[PlayStop]" + SEPARATOR + currentTimeStamp());
-        if (logging) logPb.println("[PlayStop]" + SEPARATOR + currentTimeStamp());
+        if (logging) logRt.println("[PlayStop]" + SEPARATOR + currentTimeStampEpoch());
+        if (logging) logPb.println("[PlayStop]" + SEPARATOR + currentTimeStampEpoch());
         log = logRt;
         ecg = ecgRt;
         imu = imuRt;

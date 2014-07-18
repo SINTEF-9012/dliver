@@ -140,6 +140,8 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jButtonVersion = new javax.swing.JButton();
         jButtonRec = new javax.swing.JButton();
         jButtonPlay = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        jTextFieldStepCount = new javax.swing.JTextField();
         jPanel9 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jProgressBarBatt = new javax.swing.JProgressBar();
@@ -295,6 +297,8 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             }
         });
 
+        jLabel10.setText("Step count");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -306,6 +310,10 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                 .addComponent(jButtonRec)
                 .addGap(33, 33, 33)
                 .addComponent(jButtonPlay)
+                .addGap(54, 54, 54)
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextFieldStepCount, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonAlert)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -329,7 +337,9 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                                 .addComponent(jButtonAlert)
                                 .addComponent(jButtonVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jButtonRec)
-                                .addComponent(jButtonPlay))
+                                .addComponent(jButtonPlay)
+                                .addComponent(jLabel10)
+                                .addComponent(jTextFieldStepCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jButton7))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -727,7 +737,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(75, Short.MAX_VALUE)
                 .addComponent(jLabelPosture1)
                 .addGap(32, 32, 32))
         );
@@ -982,9 +992,11 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_jComboBoxAlertLevelActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        PTTGraphForm pttform = new PTTGraphForm(belt);
-        pttform.setSize(600, 750);
-        pttform.setVisible(true);
+        if (belt != null) {
+            PTTGraphForm pttform = new PTTGraphForm(belt);
+            pttform.setSize(600, 750);
+            pttform.setVisible(true);
+        }
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jButtonConsoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsoleActionPerformed
@@ -1059,11 +1071,23 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      }//GEN-LAST:event_jButtonVersionActionPerformed
 
     private void jButtonRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRecActionPerformed
-        // TODO add your handling code here:
+        if ( belt != null ) {
+            if ( recStateActive == true) {
+                belt.sendBtGetStr("\nbuffer 1\n");  // Stop record
+            } else {
+                belt.sendBtGetStr("\nbuffer 2\n");  // Start record append
+            }
+        }
     }//GEN-LAST:event_jButtonRecActionPerformed
 
     private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlayActionPerformed
-        // TODO add your handling code here:
+        if ( belt != null ) {
+            if ( playStateActive == true) {
+                belt.sendBtGetStr("\nbuffer 11\n");  // Stop playback
+            } else {
+                belt.sendBtGetStr("\nbuffer 12\n");  // Start playback
+            }
+        }
     }//GEN-LAST:event_jButtonPlayActionPerformed
 
     private void jButtonBtPausedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBtPausedActionPerformed
@@ -1140,6 +1164,7 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JComboBox jComboBoxAlertLevel;
     private javax.swing.JComboBox jComboBoxBTInt;
     private javax.swing.JComboBox jComboBoxMode;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -1186,6 +1211,7 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JTextField jTextFieldPostTime;
     private javax.swing.JTextField jTextFieldSFW;
     private javax.swing.JTextField jTextFieldSID;
+    private javax.swing.JTextField jTextFieldStepCount;
     private javax.swing.JTextField jTextFieldTTime;
     // End of variables declaration//GEN-END:variables
 
@@ -1218,6 +1244,8 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 new javax.swing.ImageIcon(getClass().getResource("/Activity_2.png")),
                 new javax.swing.ImageIcon(getClass().getResource("/Activity_3.png"))};
 
+        boolean recStateActive = false;
+        boolean playStateActive = false;
 	@Override
 	public void indicationDev(int value) {
             
@@ -1245,15 +1273,19 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                         break;
                     case 60 : 
                         setButtonColor(jButtonRec, new java.awt.Color(255, 51, 51));
+                        recStateActive = true;
                         break;
                     case 61 : 
                         setButtonColor(jButtonRec, null);
+                        recStateActive = false;
                         break;
                     case 62 : 
                         setButtonColor(jButtonPlay, new java.awt.Color(51, 255, 51));
+                        playStateActive = true;
                         break;
                     case 63 : 
                         setButtonColor(jButtonPlay, null);
+                        playStateActive = false;
                         break;
                     default:break;     
                 }
@@ -1294,6 +1326,12 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
 	}
 
+
+        @Override
+        public void stepCount(long step, int timestamp) {
+            jTextFieldStepCount.setText("" + step);  
+        }
+        
         int total_overrun = 0;
 	@Override
 	public void messageOverrun(int value) {

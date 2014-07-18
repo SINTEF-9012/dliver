@@ -72,6 +72,8 @@ public interface DliverListener {
 		
 		void combinedIMU(int ax, int ay, int az, int gx, int gy, int gz, int timestamp);//  		@code "120";
 
+		void stepCount(long step, int timestamp);      // 	@code "126";
+                
                 void quaternion(int w, int x, int y, int z, int timestamp);
 		
                 void magnetometer(int x, int y, int z, int timestamp);

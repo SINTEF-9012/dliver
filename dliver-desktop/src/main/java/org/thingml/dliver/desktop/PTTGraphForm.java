@@ -55,6 +55,11 @@ public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
         ((GraphPanel)jPanel3).start();
         ((GraphPanel)jPanel4).start();
         ((GraphPanel)jPanel5).start();
+        ((GraphPanel)jPanel1).setAutoScale(true);
+        ((GraphPanel)jPanel2).setAutoScale(true);
+        ((GraphPanel)jPanel3).setAutoScale(true);
+        ((GraphPanel)jPanel4).setAutoScale(true);
+        ((GraphPanel)jPanel5).setAutoScale(true);
     }
 
     /** This method is called from within the constructor to
@@ -277,6 +282,9 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     public void playStop() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
+
+    @Override
+    public void stepCount(long step, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

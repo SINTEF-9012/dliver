@@ -350,5 +350,9 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
             bytesInBuffer = jTextArea1.getDocument().getLength();
         }
     }
-    
+
+    @Override
+    public void stepCount(long step, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -18,7 +18,10 @@ package org.thingml.dliver.driver;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.thingml.rtsync.core.TimeSynchronizer;
 import org.thingml.rtsync.core.TimeSynchronizableV2;
 
@@ -76,14 +79,12 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
             return 3;
         } else if (code == 102 || code == 110 || code == 117 || code == 124) {
             return 4;
-        } else if (code == 106 || code == 107 || code == 112 || code == 114) {
+        } else if (code == 106 || code == 107 || code == 112 || code == 114 || code == 126) {
             return 6;
         } else if (code == 121 || code == 122) {
             return 7;
         } else if (code == 120) {
             return 18;
-        } else if (code == 126) {
-            return 12;
         } else if (code == 127) {
             return 16;
         } else {
@@ -143,7 +144,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
 
                 if (traceCons == null ) {
                     if (activeTrace == true) {
-                        traceCons = new TraceConsole(50000,1000);
+                        traceCons = new TraceConsole(500000,1000);
                         traceCons.setSize(600, 750);
                         traceCons.setVisible(true);
                         traceCons.putString("Open trace console\n");
@@ -285,7 +286,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
                                         //eMGRMS(message);
                                         break;
                                     case 126:
-                                        epoch(message);
+                                        stepCount(message);
                                         break;
                                     case 127:
                                         eventEpoch(message);
@@ -697,10 +698,13 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
 
 
     
-    synchronized void epoch(byte[] message) {
-        long epoch = decodeEpoch(message[1], message[2], message[3], message[4], message[5], message[6], message[7], message[8], message[9], message[10], message[11]);
+    synchronized void stepCount(byte[] message) {
+        long step = decodeLong(message[1], message[2], message[3]);
+        int timestamp = ((message[4] - 32) * 64 + (message[5] - 32));
         
-        rtsync.receiveEpoch(epoch);
+        for (DliverListener l : listeners) {
+            l.stepCount(step, timestamp);
+        }
     }
 
     boolean btPaused = false;
@@ -820,6 +824,14 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     public void sendBtConStart() {
         sendBtGetChar(0x0f00);
     }
+    
+    public void sendBtGetStr(String str) {
+        for ( int i = 0; i < str.length(); i++) {
+            int ch = str.charAt(i);
+            if (ch == 0x0a) ch = 0x0d;
+            sendBtGetChar(ch);
+        }
+     }
     
 // Not supported by d-LIVER    
 //    public void sendRmsWinPramsCh1(int size, int rate) {
