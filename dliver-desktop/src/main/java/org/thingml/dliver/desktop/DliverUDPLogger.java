@@ -32,6 +32,10 @@ public class DliverUDPLogger  implements DliverListener {
     private String probeName;
     private UDPOscComm vOscEcg;
 //    private UDPOscComm vOscEcgTsDiff;
+    private UDPOscComm vOscIcgAc;
+    private UDPOscComm vOscIcgDer;
+    private UDPOscComm vOscPpgRaw;
+    private UDPOscComm vOscPpgDer;
     private UDPOscComm vOscAccX;
     private UDPOscComm vOscAccY;
     private UDPOscComm vOscAccZ;
@@ -39,7 +43,14 @@ public class DliverUDPLogger  implements DliverListener {
     private UDPOscComm vOscGyrY;
     private UDPOscComm vOscGyrZ;
     private UDPOscComm vOscEcgR;
-    private UDPOscComm vOscGen;
+    private UDPOscComm vOscDppgMax;
+    private UDPOscComm vOscPpgTangent;
+    private UDPOscComm vOscPpgFoot;
+    private UDPOscComm vOscPpgMin;
+    private UDPOscComm vOscIcgC;
+    private UDPOscComm vOscIcgB;
+    private UDPOscComm vOscPttActive;
+    private UDPOscComm vOscPttErr;
     private boolean logging = false;
 
     
@@ -55,6 +66,14 @@ public class DliverUDPLogger  implements DliverListener {
            vOscEcg.open_communication("127.0.0.1", this.probeName + ".Ecg");
 //           vOscEcgTsDiff = new UDPOscComm();
 //           vOscEcgTsDiff.open_communication("127.0.0.1", this.probeName + ".EcgTsDiff");
+           vOscIcgAc = new UDPOscComm();
+           vOscIcgAc.open_communication("127.0.0.1", this.probeName + ".IcgAc");
+           vOscIcgDer = new UDPOscComm();
+           vOscIcgDer.open_communication("127.0.0.1", this.probeName + ".IcgDer");
+           vOscPpgRaw = new UDPOscComm();
+           vOscPpgRaw.open_communication("127.0.0.1", this.probeName + ".PpgRaw");
+           vOscPpgDer = new UDPOscComm();
+           vOscPpgDer.open_communication("127.0.0.1", this.probeName + ".PpgDer");
            vOscAccX = new UDPOscComm();
            vOscAccX.open_communication("127.0.0.1", this.probeName + ".AccX");
            vOscAccY = new UDPOscComm();
@@ -69,8 +88,22 @@ public class DliverUDPLogger  implements DliverListener {
            vOscGyrZ.open_communication("127.0.0.1", this.probeName + ".GyrZ");
            vOscEcgR = new UDPOscComm();
            vOscEcgR.open_communication("127.0.0.1", this.probeName + ".EcgR");
-           vOscGen = new UDPOscComm();
-           vOscGen.open_communication("127.0.0.1", this.probeName + ".Gen");
+           vOscDppgMax = new UDPOscComm();
+           vOscDppgMax.open_communication("127.0.0.1", this.probeName + ".DppgMax");
+           vOscPpgTangent = new UDPOscComm();
+           vOscPpgTangent.open_communication("127.0.0.1", this.probeName + ".PpgTan");
+           vOscPpgFoot = new UDPOscComm();
+           vOscPpgFoot.open_communication("127.0.0.1", this.probeName + ".PpgFoot");
+           vOscPpgMin = new UDPOscComm();
+           vOscPpgMin.open_communication("127.0.0.1", this.probeName + ".PpgMin");
+           vOscIcgC = new UDPOscComm();
+           vOscIcgC.open_communication("127.0.0.1", this.probeName + ".IcgC");
+           vOscIcgB = new UDPOscComm();
+           vOscIcgB.open_communication("127.0.0.1", this.probeName + ".IcgB");
+           vOscPttActive = new UDPOscComm();
+           vOscPttActive.open_communication("127.0.0.1", this.probeName + ".PttAct");
+           vOscPttErr = new UDPOscComm();
+           vOscPttErr.open_communication("127.0.0.1", this.probeName + ".PttErr");
            logging = true;
     }
     
@@ -81,6 +114,14 @@ public class DliverUDPLogger  implements DliverListener {
             vOscEcg = null;
 //            vOscEcgTsDiff.close_communication();
 //            vOscEcg = vOscEcgTsDiff;
+            vOscIcgAc.close_communication();
+            vOscIcgAc = null;
+            vOscIcgDer.close_communication();
+            vOscIcgDer = null;
+            vOscPpgRaw.close_communication();
+            vOscPpgRaw = null;
+            vOscPpgDer.close_communication();
+            vOscPpgDer = null;
             vOscAccX.close_communication();
             vOscAccX = null;
             vOscAccY.close_communication();
@@ -95,8 +136,22 @@ public class DliverUDPLogger  implements DliverListener {
             vOscGyrZ = null;
             vOscEcgR.close_communication();
             vOscEcgR = null;
-            vOscGen.close_communication();
-            vOscGen = null;
+            vOscDppgMax.close_communication();
+            vOscDppgMax = null;
+            vOscPpgTangent.close_communication();
+            vOscPpgTangent = null;
+            vOscPpgFoot.close_communication();
+            vOscPpgFoot = null;
+            vOscPpgMin.close_communication();
+            vOscPpgMin = null;
+            vOscIcgC.close_communication();
+            vOscIcgC = null;
+            vOscIcgB.close_communication();
+            vOscIcgB = null;
+            vOscPttActive.close_communication();
+            vOscPttActive = null;
+            vOscPttErr.close_communication();
+            vOscPttErr = null;
         }
     }
     
@@ -255,11 +310,21 @@ public class DliverUDPLogger  implements DliverListener {
     @Override
     public void combinedICG(int icgAbsDer, int icgAbsAc, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (logging) {
+            long ts = belt.getEpochTimestamp(timestamp);
+            vOscIcgAc.send_ts_data(ts, icgAbsAc);
+            vOscIcgDer.send_ts_data(ts, icgAbsDer);
+        }
     }
 
     @Override
     public void ppg(int ppgRaw, int ppgDer, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (logging) {
+            long ts = belt.getEpochTimestamp(timestamp);
+            vOscPpgRaw.send_ts_data(ts, ppgRaw);
+            vOscPpgDer.send_ts_data(ts, ppgDer);
+        }
     }
 
     @Override
@@ -278,9 +343,38 @@ public class DliverUDPLogger  implements DliverListener {
                     vOscEcgR.send_ts_data(epoch+100, 0);
                     break;
                 case 62:
-                    vOscGen.send_ts_data(epoch, 1);
-                    vOscGen.send_ts_data(epoch+10, 0);
-                    vOscGen.send_ts_data(epoch+100, 0);
+                    vOscIcgC.send_ts_data(epoch, val);
+                    break;
+                case 61:
+                    vOscPpgMin.send_ts_data(epoch, val);
+                    vOscPpgMin.send_ts_data(epoch+10, 0);
+                    vOscPpgMin.send_ts_data(epoch+100, 0);
+                    break;
+                case 60:
+                    vOscPpgFoot.send_ts_data(epoch, val);
+                    vOscPpgFoot.send_ts_data(epoch+10, 0);
+                    vOscPpgFoot.send_ts_data(epoch+100, 0);
+                    break;
+                case 59:
+                    vOscPpgTangent.send_ts_data(epoch, val);
+                    break;
+                case 58:
+                    vOscDppgMax.send_ts_data(epoch, val);
+                    vOscDppgMax.send_ts_data(epoch+10, 0);
+                    vOscDppgMax.send_ts_data(epoch+100, 0);
+                    break;
+                case 57:
+                    vOscPttActive.send_ts_data(epoch, val);
+                    break;
+                case 56:
+                    vOscIcgB.send_ts_data(epoch, val);
+                    vOscIcgB.send_ts_data(epoch+10, 0);
+                    vOscIcgB.send_ts_data(epoch+100, 0);
+                    break;
+                case 55:
+                    vOscPttErr.send_ts_data(epoch, val);
+                    vOscPttErr.send_ts_data(epoch+10, 0);
+                    vOscPttErr.send_ts_data(epoch+100, 0);
                     break;
                 default:
                     break;

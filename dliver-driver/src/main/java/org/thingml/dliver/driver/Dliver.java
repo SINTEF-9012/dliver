@@ -642,8 +642,8 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     }
 
     synchronized void combinedICG(byte[] message) {
-        int icgAbsDer = decodeGyro(message[1], message[2], message[3]);
-        int icgAbsAc = decodeGyro(message[4], message[5], message[6]);
+        int icgAbsAc = decodeGyro(message[1], message[2], message[3]);
+        int icgAbsDer = decodeGyro(message[4], message[5], message[6]);
         int timestamp = lastCommonTimestamp;
         //System.out.println("combinedICG() ts = "+ lastCommonTimestamp);
         for (DliverListener l : listeners) {
