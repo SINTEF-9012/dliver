@@ -42,6 +42,7 @@ public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
     protected GraphBuffer bppgDer = new GraphBuffer(1000);
     protected GraphBuffer bicgAbsDer = new GraphBuffer(1000);
     protected GraphBuffer bicgAbsAc = new GraphBuffer(1000);
+    protected GraphBuffer bptt = new GraphBuffer(200);
     
      protected Dliver belt;
     
@@ -55,11 +56,13 @@ public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
         ((GraphPanel)jPanel3).start();
         ((GraphPanel)jPanel4).start();
         ((GraphPanel)jPanel5).start();
+        ((GraphPanel)jPanel6).start();
         ((GraphPanel)jPanel1).setAutoScale(true);
         ((GraphPanel)jPanel2).setAutoScale(true);
         ((GraphPanel)jPanel3).setAutoScale(true);
         ((GraphPanel)jPanel4).setAutoScale(true);
         ((GraphPanel)jPanel5).setAutoScale(true);
+        ((GraphPanel)jPanel6).setAutoScale(true);
     }
 
     /** This method is called from within the constructor to
@@ -71,6 +74,7 @@ public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel6 = new LineGraphPanel(bptt, "PTT (Raw value)", 75, 250, 50, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
         jPanel1 = new LineGraphPanel(becg, "ECG (Raw ADC value)", 0, 4096, 512, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
         jPanel2 = new LineGraphPanel(bppg, "PPG", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
         jPanel3 = new LineGraphPanel(bppgDer, "PPG (Der)", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
@@ -85,6 +89,7 @@ public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
             }
         });
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
+        getContentPane().add(jPanel6);
         getContentPane().add(jPanel1);
         getContentPane().add(jPanel2);
         getContentPane().add(jPanel3);
@@ -99,6 +104,9 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     ((GraphPanel)jPanel1).stop();
     ((GraphPanel)jPanel2).stop();
     ((GraphPanel)jPanel3).stop();
+    ((GraphPanel)jPanel4).stop();
+    ((GraphPanel)jPanel5).stop();
+    ((GraphPanel)jPanel6).stop();
 }//GEN-LAST:event_windowClosed
 
     
@@ -218,6 +226,7 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -242,7 +251,7 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
 
     @Override
     public void ptt(int value, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        bptt.insertData(value);
     }
 
     @Override

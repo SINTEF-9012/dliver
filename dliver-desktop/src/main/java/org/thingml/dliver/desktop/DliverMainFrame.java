@@ -204,8 +204,8 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Blood Pressure Change (PTT)"));
 
         jProgressBarPTT.setForeground(new java.awt.Color(255, 153, 0));
-        jProgressBarPTT.setMaximum(2200);
-        jProgressBarPTT.setValue(750);
+        jProgressBarPTT.setMaximum(220);
+        jProgressBarPTT.setValue(75);
         jProgressBarPTT.setString("");
         jProgressBarPTT.setStringPainted(true);
 
@@ -1535,7 +1535,7 @@ static {
     @Override
     public void ptt(int value, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-       jProgressBarPTT.setString(""+new DecimalFormat("##.0").format((double)value/10.0) + " msec");
+       jProgressBarPTT.setString(""+ value + " msec");
        jProgressBarPTT.setValue(value);
        jTextFieldPTTTime.setText("" + timestamp);
     }
