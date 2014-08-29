@@ -1546,12 +1546,22 @@ static {
     }
 
     @Override
-    public void combinedICG(int icgAbsDer, int icgAbsAc, int timestamp) {
+    public void iCGAbsAc(int icgAbsAc, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void ppg(int ppgRaw, int ppgDer, int timestamp) {
+    public void iCGDer(int icgAbsDer, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void ppgRaw(int ppgDer, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void ppgDer(int ppgDer, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

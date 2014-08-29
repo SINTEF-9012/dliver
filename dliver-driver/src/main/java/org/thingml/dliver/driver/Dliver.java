@@ -77,7 +77,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     private int msg_size(byte code) {
         if (code == 98 || code == 100 || code == 101 || code == 105 || code == 123 || code == 125) {
             return 3;
-        } else if (code == 102 || code == 110 || code == 117 || code == 124) {
+        } else if (code == 102 || code == 110 || code == 117 || code == 118 || code == 119 || code == 124) {
             return 4;
         } else if (code == 106 || code == 107 || code == 112 || code == 114 || code == 126) {
             return 6;
@@ -240,7 +240,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
                                         //gyroRoll(message);
                                         break;
                                     case 121:
-                                        ppg(message);
+                                        combinedPpg(message);
                                         // Not supported by d-LIVER    
                                         //gyroYaw(message);
                                         break;
@@ -249,10 +249,12 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
                                         //accLateral(message);
                                         break;
                                     case 119:
+                                        iCGAbsAc(message);
                                         // Not supported by d-LIVER    
                                         //accLongitudinal(message);
                                         break;
                                     case 118:
+                                        ppgRaw(message);
                                         // Not supported by d-LIVER    
                                         //accVertical(message);
                                         break;
@@ -485,13 +487,25 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         }
     }
 
-    synchronized void ppg(byte[] message) {
+    synchronized void combinedPpg(byte[] message) {
+        timestampSyncCombinedPpg();
         int ppgRaw = decodeGyro(message[1], message[2], message[3]);
         int ppgDer = decodeGyro(message[4], message[5], message[6]);
         int timestamp = lastCommonTimestamp;
         //System.out.println("ppg() ts = "+ lastCommonTimestamp);
         for (DliverListener l : listeners) {
-            l.ppg(ppgRaw, ppgDer, timestamp);
+            l.ppgRaw(ppgRaw, timestamp);
+            l.ppgDer(ppgDer, timestamp);
+        }
+    }
+
+    synchronized void ppgRaw(byte[] message) {
+        timestampSyncPpgRaw();
+        int ppgRaw = decodeGyro(message[1], message[2], message[3]);
+        int timestamp = lastCommonTimestamp;
+        //System.out.println("ppg() ts = "+ lastCommonTimestamp);
+        for (DliverListener l : listeners) {
+            l.ppgRaw(ppgRaw, timestamp);
         }
     }
 
@@ -634,6 +648,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     }
 
     synchronized void iCGAbs(byte[] message) {
+        timestampSyncICGAbs();
         int icgAbs = decodeGyro(message[1], message[2], message[3]);
         int timestamp = lastCommonTimestamp;
         for (DliverListener l : listeners) {
@@ -642,16 +657,29 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     }
 
     synchronized void combinedICG(byte[] message) {
+        timestampSyncCombinedICG();
         int icgAbsAc = decodeGyro(message[1], message[2], message[3]);
         int icgAbsDer = decodeGyro(message[4], message[5], message[6]);
         int timestamp = lastCommonTimestamp;
         //System.out.println("combinedICG() ts = "+ lastCommonTimestamp);
         for (DliverListener l : listeners) {
-            l.combinedICG(icgAbsDer, icgAbsAc, timestamp);
+            l.iCGAbsAc(icgAbsAc, timestamp);
+            l.iCGDer(icgAbsDer, timestamp);
+        }
+    }
+    
+    synchronized void iCGAbsAc(byte[] message) {
+        timestampSyncICGAbsAc();
+        int icgAbsAc = decodeGyro(message[1], message[2], message[3]);
+        int timestamp = lastCommonTimestamp;
+        //System.out.println("combinedICG() ts = "+ lastCommonTimestamp);
+        for (DliverListener l : listeners) {
+            l.iCGAbsAc(icgAbsAc, timestamp);
         }
     }
     
     synchronized void ptt(byte[] message) {
+        timestampSyncPtt();
         int ptt = decodeGyro(message[1], message[2], message[3]);
         int timestamp = lastCommonTimestamp;
         for (DliverListener l : listeners) {
@@ -661,8 +689,62 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
 
     int lastCommonTimestamp = 0;
     synchronized void commonTimestamp(byte[] message) {
+        timestampSyncCommonTimestamp();
         lastCommonTimestamp = ((message[1] - 32) * 64 + (message[2] - 32));
         //System.out.println("commonTimestamp() ts = "+ lastCommonTimestamp);
+    }
+    
+    int combinedPpgMsgCount = 0;
+    int ppgRawMsgCount = 0;
+    int iCGAbsMsgCount = 0;
+    int combinedICGMsgCount = 0;
+    int iCGAbsAcMsgCount = 0;
+    int pttMsgCount = 0;
+    int commonTimestampSyncCount = 0;
+    
+    synchronized void timestampSyncCombinedPpg() {
+        combinedPpgMsgCount++;
+        if ( combinedPpgMsgCount > commonTimestampSyncCount) stepCommonTimestamp();
+    }
+
+    synchronized void timestampSyncPpgRaw() {
+        ppgRawMsgCount++;
+        if ( ppgRawMsgCount > commonTimestampSyncCount) stepCommonTimestamp();
+    }
+
+    synchronized void timestampSyncICGAbs() {
+        iCGAbsMsgCount++;
+        if ( iCGAbsMsgCount > commonTimestampSyncCount) stepCommonTimestamp();
+    }
+
+    synchronized void timestampSyncICGAbsAc() {
+        iCGAbsAcMsgCount++;
+        if ( iCGAbsAcMsgCount > commonTimestampSyncCount) stepCommonTimestamp();
+    }
+
+    synchronized void timestampSyncCombinedICG() {
+        combinedICGMsgCount++;
+        if ( combinedICGMsgCount > commonTimestampSyncCount) stepCommonTimestamp();
+    }
+
+    synchronized void timestampSyncPtt() {
+        pttMsgCount++;
+        if ( pttMsgCount > commonTimestampSyncCount) stepCommonTimestamp();
+    }
+
+    synchronized void stepCommonTimestamp() {
+        lastCommonTimestamp++;   // Increment timestamp (refreshed every 250 step)
+        commonTimestampSyncCount++;  // Indicate that ts is updated
+    }
+
+    synchronized void timestampSyncCommonTimestamp() {
+        commonTimestampSyncCount = 1; // Indicate that ts#1 is received
+        combinedPpgMsgCount = 0;             // Indicate none received
+        ppgRawMsgCount = 0;             // Indicate none received
+        iCGAbsMsgCount = 0;          // Indicate none received
+        iCGAbsAcMsgCount = 0;          // Indicate none received
+        combinedICGMsgCount = 0;     // Indicate none received
+        pttMsgCount = 0;             // Indicate none received
     }
 
     

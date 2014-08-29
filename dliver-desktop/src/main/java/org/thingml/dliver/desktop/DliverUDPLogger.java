@@ -308,21 +308,37 @@ public class DliverUDPLogger  implements DliverListener {
     }
 
     @Override
-    public void combinedICG(int icgAbsDer, int icgAbsAc, int timestamp) {
+    public void iCGAbsAc(int icgAbsAc, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         if (logging) {
             long ts = belt.getEpochTimestamp(timestamp);
             vOscIcgAc.send_ts_data(ts, icgAbsAc);
+        }
+    }
+
+    @Override
+    public void iCGDer(int icgAbsDer, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (logging) {
+            long ts = belt.getEpochTimestamp(timestamp);
             vOscIcgDer.send_ts_data(ts, icgAbsDer);
         }
     }
 
     @Override
-    public void ppg(int ppgRaw, int ppgDer, int timestamp) {
+    public void ppgRaw(int ppgRaw, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         if (logging) {
             long ts = belt.getEpochTimestamp(timestamp);
             vOscPpgRaw.send_ts_data(ts, ppgRaw);
+        }
+    }
+
+    @Override
+    public void ppgDer(int ppgDer, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (logging) {
+            long ts = belt.getEpochTimestamp(timestamp);
             vOscPpgDer.send_ts_data(ts, ppgDer);
         }
     }

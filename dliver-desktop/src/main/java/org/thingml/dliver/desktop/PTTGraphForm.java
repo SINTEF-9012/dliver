@@ -260,15 +260,24 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
     }
 
     @Override
-    public void combinedICG(int icgAbsDer, int icgAbsAc, int timestamp) {
-        bicgAbsDer.insertData(icgAbsDer);
+    public void iCGAbsAc(int icgAbsAc, int timestamp) {
         bicgAbsAc.insertData(icgAbsAc);
     }
 
     @Override
-    public void ppg(int ppgRaw, int ppgDer, int timestamp) {
+    public void iCGDer(int icgAbsDer, int timestamp) {
+        bicgAbsDer.insertData(icgAbsDer);
+    }
+
+    @Override
+    public void ppgRaw(int ppgRaw, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         bppg.insertData(ppgRaw);
+    }
+
+    @Override
+    public void ppgDer(int ppgDer, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         bppgDer.insertData(ppgDer);
     }
 

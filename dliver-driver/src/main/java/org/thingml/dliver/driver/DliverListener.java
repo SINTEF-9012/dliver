@@ -43,8 +43,9 @@ public interface DliverListener {
 		//void pPGRaw(int value, int timestamp);
 
                 // ICG Messages
-		void iCGAbs(int icgAbs, int timestamp);//  		@code "102";
-		void combinedICG(int icgAbsDer, int icgAbsAc, int timestamp);//  		@code "122";
+		void iCGAbs(int icgAbs, int timestamp);//  		
+		void iCGAbsAc(int icgAbsAc, int timestamp);//  		
+		void iCGDer(int icgAbsDer, int timestamp);//  		
 
                 // EMG Messages
                 //void eMGData(int value);
@@ -54,7 +55,8 @@ public interface DliverListener {
 
 		void ptt(int value, int timestamp);
 
-		void ppg(int ppgRaw, int ppgDer, int timestamp);      //  			@code "121";
+		void ppgRaw(int ppgRaw, int timestamp);      //  		
+		void ppgDer(int ppgDer, int timestamp);      //  		
                 
                 void btPutChar(int value); // 123
                 

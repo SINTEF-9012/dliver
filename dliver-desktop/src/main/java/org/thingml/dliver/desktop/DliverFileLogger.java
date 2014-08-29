@@ -615,16 +615,77 @@ public class DliverFileLogger implements DliverListener, ActionListener {
         if (logging) log.println("[ICG Abs]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + icgAbs);
     }
 
+    final int tsNone = 50000;
+    int oldCombinedIcgTs = tsNone;
+    int oldIcgAbsAc = 0;
+    int oldIcgAbsDer = 0;
+    String oldIcgTsString = "";
+    
+    private void logOldCombinedIcg(int newTimestamp) {
+        if ( oldCombinedIcgTs == tsNone) return;   // No old data ... store new data
+        if ( oldCombinedIcgTs == newTimestamp ) return;  // More data on same ts ... store data
+        if (logging) icg.println(currentTimeStampEpoch() + SEPARATOR + oldIcgTsString + SEPARATOR + oldIcgAbsAc + SEPARATOR + oldIcgAbsDer);
+    }
+    private void storeIcgAbsAc(int icgAbsAc, int timestamp) {
+        logOldCombinedIcg(timestamp);
+        
+        oldCombinedIcgTs = timestamp;
+        oldIcgAbsAc = icgAbsAc;
+        oldIcgTsString = calculatedAndRawTimeStamp(timestamp);
+    }
+
+    private void storeIcgDer(int icgAbsDer, int timestamp) {
+        logOldCombinedIcg(timestamp);
+        
+        oldCombinedIcgTs = timestamp;
+        oldIcgAbsDer = icgAbsDer;
+        oldIcgTsString = calculatedAndRawTimeStamp(timestamp);
+    }
+    
     @Override
-    public void combinedICG(int icgAbsDer, int icgAbsAc, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        if (logging) icg.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + icgAbsAc + SEPARATOR + icgAbsDer);
+    public void iCGAbsAc(int icgAbsAc, int timestamp) {
+        storeIcgAbsAc(icgAbsAc, timestamp);
     }
 
     @Override
-    public void ppg(int ppgRaw, int ppgDer, int timestamp) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        if (logging) ppg.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + ppgRaw + SEPARATOR + ppgDer);
+    public void iCGDer(int icgAbsDer, int timestamp) {
+        storeIcgDer(icgAbsDer, timestamp);
+    }
+
+    int oldCombinedPpgTs = tsNone;
+    int oldPpgRaw = 0;
+    int oldPpgDer = 0;
+    String oldPpgTsString = "";
+    
+    private void logOldCombinedPpg(int newTimestamp) {
+        if ( oldCombinedPpgTs == tsNone) return;   // No old data ... store new data
+        if ( oldCombinedPpgTs == newTimestamp ) return;  // More data on same ts ... store data
+        if (logging) ppg.println(currentTimeStampEpoch() + SEPARATOR + oldPpgTsString + SEPARATOR + oldPpgRaw + SEPARATOR + oldPpgDer);
+    }
+    private void storePpgRaw(int ppgRaw, int timestamp) {
+        logOldCombinedPpg(timestamp);
+        
+        oldCombinedPpgTs = timestamp;
+        oldPpgRaw = ppgRaw;
+        oldPpgTsString = calculatedAndRawTimeStamp(timestamp);
+    }
+
+    private void storePpgDer(int ppgDer, int timestamp) {
+        logOldCombinedPpg(timestamp);
+        
+        oldCombinedPpgTs = timestamp;
+        oldPpgDer = ppgDer;
+        oldPpgTsString = calculatedAndRawTimeStamp(timestamp);
+    }
+
+    @Override
+    public void ppgRaw(int ppgRaw, int timestamp) {
+        storePpgRaw(ppgRaw, timestamp);
+    }
+
+    @Override
+    public void ppgDer(int ppgDer, int timestamp) {
+        storePpgDer(ppgDer, timestamp);
     }
 
     @Override
@@ -641,6 +702,9 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     public void playStart(long epoch) {
         if (logging) logRt.println("[PlayStart]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + timestampFormat.format(epoch) + SEPARATOR + epoch);
         if (logging) logPb.println("[PlayStart]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + timestampFormat.format(epoch) + SEPARATOR + epoch);
+        logOldCombinedPpg(tsNone); // Flush old data before changing log fileset
+        logOldCombinedIcg(tsNone); // Flush old data before changing log fileset
+
         log = logPb;
         ecg = ecgPb;
         imu = imuPb;
@@ -657,6 +721,9 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     public void playStop() {
         if (logging) logRt.println("[PlayStop]" + SEPARATOR + currentTimeStampEpoch());
         if (logging) logPb.println("[PlayStop]" + SEPARATOR + currentTimeStampEpoch());
+        logOldCombinedPpg(tsNone); // Flush old data before changing log fileset
+        logOldCombinedIcg(tsNone); // Flush old data before changing log fileset
+
         log = logRt;
         ecg = ecgRt;
         imu = imuRt;
