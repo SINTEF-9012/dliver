@@ -354,7 +354,7 @@ public class DliverUDPLogger  implements DliverListener {
         if (logging) {
             switch ( eventNum ) {
                 case 63:
-                    vOscEcgR.send_ts_data(epoch, 1);
+                    vOscEcgR.send_ts_data(epoch, val);
                     vOscEcgR.send_ts_data(epoch+10, 0);
                     vOscEcgR.send_ts_data(epoch+100, 0);
                     break;

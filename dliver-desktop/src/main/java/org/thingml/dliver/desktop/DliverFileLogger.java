@@ -55,8 +55,6 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     protected PrintWriter imu;
     protected PrintWriter phi;
     protected PrintWriter hrv;
-    protected PrintWriter icg;
-    protected PrintWriter ppg;
     protected PrintWriter ptt;
     protected PrintWriter meas;
     protected PrintWriter event;
@@ -66,8 +64,6 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     protected PrintWriter imuRt;
     protected PrintWriter phiRt;
     protected PrintWriter hrvRt;
-    protected PrintWriter icgRt;
-    protected PrintWriter ppgRt;
     protected PrintWriter pttRt;
     protected PrintWriter measRt;
     protected PrintWriter eventRt;
@@ -77,11 +73,50 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     protected PrintWriter imuPb;
     protected PrintWriter phiPb;
     protected PrintWriter hrvPb;
-    protected PrintWriter icgPb;
-    protected PrintWriter ppgPb;
     protected PrintWriter pttPb;
     protected PrintWriter measPb;
     protected PrintWriter eventPb;
+
+    protected FileLogCombiner icgLog;
+    protected final int icgIdxTime   = 0;
+    protected final int icgIdxIcgAbsAc  = 1;
+    protected final int icgIdxIcgAbsDer = 2;
+    protected final int icgIdxSize   = 3;
+    protected String[] icgHeader = new String[icgIdxSize];
+    protected String[] icgData = new String[icgIdxSize];
+    
+    protected FileLogCombiner ppgLog;
+    protected final int ppgIdxTime  = 0;
+    protected final int ppgIdxPpgRaw    = 1;
+    protected final int ppgIdxPpgDer    = 2;
+    protected final int ppgIdxSize   = 3;
+    protected String[] ppgHeader = new String[ppgIdxSize];
+    protected String[] ppgData = new String[ppgIdxSize];
+    
+    protected FileLogCombiner comLog;
+    protected final int comIdxTime           =  0;
+    protected final int comIdxPpgRaw         =  1;
+    protected final int comIdxPpgDer         =  2;
+    protected final int comIdxIcgAbsAc       =  3;
+    protected final int comIdxIcgAbsDer      =  4;
+    protected final int comIdxEcg            =  5;
+    protected final int comIdxHr             =  6;
+    protected final int comIdxHri            =  7;
+    protected final int comIdxPtt            =  8;
+    protected final int comIdxAct            =  9;
+    protected final int comIdxPos            = 10;
+    protected final int comIdxEvEcgR         = 11;
+    protected final int comIdxEvIcgC         = 12;
+    protected final int comIdxEvIcgB         = 13;
+    protected final int comIdxEvPpgMin       = 14;
+    protected final int comIdxEvPpgFoot      = 15;
+    protected final int comIdxEvPpgTangent   = 16;
+    protected final int comIdxEvDppgMax      = 17;
+    protected final int comIdxEvPttActive    = 18;
+    protected final int comIdxEvPttResultErr = 19;
+    protected final int comIdxSize           = 20;
+    protected String[] comHeader = new String[comIdxSize];
+    protected String[] comData = new String[comIdxSize];
     
     protected Timer startTimer = null;
     
@@ -153,17 +188,37 @@ public class DliverFileLogger implements DliverListener, ActionListener {
            hrvPb.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "Heart Rate Interval(ms)");
            hrv = hrvRt;
            
-           icgRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_icg.txt")));
-           icgPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_icg_playback.txt")));
-           icgRt.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "IMP (Ac)" + SEPARATOR + "ICG (IMP Der)");
-           icgPb.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "IMP (Ac)" + SEPARATOR + "ICG (IMP Der)");
-           icg = icgRt;
+           icgHeader[icgIdxIcgAbsAc] = "IMP (Ac)";
+           icgHeader[icgIdxIcgAbsDer] = "ICG (IMP Der)";
+           icgLog = new FileLogCombiner(belt, icgHeader, icgData);
+           icgLog.createLogInFolder("d-LIVER_icg", sFolder);
            
-           ppgRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ppg.txt")));
-           ppgPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ppg_playback.txt")));
-           ppgRt.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "PPG (Raw)" + SEPARATOR + "PPG (Der)");
-           ppgPb.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "PPG (Raw)" + SEPARATOR + "PPG (Der)");
-           ppg = ppgRt;
+           ppgHeader[ppgIdxPpgRaw] = "PPG (Raw)";
+           ppgHeader[ppgIdxPpgDer] = "PPG (Der)";
+           ppgLog = new FileLogCombiner(belt, ppgHeader, ppgData);
+           ppgLog.createLogInFolder("d-LIVER_ppg", sFolder);
+           
+           comHeader[comIdxPpgRaw] = "PPG (Raw)";
+           comHeader[comIdxPpgDer] = "PPG (Der)";
+           comHeader[comIdxIcgAbsAc] = "IMP (Ac)";
+           comHeader[comIdxIcgAbsDer] = "ICG (IMP Der)";
+           comHeader[comIdxEcg] = "ECG";
+           comHeader[comIdxHr] = "HR";
+           comHeader[comIdxHri] = "HRi";
+           comHeader[comIdxPtt] = "PTT";
+           comHeader[comIdxAct] = "Activity";
+           comHeader[comIdxPos] = "Posture";
+           comHeader[comIdxEvEcgR] = "EvEcgR";
+           comHeader[comIdxEvIcgC] = "EvIcgC";
+           comHeader[comIdxEvIcgB] = "EvIcgB";
+           comHeader[comIdxEvPpgMin] = "EvPpgMin";
+           comHeader[comIdxEvPpgFoot] = "EvPpgFoot";
+           comHeader[comIdxEvPpgTangent] = "EvPpgTangent";
+           comHeader[comIdxEvDppgMax] = "EvDppgMax";
+           comHeader[comIdxEvPttActive] = "EvPttActive";
+           comHeader[comIdxEvPttResultErr] = "EvPttResultErr";
+           comLog = new FileLogCombiner(belt, comHeader, comData);
+           comLog.createLogInFolder("d-LIVER_com", sFolder);
            
            pttRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ptt.txt")));
            pttPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ptt_playback.txt")));
@@ -215,6 +270,9 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
        System.out.println("DliverFileLogger.class - Starting logger");
        logging = true;
+       icgLog.startLogging();
+       ppgLog.startLogging();
+       comLog.startLogging();
     }
     
     
@@ -228,8 +286,6 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             imuRt.close();
             phiRt.close();
             hrvRt.close();
-            icgRt.close();
-            ppgRt.close();
             pttRt.close();
             measRt.close();
             eventRt.close();
@@ -238,8 +294,6 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             imuPb.close();
             phiPb.close();
             hrvPb.close();
-            icgPb.close();
-            ppgPb.close();
             pttPb.close();
             measPb.close();
             eventPb.close();
@@ -248,8 +302,6 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             imuRt = null;
             phiRt = null;
             hrvRt = null;
-            icgRt = null;
-            ppgRt = null;
             pttRt = null;
             measRt = null;
             eventRt = null;
@@ -258,8 +310,6 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             imuPb = null;
             phiPb = null;
             hrvPb = null;
-            icgPb = null;
-            ppgPb = null;
             pttPb = null;
             measPb = null;
             eventPb = null;
@@ -268,11 +318,16 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             imu = null;
             phi = null;
             hrv = null;
-            icg = null;
-            ppg = null;
             ptt = null;
             meas = null;
             event = null;
+            
+            icgLog.stopLogging();
+            ppgLog.stopLogging();
+            comLog.stopLogging();
+            icgLog = null;
+            ppgLog = null;
+            comLog = null;
         }
     }
     
@@ -326,11 +381,17 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     private int activity = 0;
     @Override
     public void measurementPatient(int value, int timestamp) {
-        if (value >= 1 && value <= 6) { // This is orientation
-            posture = value;
-        }
-        else if (value >=10 && value <=13) { // This is activity
-            activity = value;  
+        if (logging) {
+            if (value >= 1 && value <= 6) { // This is orientation
+                posture = value;
+                comLog.newLogEntryTs(timestamp);
+                comLog.data[comIdxPos] = "" + value;
+            }
+            else if (value >=10 && value <=13) { // This is activity
+                activity = value;  
+                comLog.newLogEntryTs(timestamp);
+                comLog.data[comIdxAct] = "" + value;
+            }
         }
         
     }
@@ -377,11 +438,20 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     @Override
     public void heartRate(int valueHR, int timestamp) {
         heartrate = valueHR;
+        if (logging) {
+            comLog.newLogEntryTs(timestamp);
+            comLog.data[comIdxHr] = "" + valueHR;
+        }
+        
     }
 
     @Override
     public void heartRateInterval(int valueHri, int timestamp) {
-        if (logging) hrv.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + valueHri);
+        if (logging) {
+            hrv.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + valueHri);
+            comLog.newLogEntryTs(timestamp);
+            comLog.data[comIdxHri] = "" + valueHri;
+        }
     }
 
     private int ecg_timestamp = 0;
@@ -397,6 +467,8 @@ public class DliverFileLogger implements DliverListener, ActionListener {
                 long ts = belt.getEpochTimestampFromMs(ecg_timestamp);
                 ecg.println(currentTimeStampEpoch() + SEPARATOR + timestampFormat.format(ts) + SEPARATOR + ts + SEPARATOR + ecg_timestamp + SEPARATOR + 0 + SEPARATOR + value);
             }
+            comLog.newLogEntryTs(ecg_timestamp/4);
+            comLog.data[comIdxEcg] = "" + value;
         }
 
     }
@@ -418,6 +490,8 @@ public class DliverFileLogger implements DliverListener, ActionListener {
                 long ts = belt.getEpochTimestampFromMs(ecg_timestamp);
                 ecg.println(currentTimeStampEpoch() + SEPARATOR + timestampFormat.format(ts) + SEPARATOR + ts + SEPARATOR + ecg_timestamp + SEPARATOR + 1 + SEPARATOR + value);
             }
+            comLog.newLogEntryTs(ecg_timestamp/4);
+            comLog.data[comIdxEcg] = "" + value;
         }
     }
     
@@ -606,7 +680,11 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     @Override
     public void ptt(int value, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        if (logging) ptt.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
+        if (logging) {
+            ptt.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + value);
+            comLog.newLogEntryTs(timestamp);
+            comLog.data[comIdxPtt] = "" + value;
+        }
     }
 
     @Override
@@ -615,77 +693,44 @@ public class DliverFileLogger implements DliverListener, ActionListener {
         if (logging) log.println("[ICG Abs]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + icgAbs);
     }
 
-    final int tsNone = 50000;
-    int oldCombinedIcgTs = tsNone;
-    int oldIcgAbsAc = 0;
-    int oldIcgAbsDer = 0;
-    String oldIcgTsString = "";
-    
-    private void logOldCombinedIcg(int newTimestamp) {
-        if ( oldCombinedIcgTs == tsNone) return;   // No old data ... store new data
-        if ( oldCombinedIcgTs == newTimestamp ) return;  // More data on same ts ... store data
-        if (logging) icg.println(currentTimeStampEpoch() + SEPARATOR + oldIcgTsString + SEPARATOR + oldIcgAbsAc + SEPARATOR + oldIcgAbsDer);
-    }
-    private void storeIcgAbsAc(int icgAbsAc, int timestamp) {
-        logOldCombinedIcg(timestamp);
-        
-        oldCombinedIcgTs = timestamp;
-        oldIcgAbsAc = icgAbsAc;
-        oldIcgTsString = calculatedAndRawTimeStamp(timestamp);
-    }
-
-    private void storeIcgDer(int icgAbsDer, int timestamp) {
-        logOldCombinedIcg(timestamp);
-        
-        oldCombinedIcgTs = timestamp;
-        oldIcgAbsDer = icgAbsDer;
-        oldIcgTsString = calculatedAndRawTimeStamp(timestamp);
-    }
-    
     @Override
     public void iCGAbsAc(int icgAbsAc, int timestamp) {
-        storeIcgAbsAc(icgAbsAc, timestamp);
+        if (logging) {
+            icgLog.newLogEntryTs(timestamp);
+            comLog.newLogEntryTs(timestamp);
+            icgLog.data[icgIdxIcgAbsAc] = "" + icgAbsAc;
+            comLog.data[comIdxIcgAbsAc] = "" + icgAbsAc;
+        }
     }
 
     @Override
     public void iCGDer(int icgAbsDer, int timestamp) {
-        storeIcgDer(icgAbsDer, timestamp);
-    }
-
-    int oldCombinedPpgTs = tsNone;
-    int oldPpgRaw = 0;
-    int oldPpgDer = 0;
-    String oldPpgTsString = "";
-    
-    private void logOldCombinedPpg(int newTimestamp) {
-        if ( oldCombinedPpgTs == tsNone) return;   // No old data ... store new data
-        if ( oldCombinedPpgTs == newTimestamp ) return;  // More data on same ts ... store data
-        if (logging) ppg.println(currentTimeStampEpoch() + SEPARATOR + oldPpgTsString + SEPARATOR + oldPpgRaw + SEPARATOR + oldPpgDer);
-    }
-    private void storePpgRaw(int ppgRaw, int timestamp) {
-        logOldCombinedPpg(timestamp);
-        
-        oldCombinedPpgTs = timestamp;
-        oldPpgRaw = ppgRaw;
-        oldPpgTsString = calculatedAndRawTimeStamp(timestamp);
-    }
-
-    private void storePpgDer(int ppgDer, int timestamp) {
-        logOldCombinedPpg(timestamp);
-        
-        oldCombinedPpgTs = timestamp;
-        oldPpgDer = ppgDer;
-        oldPpgTsString = calculatedAndRawTimeStamp(timestamp);
+        if (logging) {
+            icgLog.newLogEntryTs(timestamp);
+            comLog.newLogEntryTs(timestamp);
+            icgLog.data[icgIdxIcgAbsDer] = "" + icgAbsDer;
+            comLog.data[comIdxIcgAbsDer] = "" + icgAbsDer;
+        }
     }
 
     @Override
     public void ppgRaw(int ppgRaw, int timestamp) {
-        storePpgRaw(ppgRaw, timestamp);
+        if (logging) {
+            ppgLog.newLogEntryTs(timestamp);
+            comLog.newLogEntryTs(timestamp);
+            ppgLog.data[ppgIdxPpgRaw] = "" + ppgRaw;
+            comLog.data[comIdxPpgRaw] = "" + ppgRaw;
+        }
     }
 
     @Override
     public void ppgDer(int ppgDer, int timestamp) {
-        storePpgDer(ppgDer, timestamp);
+        if (logging) {
+            ppgLog.newLogEntryTs(timestamp);
+            comLog.newLogEntryTs(timestamp);
+            ppgLog.data[ppgIdxPpgDer] = "" + ppgDer;
+            comLog.data[comIdxPpgDer] = "" + ppgDer;
+        }
     }
 
     @Override
@@ -695,23 +740,65 @@ public class DliverFileLogger implements DliverListener, ActionListener {
 
     @Override
     public void eventEpoch(int eventNum, int val, long epoch) {
-        if (logging) event.println(currentTimeStampEpoch() + SEPARATOR + timestampFormat.format(epoch) + SEPARATOR + epoch + SEPARATOR + eventNum + SEPARATOR + val);
+        if (logging) {
+            event.println(currentTimeStampEpoch() + SEPARATOR + timestampFormat.format(epoch) + SEPARATOR + epoch + SEPARATOR + eventNum + SEPARATOR + val);
+
+            switch ( eventNum ) {
+                case 63:
+                    comLog.newLogEntryEpoch(epoch);
+                    comLog.data[comIdxEvEcgR] = "" + val;
+                    break;
+                case 62:
+                    comLog.newLogEntryEpoch(epoch);
+                    comLog.data[comIdxEvIcgC] = "" + val;
+                    break;
+                case 61:
+                    comLog.newLogEntryEpoch(epoch);
+                    comLog.data[comIdxEvPpgMin] = "" + val;
+                    break;
+                case 60:
+                    comLog.newLogEntryEpoch(epoch);
+                    comLog.data[comIdxEvPpgFoot] = "" + val;
+                    break;
+                case 59:
+                    comLog.newLogEntryEpoch(epoch);
+                    comLog.data[comIdxEvPpgTangent] = "" + val;
+                    break;
+                case 58:
+                    comLog.newLogEntryEpoch(epoch);
+                    comLog.data[comIdxEvDppgMax] = "" + val;
+                    break;
+                case 57:
+                    comLog.newLogEntryEpoch(epoch);
+                    comLog.data[comIdxEvPttActive] = "" + val;
+                    break;
+                case 56:
+                    comLog.newLogEntryEpoch(epoch);
+                    comLog.data[comIdxEvIcgB] = "" + val;
+                    break;
+                case 55:
+                    comLog.newLogEntryEpoch(epoch);
+                    comLog.data[comIdxEvPttResultErr] = "" + val;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     @Override
     public void playStart(long epoch) {
         if (logging) logRt.println("[PlayStart]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + timestampFormat.format(epoch) + SEPARATOR + epoch);
         if (logging) logPb.println("[PlayStart]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + timestampFormat.format(epoch) + SEPARATOR + epoch);
-        logOldCombinedPpg(tsNone); // Flush old data before changing log fileset
-        logOldCombinedIcg(tsNone); // Flush old data before changing log fileset
+        icgLog.playStart(); // Flush old data before changing log fileset
+        ppgLog.playStart(); // Flush old data before changing log fileset
+        comLog.playStart(); // Flush old data before changing log fileset
 
         log = logPb;
         ecg = ecgPb;
         imu = imuPb;
         phi = phiPb;
         hrv = hrvPb;
-        icg = icgPb;
-        ppg = ppgPb;
         ptt = pttPb;
         meas = measPb;
         event = eventPb;
@@ -721,16 +808,15 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     public void playStop() {
         if (logging) logRt.println("[PlayStop]" + SEPARATOR + currentTimeStampEpoch());
         if (logging) logPb.println("[PlayStop]" + SEPARATOR + currentTimeStampEpoch());
-        logOldCombinedPpg(tsNone); // Flush old data before changing log fileset
-        logOldCombinedIcg(tsNone); // Flush old data before changing log fileset
+        icgLog.playStop(); // Flush old data before changing log fileset
+        ppgLog.playStop(); // Flush old data before changing log fileset
+        comLog.playStop(); // Flush old data before changing log fileset
 
         log = logRt;
         ecg = ecgRt;
         imu = imuRt;
         phi = phiRt;
         hrv = hrvRt;
-        icg = icgRt;
-        ppg = ppgRt;
         ptt = pttRt;
         meas = measRt;
         event = eventRt;

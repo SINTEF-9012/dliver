@@ -488,7 +488,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     }
 
     synchronized void combinedPpg(byte[] message) {
-        timestampSyncCombinedPpg();
+        comTsSyncFunc(comTsFuncIdxCombinedPpg);
         int ppgRaw = decodeGyro(message[1], message[2], message[3]);
         int ppgDer = decodeGyro(message[4], message[5], message[6]);
         int timestamp = lastCommonTimestamp;
@@ -500,7 +500,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     }
 
     synchronized void ppgRaw(byte[] message) {
-        timestampSyncPpgRaw();
+        comTsSyncFunc(comTsFuncIdxPpgRaw);
         int ppgRaw = decodeGyro(message[1], message[2], message[3]);
         int timestamp = lastCommonTimestamp;
         //System.out.println("ppg() ts = "+ lastCommonTimestamp);
@@ -648,7 +648,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     }
 
     synchronized void iCGAbs(byte[] message) {
-        timestampSyncICGAbs();
+        comTsSyncFunc(comTsFuncIdxIcgAbs);
         int icgAbs = decodeGyro(message[1], message[2], message[3]);
         int timestamp = lastCommonTimestamp;
         for (DliverListener l : listeners) {
@@ -657,7 +657,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     }
 
     synchronized void combinedICG(byte[] message) {
-        timestampSyncCombinedICG();
+        comTsSyncFunc(comTsFuncIdxCombinedIcg);
         int icgAbsAc = decodeGyro(message[1], message[2], message[3]);
         int icgAbsDer = decodeGyro(message[4], message[5], message[6]);
         int timestamp = lastCommonTimestamp;
@@ -669,7 +669,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     }
     
     synchronized void iCGAbsAc(byte[] message) {
-        timestampSyncICGAbsAc();
+        comTsSyncFunc(comTsFuncIdxIcgAbsAc);
         int icgAbsAc = decodeGyro(message[1], message[2], message[3]);
         int timestamp = lastCommonTimestamp;
         //System.out.println("combinedICG() ts = "+ lastCommonTimestamp);
@@ -679,7 +679,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     }
     
     synchronized void ptt(byte[] message) {
-        timestampSyncPtt();
+        comTsSyncFunc(comTsFuncIdxPtt);
         int ptt = decodeGyro(message[1], message[2], message[3]);
         int timestamp = lastCommonTimestamp;
         for (DliverListener l : listeners) {
@@ -687,66 +687,41 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         }
     }
 
-    int lastCommonTimestamp = 0;
     synchronized void commonTimestamp(byte[] message) {
-        timestampSyncCommonTimestamp();
-        lastCommonTimestamp = ((message[1] - 32) * 64 + (message[2] - 32));
+        int ts = ((message[1] - 32) * 64 + (message[2] - 32));
+        comTsSyncRefresh(ts);
         //System.out.println("commonTimestamp() ts = "+ lastCommonTimestamp);
     }
     
-    int combinedPpgMsgCount = 0;
-    int ppgRawMsgCount = 0;
-    int iCGAbsMsgCount = 0;
-    int combinedICGMsgCount = 0;
-    int iCGAbsAcMsgCount = 0;
-    int pttMsgCount = 0;
-    int commonTimestampSyncCount = 0;
-    
-    synchronized void timestampSyncCombinedPpg() {
-        combinedPpgMsgCount++;
-        if ( combinedPpgMsgCount > commonTimestampSyncCount) stepCommonTimestamp();
+    final int comTsFuncIdxCombinedPpg = 0;
+    final int comTsFuncIdxPpgRaw      = 1;
+    final int comTsFuncIdxIcgAbs      = 2;
+    final int comTsFuncIdxCombinedIcg = 3;
+    final int comTsFuncIdxIcgAbsAc    = 4;
+    final int comTsFuncIdxPtt         = 5;
+    final int comTsFuncIdxSize        = 6;
+    int[] comTsFuncCountArr = new int[comTsFuncIdxSize];
+    int   comTsSyncCount = 0;
+    int   lastCommonTimestamp = 0;
+
+    synchronized void comTsSyncFunc(int comTsFuncIdx) {
+        comTsFuncCountArr[comTsFuncIdx]++;
+        if ( comTsFuncCountArr[comTsFuncIdx] > comTsSyncCount) {
+            lastCommonTimestamp++;   // Local increment timestamp (refreshed every 250 step)
+            comTsSyncCount++;        // Indicate that ts is incremented
+        }
     }
 
-    synchronized void timestampSyncPpgRaw() {
-        ppgRawMsgCount++;
-        if ( ppgRawMsgCount > commonTimestampSyncCount) stepCommonTimestamp();
+    synchronized void comTsSyncRefresh(int newTs) {
+        System.out.print("SyncRefresh(" + newTs + ") count=" + comTsSyncCount + " [");
+        lastCommonTimestamp = newTs;
+        for (int i = 0; i < comTsFuncCountArr.length; i++) {
+            System.out.print(" " + comTsFuncCountArr[i]);
+            comTsFuncCountArr[i] = 0;  // Indicate none received
+        }
+        System.out.println("]");
+        comTsSyncCount = 1; // Indicate that ts#1 is received
     }
-
-    synchronized void timestampSyncICGAbs() {
-        iCGAbsMsgCount++;
-        if ( iCGAbsMsgCount > commonTimestampSyncCount) stepCommonTimestamp();
-    }
-
-    synchronized void timestampSyncICGAbsAc() {
-        iCGAbsAcMsgCount++;
-        if ( iCGAbsAcMsgCount > commonTimestampSyncCount) stepCommonTimestamp();
-    }
-
-    synchronized void timestampSyncCombinedICG() {
-        combinedICGMsgCount++;
-        if ( combinedICGMsgCount > commonTimestampSyncCount) stepCommonTimestamp();
-    }
-
-    synchronized void timestampSyncPtt() {
-        pttMsgCount++;
-        if ( pttMsgCount > commonTimestampSyncCount) stepCommonTimestamp();
-    }
-
-    synchronized void stepCommonTimestamp() {
-        lastCommonTimestamp++;   // Increment timestamp (refreshed every 250 step)
-        commonTimestampSyncCount++;  // Indicate that ts is updated
-    }
-
-    synchronized void timestampSyncCommonTimestamp() {
-        commonTimestampSyncCount = 1; // Indicate that ts#1 is received
-        combinedPpgMsgCount = 0;             // Indicate none received
-        ppgRawMsgCount = 0;             // Indicate none received
-        iCGAbsMsgCount = 0;          // Indicate none received
-        iCGAbsAcMsgCount = 0;          // Indicate none received
-        combinedICGMsgCount = 0;     // Indicate none received
-        pttMsgCount = 0;             // Indicate none received
-    }
-
     
     synchronized void combinedIMU(byte[] message) {
         int ax = decodeAcc(message[1], message[2]);
