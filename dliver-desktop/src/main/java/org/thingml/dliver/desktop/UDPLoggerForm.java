@@ -21,6 +21,9 @@ public class UDPLoggerForm extends javax.swing.JFrame {
     public UDPLoggerForm(Dliver b) {
         this.belt = b;
         initComponents();
+        if (belt.getLastSerialNumber() != "") {
+            jTextFieldProbeName.setText(belt.getLastSerialNumber());
+        }
     }
 
     /**

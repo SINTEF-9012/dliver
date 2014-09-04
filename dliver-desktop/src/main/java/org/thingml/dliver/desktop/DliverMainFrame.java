@@ -45,11 +45,12 @@ import org.thingml.rtsync.core.TimeSynchronizerPrintLogger;
  *
  * @author ffl
  */
-public class DliverMainFrame extends javax.swing.JFrame implements DliverListener, BitRateListemer {
+public class DliverMainFrame extends javax.swing.JFrame implements DliverListener, BitRateListemer, TsErrorListener {
 
     Dliver belt = null;
     //protected GraphBuffer becg = new GraphBuffer(1000);
     BitRateCounter counter = null;
+    TsErrorStat tsError = null;
     
   
     /** Creates new form MainFrame */
@@ -170,6 +171,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jLabel16 = new javax.swing.JLabel();
         jTextFieldOver = new javax.swing.JTextField();
         jButton11 = new javax.swing.JButton();
+        jTextFieldTsErr = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         jTextFieldActTime = new javax.swing.JTextField();
         jLabelActivity = new javax.swing.JLabel();
@@ -493,6 +495,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         );
 
         jPanel5.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel5.setPreferredSize(new java.awt.Dimension(869, 47));
 
         jButton1.setText("Connect...");
         jButton1.setMaximumSize(null);
@@ -529,6 +532,8 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             }
         });
 
+        jTextFieldTsErr.setText("0");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -546,16 +551,18 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldOver, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(26, 26, 26)
                 .addComponent(jLabel20)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldBitRate, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTextFieldTsErr, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -573,7 +580,8 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                     .addComponent(jTextFieldSFW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16)
                     .addComponent(jTextFieldOver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton11))
+                    .addComponent(jButton11)
+                    .addComponent(jTextFieldTsErr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -753,7 +761,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 945, Short.MAX_VALUE)
+            .addGap(0, 946, Short.MAX_VALUE)
             .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel11Layout.createSequentialGroup()
                     .addContainerGap()
@@ -765,7 +773,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                             .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 926, Short.MAX_VALUE)
                         .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -859,6 +867,9 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             counter = new BitRateCounter(belt);
             counter.addDliverListener(this);
             counter.start();
+            tsError = new TsErrorStat(belt);
+            tsError.addDliverListener(this);
+            tsError.start();
             belt.requestCUTime(1); // default to 4ms timestamps
             belt.getModelInfo();
             belt.getSerialNumber();
@@ -960,6 +971,9 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             counter = new BitRateCounter(belt);
             counter.addDliverListener(this);
             counter.start();
+            tsError = new TsErrorStat(belt);
+            tsError.addDliverListener(this);
+            tsError.start();
             //belt.requestCUTime(0);
             //belt.getModelInfo();
             //belt.getSerialNumber();
@@ -1213,6 +1227,7 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JTextField jTextFieldSID;
     private javax.swing.JTextField jTextFieldStepCount;
     private javax.swing.JTextField jTextFieldTTime;
+    private javax.swing.JTextField jTextFieldTsErr;
     // End of variables declaration//GEN-END:variables
 
         @Override
@@ -1470,6 +1485,37 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         jTextFieldBitRate.setText("" + value);
     }
 
+    @Override
+    public void errorAverage(long average, int errorLevel) {
+        //jTextFieldBitRate1.setText("" + average);
+        if(errorLevel >= 0) jTextFieldTsErr.setText(""+average);
+        switch(errorLevel) {
+            case -1:
+                jTextFieldTsErr.setText("Off");
+                jTextFieldTsErr.setBackground(new java.awt.Color(153, 153, 153)); // Gray
+                break;
+            case 0:
+                jTextFieldTsErr.setBackground(new java.awt.Color(0, 204, 0)); // Green
+                break;
+            case 1:
+                jTextFieldTsErr.setBackground(new java.awt.Color(204, 204, 0)); // Yellow
+                break;
+            case 2:
+                jTextFieldTsErr.setBackground(new java.awt.Color(204, 102, 0)); // Orange
+                break;
+            case 3:
+                jTextFieldTsErr.setBackground(new java.awt.Color(204, 0, 204)); // Violet
+                break;
+            case 4:
+            case 5:
+                jTextFieldTsErr.setBackground(new java.awt.Color(204, 0, 0)); // Red
+                break;
+            default:
+                jTextFieldTsErr.setText("?"+errorLevel);
+                jTextFieldTsErr.setBackground(new java.awt.Color(204, 0, 0)); // Red
+                break;
+        }
+    }
 
 static {
         
@@ -1584,4 +1630,5 @@ static {
     public void playStop() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
 }

@@ -81,7 +81,8 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     protected final int icgIdxTime   = 0;
     protected final int icgIdxIcgAbsAc  = 1;
     protected final int icgIdxIcgAbsDer = 2;
-    protected final int icgIdxSize   = 3;
+    protected final int icgIdxIcgAbsDerPc = 3;
+    protected final int icgIdxSize   = 4;
     protected String[] icgHeader = new String[icgIdxSize];
     protected String[] icgData = new String[icgIdxSize];
     
@@ -89,7 +90,8 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     protected final int ppgIdxTime  = 0;
     protected final int ppgIdxPpgRaw    = 1;
     protected final int ppgIdxPpgDer    = 2;
-    protected final int ppgIdxSize   = 3;
+    protected final int ppgIdxPpgDerPc  = 3;
+    protected final int ppgIdxSize   = 4;
     protected String[] ppgHeader = new String[ppgIdxSize];
     protected String[] ppgData = new String[ppgIdxSize];
     
@@ -97,24 +99,26 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     protected final int comIdxTime           =  0;
     protected final int comIdxPpgRaw         =  1;
     protected final int comIdxPpgDer         =  2;
-    protected final int comIdxIcgAbsAc       =  3;
-    protected final int comIdxIcgAbsDer      =  4;
-    protected final int comIdxEcg            =  5;
-    protected final int comIdxHr             =  6;
-    protected final int comIdxHri            =  7;
-    protected final int comIdxPtt            =  8;
-    protected final int comIdxAct            =  9;
-    protected final int comIdxPos            = 10;
-    protected final int comIdxEvEcgR         = 11;
-    protected final int comIdxEvIcgC         = 12;
-    protected final int comIdxEvIcgB         = 13;
-    protected final int comIdxEvPpgMin       = 14;
-    protected final int comIdxEvPpgFoot      = 15;
-    protected final int comIdxEvPpgTangent   = 16;
-    protected final int comIdxEvDppgMax      = 17;
-    protected final int comIdxEvPttActive    = 18;
-    protected final int comIdxEvPttResultErr = 19;
-    protected final int comIdxSize           = 20;
+    protected final int comIdxPpgDerPc       =  3;
+    protected final int comIdxIcgAbsAc       =  4;
+    protected final int comIdxIcgAbsDer      =  5;
+    protected final int comIdxIcgAbsDerPc    =  6;
+    protected final int comIdxEcg            =  7;
+    protected final int comIdxHr             =  8;
+    protected final int comIdxHri            =  9;
+    protected final int comIdxPtt            = 10;
+    protected final int comIdxAct            = 11;
+    protected final int comIdxPos            = 12;
+    protected final int comIdxEvEcgR         = 13;
+    protected final int comIdxEvIcgC         = 14;
+    protected final int comIdxEvIcgB         = 15;
+    protected final int comIdxEvPpgMin       = 16;
+    protected final int comIdxEvPpgFoot      = 17;
+    protected final int comIdxEvPpgTangent   = 18;
+    protected final int comIdxEvDppgMax      = 19;
+    protected final int comIdxEvPttActive    = 20;
+    protected final int comIdxEvPttResultErr = 21;
+    protected final int comIdxSize           = 22;
     protected String[] comHeader = new String[comIdxSize];
     protected String[] comData = new String[comIdxSize];
     
@@ -155,8 +159,8 @@ public class DliverFileLogger implements DliverListener, ActionListener {
        try {
            logRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_log.txt")));
            logPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_log_playback.txt")));
-           logRt.println("# This file contains one line per message received from the d-LIVER.");
-           logPb.println("# This file contains one line per message received from the d-LIVER.");
+           logRt.println("# This file contains one line per message received from the d-LIVER unit " + belt.getLastSerialNumber() + " running FW rev. " + belt.getLastFWRevision());
+           logPb.println("# This file contains one line per message received from the d-LIVER unit " + belt.getLastSerialNumber() + " running FW rev. " + belt.getLastFWRevision());
            log = logRt;
 
            ecgRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ecg.txt")));
@@ -190,18 +194,22 @@ public class DliverFileLogger implements DliverListener, ActionListener {
            
            icgHeader[icgIdxIcgAbsAc] = "IMP (Ac)";
            icgHeader[icgIdxIcgAbsDer] = "ICG (IMP Der)";
+           icgHeader[icgIdxIcgAbsDerPc] = "ICG (IMP Der)Pc";
            icgLog = new FileLogCombiner(belt, icgHeader, icgData);
            icgLog.createLogInFolder("d-LIVER_icg", sFolder);
            
            ppgHeader[ppgIdxPpgRaw] = "PPG (Raw)";
            ppgHeader[ppgIdxPpgDer] = "PPG (Der)";
+           ppgHeader[ppgIdxPpgDerPc] = "PPG (Der)Pc";
            ppgLog = new FileLogCombiner(belt, ppgHeader, ppgData);
            ppgLog.createLogInFolder("d-LIVER_ppg", sFolder);
            
            comHeader[comIdxPpgRaw] = "PPG (Raw)";
            comHeader[comIdxPpgDer] = "PPG (Der)";
+           comHeader[comIdxPpgDerPc] = "PPG (Der)Pc";
            comHeader[comIdxIcgAbsAc] = "IMP (Ac)";
            comHeader[comIdxIcgAbsDer] = "ICG (IMP Der)";
+           comHeader[comIdxIcgAbsDerPc] = "ICG (IMP Der)Pc";
            comHeader[comIdxEcg] = "ECG";
            comHeader[comIdxHr] = "HR";
            comHeader[comIdxHri] = "HRi";
@@ -693,13 +701,20 @@ public class DliverFileLogger implements DliverListener, ActionListener {
         if (logging) log.println("[ICG Abs]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + icgAbs);
     }
 
+    private SimpleFirDifferentiator icgAbsDerPc = new SimpleFirDifferentiator();
     @Override
     public void iCGAbsAc(int icgAbsAc, int timestamp) {
+
+        icgAbsDerPc.addSample(icgAbsAc);
         if (logging) {
             icgLog.newLogEntryTs(timestamp);
-            comLog.newLogEntryTs(timestamp);
             icgLog.data[icgIdxIcgAbsAc] = "" + icgAbsAc;
+            icgLog.data[icgIdxIcgAbsDerPc] = "" + icgAbsDerPc.getDeriv();
+
+            comLog.newLogEntryTs(timestamp);
             comLog.data[comIdxIcgAbsAc] = "" + icgAbsAc;
+            comLog.data[comIdxIcgAbsDerPc] = "" + icgAbsDerPc.getDeriv();
+            
         }
     }
 
@@ -707,19 +722,26 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     public void iCGDer(int icgAbsDer, int timestamp) {
         if (logging) {
             icgLog.newLogEntryTs(timestamp);
-            comLog.newLogEntryTs(timestamp);
             icgLog.data[icgIdxIcgAbsDer] = "" + icgAbsDer;
+
+            comLog.newLogEntryTs(timestamp);
             comLog.data[comIdxIcgAbsDer] = "" + icgAbsDer;
         }
     }
 
+    private SimpleFirDifferentiator ppgDerPc = new SimpleFirDifferentiator();
     @Override
     public void ppgRaw(int ppgRaw, int timestamp) {
+        ppgDerPc.addSample(ppgRaw);
+        
         if (logging) {
             ppgLog.newLogEntryTs(timestamp);
-            comLog.newLogEntryTs(timestamp);
             ppgLog.data[ppgIdxPpgRaw] = "" + ppgRaw;
+            ppgLog.data[ppgIdxPpgDerPc] = "" + ppgDerPc.getDeriv() * 16;
+
+            comLog.newLogEntryTs(timestamp);
             comLog.data[comIdxPpgRaw] = "" + ppgRaw;
+            comLog.data[comIdxPpgDerPc] = "" + ppgDerPc.getDeriv() * 16;
         }
     }
 
@@ -727,8 +749,9 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     public void ppgDer(int ppgDer, int timestamp) {
         if (logging) {
             ppgLog.newLogEntryTs(timestamp);
-            comLog.newLogEntryTs(timestamp);
             ppgLog.data[ppgIdxPpgDer] = "" + ppgDer;
+
+            comLog.newLogEntryTs(timestamp);
             comLog.data[comIdxPpgDer] = "" + ppgDer;
         }
     }

@@ -97,6 +97,14 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         return receivedBytes;
     }
     
+    public String getLastSerialNumber() {
+        return lastSID;
+    }
+    
+    public String getLastFWRevision() {
+        return lastFW;
+    }
+    
     public boolean isConnected() {
         if (rxthread != null) return rxthread.isAlive();
         else return false;
@@ -346,17 +354,21 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         return result;
     }
 
+    String lastSID = "";
+    String lastFW = "";
+    
     synchronized void cUSerialNumber(byte[] message) {
         long value = decodeLong(message[1], message[2], message[3]);
+        lastSID = ""+value;
         for (DliverListener l : listeners) {
             l.cUSerialNumber(value);
         }
     }
 
     synchronized void cUFWRevision(byte[] message) {
-        long value = decodeLong(message[1], message[2], message[3]);
+        lastFW = ""+(message[1]-32) +"."+ (message[2]-32) +"."+ (message[3]-32);
         for (DliverListener l : listeners) {
-            l.cUFWRevision(""+(message[1]-32) +"."+ (message[2]-32) +"."+ (message[3]-32));
+            l.cUFWRevision(lastFW);
         }
     }
 
