@@ -1043,29 +1043,9 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }//GEN-LAST:event_jCheckBoxDebugConsActionPerformed
 
-    private String addKeyInfo(String module[], String keyInfo) {
-        ReadVersionInfo version = new ReadVersionInfo();
-        Properties prop;
-
-        for(int i = 0; i < module.length; i++) {
-            prop = version.GetVersionProperties(module[i]);
-            keyInfo += "Module:" + prop.getProperty("Proj") + " Compiled:" + prop.getProperty("Compiled") + " Computer:" + prop.getProperty("Computer") + "\n";
-        }
-        
-        return(keyInfo);
-    }
-    
-    private String addDetailedInfo(String module[], String detailedInfo) {
-        ReadVersionInfo version = new ReadVersionInfo();
-
-        for(int i = 0; i < module.length; i++)
-            detailedInfo += version.GetVersionString(module[i]) + "\n";
-        
-        return(detailedInfo);
-    }
-    
     private void jButtonVersionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVersionActionPerformed
         DebugConsole verCons = new DebugConsole(5000,1000);
+        ReadVersionInfo version = new ReadVersionInfo();
         String keyInfo = "\nKey information\n";
         String detailedInfo = "Detailed information\n";
         String[] modules = {"dliver-desktop", 
@@ -1074,8 +1054,8 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                             "rtsync-core",
                             "rtsync-ui"};
 
-        keyInfo = addKeyInfo(modules, keyInfo);
-        detailedInfo = addDetailedInfo(modules, detailedInfo);
+        keyInfo = keyInfo + version.getKeyInfoString(modules);
+        detailedInfo = detailedInfo + version.getDetailedInfoString(modules);
         
         verCons.setSize(700, 200);
         verCons.setTitle("Version information for jar-files");
@@ -1492,7 +1472,7 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         switch(errorLevel) {
             case -1:
                 jTextFieldTsErr.setText("Off");
-                jTextFieldTsErr.setBackground(new java.awt.Color(153, 153, 153)); // Gray
+                jTextFieldTsErr.setBackground(new java.awt.Color(204, 0, 0)); // Red
                 break;
             case 0:
                 jTextFieldTsErr.setBackground(new java.awt.Color(0, 204, 0)); // Green

@@ -58,6 +58,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         rxthread = new Thread(this);
         rxthread.start();
         activeTrace = false;
+        rtsync.setTsErrorMax(1000);  // Quick fix to handle NTP clock adjustments
         rtsync.start_timesync(); // Can be omitted if no timesync by default
     }
 
@@ -67,6 +68,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         rxthread = new Thread(this);
         rxthread.start();
         this.activeTrace = openTrace;
+        rtsync.setTsErrorMax(1000);  // Quick fix to handle NTP clock adjustments
         rtsync.start_timesync(); // Can be omitted if no timesync by default
     }
 
@@ -83,6 +85,8 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
             return 6;
         } else if (code == 121 || code == 122) {
             return 7;
+        } else if (code == 115) {
+            return 9;
         } else if (code == 120) {
             return 18;
         } else if (code == 127) {
@@ -253,6 +257,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
                                         //gyroYaw(message);
                                         break;
                                     case 115:
+                                        combinedEcgIcgPpg(message);
                                         // Not supported by d-LIVER    
                                         //accLateral(message);
                                         break;
@@ -521,6 +526,21 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         }
     }
 
+    
+    synchronized void combinedEcgIcgPpg(byte[] message) {
+        comTsSyncFunc(comTsFuncIdxCombinedEcgIcgPpg);
+        int value = ((message[1] - 32) * 64 + (message[2] - 32));
+        int icgAbsAc = decodeGyro(message[3], message[4], message[5]);
+        int ppgRaw = decodeGyro(message[6], message[7], message[8]);
+        int timestamp = lastCommonTimestamp;
+        //System.out.println("ppg() ts = "+ lastCommonTimestamp);
+        for (DliverListener l : listeners) {
+            l.eCGRaw(value, timestamp);
+            l.iCGAbsAc(icgAbsAc, timestamp);
+            l.ppgRaw(ppgRaw, timestamp);
+        }
+    }
+
     synchronized void btPutChar(byte[] message) {
         int value = ((message[1] - 32) * 64 + (message[2] - 32));
         for (DliverListener l : listeners) {
@@ -711,7 +731,9 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     final int comTsFuncIdxCombinedIcg = 3;
     final int comTsFuncIdxIcgAbsAc    = 4;
     final int comTsFuncIdxPtt         = 5;
-    final int comTsFuncIdxSize        = 6;
+    final int comTsFuncIdxCombinedEcgIcgPpg = 6;
+    
+    final int comTsFuncIdxSize        = 7;
     int[] comTsFuncCountArr = new int[comTsFuncIdxSize];
     int   comTsSyncCount = 0;
     int   lastCommonTimestamp = 0;
@@ -725,14 +747,15 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     }
 
     synchronized void comTsSyncRefresh(int newTs) {
-        System.out.print("SyncRefresh(" + newTs + ") count=" + comTsSyncCount + " [");
         lastCommonTimestamp = newTs;
-        for (int i = 0; i < comTsFuncCountArr.length; i++) {
-            System.out.print(" " + comTsFuncCountArr[i]);
-            comTsFuncCountArr[i] = 0;  // Indicate none received
-        }
-        System.out.println("]");
         comTsSyncCount = 1; // Indicate that ts#1 is received
+
+        //System.out.print("SyncRefresh(" + newTs + ") count=" + comTsSyncCount + " [");
+        //for (int i = 0; i < comTsFuncCountArr.length; i++) {
+        //    System.out.print(" " + comTsFuncCountArr[i]);
+        //    comTsFuncCountArr[i] = 0;  // Indicate none received
+        //}
+        //System.out.println("]");
     }
     
     synchronized void combinedIMU(byte[] message) {

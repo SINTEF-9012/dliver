@@ -155,12 +155,20 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     }
     
     public void startLoggingInFolder(File sFolder) {
+        ReadVersionInfo version = new ReadVersionInfo();
+        String[] modules = {"dliver-desktop", 
+                            "dliver-driver", 
+                            "rtcharts-swing",
+                            "rtsync-core",
+                            "rtsync-ui"};
         imu_data_reset();
-       try {
+        try {
            logRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_log.txt")));
            logPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_log_playback.txt")));
            logRt.println("# This file contains one line per message received from the d-LIVER unit " + belt.getLastSerialNumber() + " running FW rev. " + belt.getLastFWRevision());
+           logRt.println("PC app compile information START\n" + version.getDetailedInfoString(modules) + "\nPC app compile information END");
            logPb.println("# This file contains one line per message received from the d-LIVER unit " + belt.getLastSerialNumber() + " running FW rev. " + belt.getLastFWRevision());
+           logPb.println("PC app compile information START\n" + version.getDetailedInfoString(modules) + "\nPC app compile information END");
            log = logRt;
 
            ecgRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_ecg.txt")));

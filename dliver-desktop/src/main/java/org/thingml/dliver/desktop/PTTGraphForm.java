@@ -77,9 +77,9 @@ public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
         jPanel6 = new LineGraphPanel(bptt, "PTT (Raw value)", 75, 250, 50, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
         jPanel1 = new LineGraphPanel(becg, "ECG (Raw ADC value)", 0, 4096, 512, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
         jPanel2 = new LineGraphPanel(bppg, "PPG", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
-        jPanel3 = new LineGraphPanel(bppgDer, "PPG (Der)", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
+        jPanel3 = new LineGraphPanel(bppgDer, "PPG (Der PC)", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
         jPanel4 = new LineGraphPanel(bicgAbsAc, "IMP_ABS (AC value with gain)", -32767, 32767, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
-        jPanel5 = new LineGraphPanel(bicgAbsDer, "ICG (IMP Derived after gain)", -750, 750, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
+        jPanel5 = new LineGraphPanel(bicgAbsDer, "ICG (IMP Derived after gain PC)", -750, 750, 8192, new java.awt.Color(255, 153, 0), 1.0, "0", "Avg: ", "Last: ");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("d-LIVER Blood Pressure Graphs");
@@ -259,26 +259,34 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
         //bicgAbs.insertData(icgAbs);
     }
 
+    private SimpleFirDifferentiator icgAbsDerPc = new SimpleFirDifferentiator();
     @Override
     public void iCGAbsAc(int icgAbsAc, int timestamp) {
+        icgAbsDerPc.addSample(icgAbsAc);
+
         bicgAbsAc.insertData(icgAbsAc);
+        bicgAbsDer.insertData(icgAbsDerPc.getDeriv());
     }
 
     @Override
     public void iCGDer(int icgAbsDer, int timestamp) {
-        bicgAbsDer.insertData(icgAbsDer);
+        //bicgAbsDer.insertData(icgAbsDer);
     }
 
+    private SimpleFirDifferentiator ppgDerPc = new SimpleFirDifferentiator();
     @Override
     public void ppgRaw(int ppgRaw, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ppgDerPc.addSample(ppgRaw);
+
         bppg.insertData(ppgRaw);
+        bppgDer.insertData(ppgDerPc.getDeriv() * 16);
     }
 
     @Override
     public void ppgDer(int ppgDer, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        bppgDer.insertData(ppgDer);
+        //bppgDer.insertData(ppgDer);
     }
 
     @Override

@@ -72,4 +72,28 @@ public class ReadVersionInfo {
         return ret;
     }
     
+    public String getKeyInfoString(String modules[]) {
+
+        Properties prop;
+        String ret = "";
+
+        for(int i = 0; i < modules.length; i++) {
+            prop = GetVersionProperties(modules[i]);
+            ret += "Module:" + prop.getProperty("Proj") + " Compiled:" + prop.getProperty("Compiled") + " Computer:" + prop.getProperty("Computer") + "\n";
+        }
+        
+        return(ret);
+    }
+    
+    public String getDetailedInfoString(String modules[]) {
+
+        String ret = "";
+
+        for(int i = 0; i < modules.length; i++)
+            ret += GetVersionString(modules[i]) + "\n";
+        
+        return(ret);
+    }
+    
+    
 }

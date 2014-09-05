@@ -69,11 +69,11 @@ public class DliverUDPLogger  implements DliverListener {
            vOscIcgAc = new UDPOscComm();
            vOscIcgAc.open_communication("127.0.0.1", this.probeName + ".IcgAc");
            vOscIcgDer = new UDPOscComm();
-           vOscIcgDer.open_communication("127.0.0.1", this.probeName + ".IcgDer");
+           vOscIcgDer.open_communication("127.0.0.1", this.probeName + ".IcgDer(PC)");
            vOscPpgRaw = new UDPOscComm();
            vOscPpgRaw.open_communication("127.0.0.1", this.probeName + ".PpgRaw");
            vOscPpgDer = new UDPOscComm();
-           vOscPpgDer.open_communication("127.0.0.1", this.probeName + ".PpgDer");
+           vOscPpgDer.open_communication("127.0.0.1", this.probeName + ".PpgDer(PC)");
            vOscAccX = new UDPOscComm();
            vOscAccX.open_communication("127.0.0.1", this.probeName + ".AccX");
            vOscAccY = new UDPOscComm();
@@ -307,40 +307,46 @@ public class DliverUDPLogger  implements DliverListener {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    private SimpleFirDifferentiator icgAbsDerPc = new SimpleFirDifferentiator();
     @Override
     public void iCGAbsAc(int icgAbsAc, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        icgAbsDerPc.addSample(icgAbsAc);
         if (logging) {
             long ts = belt.getEpochTimestamp(timestamp);
             vOscIcgAc.send_ts_data(ts, icgAbsAc);
+            vOscIcgDer.send_ts_data(ts, icgAbsDerPc.getDeriv());
         }
     }
 
     @Override
     public void iCGDer(int icgAbsDer, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        if (logging) {
-            long ts = belt.getEpochTimestamp(timestamp);
-            vOscIcgDer.send_ts_data(ts, icgAbsDer);
-        }
+        //if (logging) {
+        //    long ts = belt.getEpochTimestamp(timestamp);
+        //    vOscIcgDer.send_ts_data(ts, icgAbsDer);
+        //}
     }
 
+    private SimpleFirDifferentiator ppgDerPc = new SimpleFirDifferentiator();
     @Override
     public void ppgRaw(int ppgRaw, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ppgDerPc.addSample(ppgRaw);
         if (logging) {
             long ts = belt.getEpochTimestamp(timestamp);
             vOscPpgRaw.send_ts_data(ts, ppgRaw);
+            vOscPpgDer.send_ts_data(ts, ppgDerPc.getDeriv() * 16);
         }
     }
 
     @Override
     public void ppgDer(int ppgDer, int timestamp) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        if (logging) {
-            long ts = belt.getEpochTimestamp(timestamp);
-            vOscPpgDer.send_ts_data(ts, ppgDer);
-        }
+        //if (logging) {
+        //    long ts = belt.getEpochTimestamp(timestamp);
+        //    vOscPpgDer.send_ts_data(ts, ppgDer);
+        //}
     }
 
     @Override
