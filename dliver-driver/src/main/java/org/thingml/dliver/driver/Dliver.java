@@ -747,14 +747,15 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     }
 
     synchronized void comTsSyncRefresh(int newTs) {
+        //System.out.println("comTsSyncRefresh()");
         lastCommonTimestamp = newTs;
         comTsSyncCount = 1; // Indicate that ts#1 is received
 
         //System.out.print("SyncRefresh(" + newTs + ") count=" + comTsSyncCount + " [");
-        //for (int i = 0; i < comTsFuncCountArr.length; i++) {
+        for (int i = 0; i < comTsFuncCountArr.length; i++) {
         //    System.out.print(" " + comTsFuncCountArr[i]);
-        //    comTsFuncCountArr[i] = 0;  // Indicate none received
-        //}
+            comTsFuncCountArr[i] = 0;  // Indicate none received
+        }
         //System.out.println("]");
     }
     
