@@ -56,7 +56,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     protected PrintWriter phi;
     protected PrintWriter hrv;
     protected PrintWriter ptt;
-    protected PrintWriter meas;
+    //protected PrintWriter meas;
     protected PrintWriter event;
 
     protected PrintWriter logRt;
@@ -65,7 +65,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     protected PrintWriter phiRt;
     protected PrintWriter hrvRt;
     protected PrintWriter pttRt;
-    protected PrintWriter measRt;
+    //protected PrintWriter measRt;
     protected PrintWriter eventRt;
 
     protected PrintWriter logPb;
@@ -74,9 +74,20 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     protected PrintWriter phiPb;
     protected PrintWriter hrvPb;
     protected PrintWriter pttPb;
-    protected PrintWriter measPb;
+    //protected PrintWriter measPb;
     protected PrintWriter eventPb;
 
+    protected FileLogCombiner measLog;
+    protected final int measIdxTime   = 0;
+    protected final int measIdxPos  = 1;
+    protected final int measIdxAct = 2;
+    protected final int measIdxStepCount = 3;
+    protected final int measIdxHr = 4;
+    protected final int measIdxSkinTemp = 5;
+    protected final int measIdxSize   = 6;
+    protected String[] measHeader = new String[measIdxSize];
+    protected String[] measData = new String[measIdxSize];
+    
     protected FileLogCombiner icgLog;
     protected final int icgIdxTime   = 0;
     protected final int icgIdxIcgAbsAc  = 1;
@@ -242,11 +253,18 @@ public class DliverFileLogger implements DliverListener, ActionListener {
            pttPb.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "PTT");
            ptt = pttRt;
            
-           measRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_meas.txt")));
-           measPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_meas_playback.txt")));
-           measRt.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "Posture" + SEPARATOR + "Activity" + SEPARATOR + "StepCount" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
-           measPb.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "Posture" + SEPARATOR + "Activity" + SEPARATOR + "StepCount" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
-           meas = measRt;
+           measHeader[measIdxPos] = "Posture";
+           measHeader[measIdxAct] = "Activity";
+           measHeader[measIdxStepCount] = "StepCount";
+           measHeader[measIdxHr] = "Heart Rate (BPM)";
+           measHeader[measIdxSkinTemp] = "Temperature (°C)";
+           measLog = new FileLogCombiner(belt, measHeader, measData);
+           measLog.createLogInFolder("d-LIVER_meas", sFolder);
+           //measRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_meas.txt")));
+           //measPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_meas_playback.txt")));
+           //measRt.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "Posture" + SEPARATOR + "Activity" + SEPARATOR + "StepCount" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
+           //measPb.println("RXTime" + SEPARATOR + "Corrtime_HMS" + SEPARATOR + "Corrtime_Epoch" + SEPARATOR + "RawTime" + SEPARATOR + "Posture" + SEPARATOR + "Activity" + SEPARATOR + "StepCount" + SEPARATOR + "Heart Rate (BPM)" + SEPARATOR + "Temperature (°C)");
+           //meas = measRt;
            
            eventRt = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_event.txt")));
            eventPb = new PrintWriter(new FileWriter(new File(sFolder, "d-LIVER_event_playback.txt")));
@@ -257,7 +275,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
        } catch (IOException ex) {
            Logger.getLogger(DliverFileLogger.class.getName()).log(Level.SEVERE, null, ex);
        }
-       temperature = 0;
+       //temperature = 0;
        heartrate = 0;
        //request_start = true;
     }
@@ -287,6 +305,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
        System.out.println("DliverFileLogger.class - Starting logger");
        logging = true;
        icgLog.startLogging();
+       measLog.startLogging();
        ppgLog.startLogging();
        comLog.startLogging();
     }
@@ -303,7 +322,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             phiRt.close();
             hrvRt.close();
             pttRt.close();
-            measRt.close();
+            //measRt.close();
             eventRt.close();
             logPb.close();
             ecgPb.close();
@@ -311,7 +330,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             phiPb.close();
             hrvPb.close();
             pttPb.close();
-            measPb.close();
+            //measPb.close();
             eventPb.close();
             logRt = null;
             ecgRt = null;
@@ -319,7 +338,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             phiRt = null;
             hrvRt = null;
             pttRt = null;
-            measRt = null;
+            //measRt = null;
             eventRt = null;
             logPb = null;
             ecgPb = null;
@@ -327,7 +346,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             phiPb = null;
             hrvPb = null;
             pttPb = null;
-            measPb = null;
+            //measPb = null;
             eventPb = null;
             log = null;
             ecg = null;
@@ -335,13 +354,15 @@ public class DliverFileLogger implements DliverListener, ActionListener {
             phi = null;
             hrv = null;
             ptt = null;
-            meas = null;
+            //meas = null;
             event = null;
             
             icgLog.stopLogging();
+            measLog.stopLogging();
             ppgLog.stopLogging();
             comLog.stopLogging();
             icgLog = null;
+            measLog = null;
             ppgLog = null;
             comLog = null;
         }
@@ -393,29 +414,39 @@ public class DliverFileLogger implements DliverListener, ActionListener {
         if (logging) log.println("[Indication]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + currentTimeStampHms() + SEPARATOR + value);
     }
 
-    private int posture = 0;
-    private int activity = 0;
+    //private int posture = 0;
+    //private int activity = 0;
     @Override
     public void measurementPatient(int value, int timestamp) {
         if (logging) {
             if (value >= 1 && value <= 6) { // This is orientation
-                posture = value;
+                //posture = value;
                 comLog.newLogEntryTs(timestamp);
                 comLog.data[comIdxPos] = "" + value;
+                
+                measLog.newLogEntryTs(timestamp);
+                measLog.data[measIdxPos] = "" + value;
             }
             else if (value >=10 && value <=13) { // This is activity
-                activity = value;  
+                //activity = value;  
                 comLog.newLogEntryTs(timestamp);
                 comLog.data[comIdxAct] = "" + value;
+                
+                measLog.newLogEntryTs(timestamp);
+                measLog.data[measIdxAct] = "" + value;
             }
         }
         
     }
 
-    private long stepCount = 0;
+    //private long stepCount = 0;
     @Override
     public void stepCount(long step, int timestamp) {
-        stepCount = stepCount;
+        //stepCount = stepCount;
+        if (logging) {
+            measLog.newLogEntryTs(timestamp);
+            measLog.data[measIdxStepCount] = "" + step;
+        }
     }
 
     
@@ -454,9 +485,14 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     @Override
     public void heartRate(int valueHR, int timestamp) {
         heartrate = valueHR;
+        double hr = heartrate/10.0;
+        
         if (logging) {
             comLog.newLogEntryTs(timestamp);
             comLog.data[comIdxHr] = "" + valueHR;
+
+            measLog.newLogEntryTs(timestamp);
+            measLog.data[measIdxHr] = "" + numFormat.format(hr);
         }
         
     }
@@ -665,19 +701,23 @@ public class DliverFileLogger implements DliverListener, ActionListener {
     }
 
     private DecimalFormat numFormat = new DecimalFormat("##.0");
-    private int temperature = 0;
+    //private int temperature = 0;
     @Override
     public void skinTemperature(int value, int timestamp) {
-        temperature = value;
-        double hr = heartrate/10.0;
+        int temperature = value;
         double temp = temperature/10.0;
+        double hr = heartrate/10.0;
         //System.out.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + numFormat.format(hr) + SEPARATOR + numFormat.format(temp));
         if (logging) {
             phi.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + numFormat.format(hr) + SEPARATOR + numFormat.format(temp));
-            meas.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + posture + SEPARATOR + activity + SEPARATOR + stepCount + SEPARATOR + numFormat.format(hr) + SEPARATOR + numFormat.format(temp));
+            //meas.println(currentTimeStampEpoch() + SEPARATOR + calculatedAndRawTimeStamp(timestamp) + SEPARATOR + posture + SEPARATOR + activity + SEPARATOR + stepCount + SEPARATOR + numFormat.format(hr) + SEPARATOR + numFormat.format(temp));
+            measLog.newLogEntryTs(timestamp);
+            measLog.data[measIdxSkinTemp] = "" + numFormat.format(temp);
         }
     }
 
+    
+    
     @Override
     public void connectionLost() {
        
@@ -827,6 +867,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
         if (logging) logRt.println("[PlayStart]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + timestampFormat.format(epoch) + SEPARATOR + epoch);
         if (logging) logPb.println("[PlayStart]" + SEPARATOR + currentTimeStampEpoch() + SEPARATOR + timestampFormat.format(epoch) + SEPARATOR + epoch);
         icgLog.playStart(); // Flush old data before changing log fileset
+        measLog.playStart(); // Flush old data before changing log fileset
         ppgLog.playStart(); // Flush old data before changing log fileset
         comLog.playStart(); // Flush old data before changing log fileset
 
@@ -836,7 +877,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
         phi = phiPb;
         hrv = hrvPb;
         ptt = pttPb;
-        meas = measPb;
+        //meas = measPb;
         event = eventPb;
     }
 
@@ -845,6 +886,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
         if (logging) logRt.println("[PlayStop]" + SEPARATOR + currentTimeStampEpoch());
         if (logging) logPb.println("[PlayStop]" + SEPARATOR + currentTimeStampEpoch());
         icgLog.playStop(); // Flush old data before changing log fileset
+        measLog.playStop(); // Flush old data before changing log fileset
         ppgLog.playStop(); // Flush old data before changing log fileset
         comLog.playStop(); // Flush old data before changing log fileset
 
@@ -854,7 +896,7 @@ public class DliverFileLogger implements DliverListener, ActionListener {
         phi = phiRt;
         hrv = hrvRt;
         ptt = pttRt;
-        meas = measRt;
+        //meas = measRt;
         event = eventRt;
     }
 
