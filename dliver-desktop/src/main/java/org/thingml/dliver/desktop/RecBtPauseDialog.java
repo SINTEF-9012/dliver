@@ -6,6 +6,9 @@
 
 package org.thingml.dliver.desktop;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
 import org.thingml.dliver.driver.Dliver;
 import org.thingml.dliver.driver.DliverListener;
 import org.thingml.dliver.driver.DliverMode;
@@ -14,9 +17,10 @@ import org.thingml.dliver.driver.DliverMode;
  *
  * @author steffend
  */
-public class RecBtPauseDialog extends javax.swing.JDialog implements DliverListener{
+public class RecBtPauseDialog extends javax.swing.JDialog implements DliverListener, ActionListener {
 
     protected Dliver belt;
+    protected Timer startTimer = null;
     /**
      * Creates new form EraseRecConfirmDialog
      */
@@ -44,8 +48,14 @@ public class RecBtPauseDialog extends javax.swing.JDialog implements DliverListe
         jButtonStopRec = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jComboBoxMode = new javax.swing.JComboBox(org.thingml.dliver.driver.DliverMode.values());
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jLabel1.setText("Device is now recording with BT paused");
 
@@ -64,6 +74,8 @@ public class RecBtPauseDialog extends javax.swing.JDialog implements DliverListe
             }
         });
 
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -71,17 +83,20 @@ public class RecBtPauseDialog extends javax.swing.JDialog implements DliverListe
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(159, 159, 159)
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBoxMode, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(221, 221, 221)
                         .addComponent(jButtonStopRec))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(182, 182, 182)
-                        .addComponent(jLabel1)))
-                .addContainerGap(255, Short.MAX_VALUE))
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(159, 159, 159)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(jComboBoxMode, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(221, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -92,7 +107,9 @@ public class RecBtPauseDialog extends javax.swing.JDialog implements DliverListe
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxMode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 156, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
                 .addComponent(jButtonStopRec)
                 .addGap(197, 197, 197))
         );
@@ -112,12 +129,18 @@ public class RecBtPauseDialog extends javax.swing.JDialog implements DliverListe
         }
     }//GEN-LAST:event_jComboBoxModeActionPerformed
 
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        if (belt != null) belt.removeDliverListener(this);
+        //System.out.println("closed");
+    }//GEN-LAST:event_formWindowClosed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonStopRec;
     private javax.swing.JComboBox jComboBoxMode;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -135,25 +158,75 @@ public class RecBtPauseDialog extends javax.swing.JDialog implements DliverListe
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    private enum TimerMode {TIMER_NONE, TIMER_REC_START, TIMER_BT_PAUSE_END, TIMER_REC_END};
+    private TimerMode timerFunc = TimerMode.TIMER_NONE;
+    
     @Override
     public void indicationDev(int value) {
             
         if (value >=57 && value <=63) { // BT status
             switch (value) {
                 case 59 :  // BT pause end
-                    belt.sendBtGetStrForce("\nbuffer 1\n");   // Stop record
-                    belt.setDataModeForce(((DliverMode)jComboBoxMode.getSelectedItem()));
-                    belt.removeDliverListener(this);
-                    dispose(); // Close this form
+                    timerFunc = TimerMode.TIMER_BT_PAUSE_END;
+                    startTimer = new Timer(2000, this);
+                    startTimer.setRepeats(false);
+                    startTimer.start();
+                    System.out.println("indicationDev - BT pause end - Starting timer");
+                    jLabel4.setText("End recording - doing cleanup");
+                    
                     break;
                 case 60 :  // Record started
-                    belt.sendBtGetStrForce("\nbtpause 1\n");  // Activate BT pause
+                    timerFunc = TimerMode.TIMER_REC_START;
+                    startTimer = new Timer(2000, this);
+                    startTimer.setRepeats(false);
+                    startTimer.start();
+                    System.out.println("indicationDev - Record started - Starting timer");
+                    
                     setButtonColor(jButtonStopRec, new java.awt.Color(255, 51, 51));
                     break;
-                default:break;     
+                case 61 : // Record ended
+                    timerFunc = TimerMode.TIMER_REC_END;
+                    startTimer = new Timer(2000, this);
+                    startTimer.setRepeats(false);
+                    startTimer.start();
+                    System.out.println("indicationDev - Record ended - Starting timer");
+
+                    setButtonColor(jButtonStopRec, null);
+                    break;
+                default:
+                    break;     
             }
         }
     }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.print("RecBtPauseDialog - got event ");
+        switch (timerFunc) {
+            case TIMER_REC_START:
+                System.out.print("- activate btpause ");
+                belt.sendBtGetStrForce("\nbtpause 1\n");  // Activate BT pause
+                System.out.println("- done");
+                break;
+            case TIMER_BT_PAUSE_END:
+                System.out.print("- stop record ");
+                belt.sendBtGetStrForce("\nbuffer 1\n");   // Stop record
+                belt.setDataModeForce(((DliverMode)jComboBoxMode.getSelectedItem()));
+                System.out.println("- done");
+                break;
+            case TIMER_REC_END:
+                System.out.print("- close dialog ");
+                dispose();
+                System.out.println("- done");
+                break;
+            default:
+                System.out.println("- nothing done ");
+                break;
+        }
+        timerFunc = TimerMode.TIMER_NONE;
+    }
+    
+
     private void setButtonColor( javax.swing.JButton button, java.awt.Color color) {
         if ( color == null ) {
             button.setBackground(new java.awt.Color(240, 240, 240));

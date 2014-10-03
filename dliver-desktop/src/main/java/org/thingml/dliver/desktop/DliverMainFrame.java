@@ -1317,12 +1317,6 @@ private void jComboBoxBTIntActionPerformed(java.awt.event.ActionEvent evt) {//GE
             else if (value >=57 && value <=63) { // BT status
                 switch (value) {
                     case 57 : 
-                        {
-                            EraseRecDoneDialog dialog = new EraseRecDoneDialog(this, true);
-                            dialog.setLocationRelativeTo(this);
-                            dialog.pack();
-                            dialog.setVisible(true);
-                        }
                         break;
                     case 58 : 
                         setButtonColor(jButtonBtPaused, new java.awt.Color(255, 51, 51));

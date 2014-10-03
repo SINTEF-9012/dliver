@@ -390,9 +390,8 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
 
     int lastMode;
     synchronized void indicationDev(byte[] message) {
-        ArrayList<DliverListener> copyOfListeners = new ArrayList<DliverListener>(listeners); 
         int value = ((message[1] - 32) * 64 + (message[2] - 32));
-        for (DliverListener l : copyOfListeners) {
+        for (DliverListener l : listeners) {
             l.indicationDev(value);
         }
         if ( value == 58) btPause();
