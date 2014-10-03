@@ -62,7 +62,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         setLocationRelativeTo(null);
         
         prop = version.GetVersionProperties("dliver-desktop");
-        jButtonVersion.setText("Ver: " + prop.getProperty("Compiled"));
+        jButtonVersionNew.setText("Ver: " + prop.getProperty("Compiled"));
         
     }
     
@@ -138,11 +138,12 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jComboBoxAlertLevel = new javax.swing.JComboBox();
         jButtonAlert = new javax.swing.JButton();
         jButtonConsole = new javax.swing.JButton();
-        jButtonVersion = new javax.swing.JButton();
         jButtonRec = new javax.swing.JButton();
         jButtonPlay = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         jTextFieldStepCount = new javax.swing.JTextField();
+        jButtonRecBtPause = new javax.swing.JButton();
+        jButtonEraseRec = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jProgressBarBatt = new javax.swing.JProgressBar();
@@ -159,6 +160,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jCheckBoxBTtrace = new javax.swing.JCheckBox();
         jCheckBoxDebugCons = new javax.swing.JCheckBox();
         jButtonBtPaused = new javax.swing.JButton();
+        jButtonVersionNew = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel20 = new javax.swing.JLabel();
@@ -224,7 +226,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBarPTT, javax.swing.GroupLayout.DEFAULT_SIZE, 732, Short.MAX_VALUE)
+                .addComponent(jProgressBarPTT, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldPTTTime, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -274,17 +276,6 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             }
         });
 
-        jButtonVersion.setForeground(new java.awt.Color(102, 102, 102));
-        jButtonVersion.setText("Version ???");
-        jButtonVersion.setMaximumSize(new java.awt.Dimension(85, 33));
-        jButtonVersion.setMinimumSize(new java.awt.Dimension(85, 33));
-        jButtonVersion.setPreferredSize(new java.awt.Dimension(85, 33));
-        jButtonVersion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonVersionActionPerformed(evt);
-            }
-        });
-
         jButtonRec.setText("Record");
         jButtonRec.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -301,22 +292,38 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
 
         jLabel10.setText("Step count");
 
+        jButtonRecBtPause.setText("Rec+BTpause");
+        jButtonRecBtPause.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRecBtPauseActionPerformed(evt);
+            }
+        });
+
+        jButtonEraseRec.setText("Erase rec");
+        jButtonEraseRec.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEraseRecActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButtonVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
+                .addComponent(jButtonEraseRec, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(jButtonRecBtPause, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
                 .addComponent(jButtonRec)
-                .addGap(33, 33, 33)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonPlay)
-                .addGap(54, 54, 54)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldStepCount, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                 .addComponent(jButtonAlert)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jComboBoxAlertLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -337,11 +344,12 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jComboBoxAlertLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jButtonAlert)
-                                .addComponent(jButtonVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jButtonRec)
                                 .addComponent(jButtonPlay)
                                 .addComponent(jLabel10)
-                                .addComponent(jTextFieldStepCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jTextFieldStepCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonRecBtPause)
+                                .addComponent(jButtonEraseRec))
                             .addComponent(jButton7))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -388,7 +396,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                 .addContainerGap()
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jProgressBarBatt, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
+                .addComponent(jProgressBarBatt, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jRadioButtonOn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -426,7 +434,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             }
         });
 
-        jLabel4.setText("Bluetooth update interval :");
+        jLabel4.setText("BT update interval :");
 
         jComboBoxBTInt.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "3", "5", "10", "15", "30", "60", "120" }));
         jComboBoxBTInt.addActionListener(new java.awt.event.ActionListener() {
@@ -458,6 +466,14 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             }
         });
 
+        jButtonVersionNew.setForeground(new java.awt.Color(102, 102, 102));
+        jButtonVersionNew.setText("Version ???");
+        jButtonVersionNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVersionNewActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -466,13 +482,15 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBoxMode, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(95, 95, 95)
+                .addComponent(jComboBoxMode, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jCheckBoxDebugCons)
                 .addGap(18, 18, 18)
                 .addComponent(jCheckBoxBTtrace)
-                .addGap(47, 47, 47)
+                .addGap(18, 18, 18)
                 .addComponent(jButtonBtPaused)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonVersionNew, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -490,7 +508,8 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                     .addComponent(jLabel4)
                     .addComponent(jCheckBoxBTtrace)
                     .addComponent(jCheckBoxDebugCons)
-                    .addComponent(jButtonBtPaused))
+                    .addComponent(jButtonBtPaused)
+                    .addComponent(jButtonVersionNew))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -569,19 +588,20 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14)
-                    .addComponent(jTextFieldSID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldBitRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20)
-                    .addComponent(jLabel15)
-                    .addComponent(jTextFieldSFW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16)
-                    .addComponent(jTextFieldOver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton11)
-                    .addComponent(jTextFieldTsErr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel14)
+                        .addComponent(jTextFieldSID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextFieldBitRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel20)
+                        .addComponent(jLabel15)
+                        .addComponent(jTextFieldSFW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel16)
+                        .addComponent(jTextFieldOver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton11)
+                        .addComponent(jTextFieldTsErr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -680,7 +700,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBarHR, javax.swing.GroupLayout.DEFAULT_SIZE, 732, Short.MAX_VALUE)
+                .addComponent(jProgressBarHR, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldHRTime, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -719,7 +739,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBarT, javax.swing.GroupLayout.DEFAULT_SIZE, 732, Short.MAX_VALUE)
+                .addComponent(jProgressBarT, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldTTime, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -783,7 +803,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 697, Short.MAX_VALUE)
+            .addGap(0, 705, Short.MAX_VALUE)
             .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel11Layout.createSequentialGroup()
                     .addContainerGap()
@@ -846,14 +866,14 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 947, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 948, Short.MAX_VALUE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -905,36 +925,44 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
 
 private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
     IMUGraphForm imuform = new IMUGraphForm(belt);
+    imuform.setLocationRelativeTo(this);
     imuform.setSize(600, 800);
     imuform.setVisible(true);
 }//GEN-LAST:event_jButton2ActionPerformed
 
 private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
     ECGGraphForm ecgform = new ECGGraphForm(belt);
+    ecgform.setLocationRelativeTo(this);
     ecgform.setSize(600, 300);
     ecgform.setVisible(true);
 }//GEN-LAST:event_jButton5ActionPerformed
 
 private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
     SkinTempGraphFrame tempform = new SkinTempGraphFrame(belt);
+    tempform.setLocationRelativeTo(this);
     tempform.setSize(600, 200);
     tempform.setVisible(true);
 }//GEN-LAST:event_jButton6ActionPerformed
 
 private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
     BitRateGraphFrame tempform = new BitRateGraphFrame(counter);
+    tempform.setLocationRelativeTo(this);
     tempform.setSize(600, 200);
     tempform.setVisible(true);
 }//GEN-LAST:event_jButton8ActionPerformed
 
 private void jComboBoxModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxModeActionPerformed
     if (belt != null) {
-        belt.setDataMode(((DliverMode)jComboBoxMode.getSelectedItem()));
-        if (((DliverMode)jComboBoxMode.getSelectedItem()) == DliverMode.Test) {
-            activeTestMode = true;
-        }
-        else {
-            activeTestMode = false;
+        int lastMode = belt.getLastMode();
+        int selectedMode = ((DliverMode)jComboBoxMode.getSelectedItem()).getCode();
+        if (lastMode != selectedMode) {
+            belt.setDataMode(((DliverMode)jComboBoxMode.getSelectedItem()));
+            if (((DliverMode)jComboBoxMode.getSelectedItem()) == DliverMode.Test) {
+                activeTestMode = true;
+            }
+            else {
+                activeTestMode = false;
+            }
         }
     }
 }//GEN-LAST:event_jComboBoxModeActionPerformed
@@ -947,14 +975,6 @@ private void jComboBoxBTIntActionPerformed(java.awt.event.ActionEvent evt) {//GE
     if (belt != null) belt.setBTUpdateInterval(
         Integer.parseInt(jComboBoxBTInt.getSelectedItem().toString()));
 }//GEN-LAST:event_jComboBoxBTIntActionPerformed
-
-private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-    if (belt != null) {
-        FileLoggerForm form = new FileLoggerForm(belt);
-        form.pack();
-        form.setVisible(true);
-    }
-}//GEN-LAST:event_jButton7ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
@@ -989,37 +1009,20 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         if (belt != null) {
             TimeSyncFrame f = new TimeSyncFrame(belt.getTimeSynchronizer());
+            f.setLocationRelativeTo(this);
             f.pack();
             f.setVisible(true);
         }
     }//GEN-LAST:event_jButton11ActionPerformed
 
-    private void jButtonAlertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlertActionPerformed
-        int level = Integer.parseInt(jComboBoxAlertLevel.getSelectedItem().toString());
-        if (belt != null) {
-            belt.sendAlert(level);
-        }
-    }//GEN-LAST:event_jButtonAlertActionPerformed
-
-    private void jComboBoxAlertLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxAlertLevelActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxAlertLevelActionPerformed
-
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         if (belt != null) {
             PTTGraphForm pttform = new PTTGraphForm(belt);
+            pttform.setLocationRelativeTo(this);
             pttform.setSize(600, 750);
             pttform.setVisible(true);
         }
     }//GEN-LAST:event_jButton12ActionPerformed
-
-    private void jButtonConsoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsoleActionPerformed
-        if (belt != null) {
-            ConsoleFrame form = new ConsoleFrame(belt, 50000, 1000);
-            form.setSize(600, 750);
-            form.setVisible(true);
-        }
-    }//GEN-LAST:event_jButtonConsoleActionPerformed
 
     private void jCheckBoxBTtraceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxBTtraceActionPerformed
         if (jCheckBoxBTtrace.isSelected())
@@ -1031,6 +1034,7 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         {
             if (belt != null) {
                         VerifyTestMode = new DebugConsole(50000,1000);
+                        VerifyTestMode.setLocationRelativeTo(this);
                         VerifyTestMode.setSize(600, 750);
                         VerifyTestMode.setTitle("Verify Test Mode");
                         VerifyTestMode.setVisible(true);
@@ -1043,7 +1047,11 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }//GEN-LAST:event_jCheckBoxDebugConsActionPerformed
 
-    private void jButtonVersionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVersionActionPerformed
+    private void jButtonBtPausedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBtPausedActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonBtPausedActionPerformed
+
+    private void jButtonVersionNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVersionNewActionPerformed
         DebugConsole verCons = new DebugConsole(5000,1000);
         ReadVersionInfo version = new ReadVersionInfo();
         String keyInfo = "\nKey information\n";
@@ -1058,21 +1066,21 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         detailedInfo = detailedInfo + version.getDetailedInfoString(modules);
         
         verCons.setSize(700, 200);
+        verCons.setLocationRelativeTo(this);
         verCons.setTitle("Version information for jar-files");
         verCons.setVisible(true);
         verCons.putString(detailedInfo);
         verCons.putString(keyInfo);
-     }//GEN-LAST:event_jButtonVersionActionPerformed
+    }//GEN-LAST:event_jButtonVersionNewActionPerformed
 
-    private void jButtonRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRecActionPerformed
+    private void jButtonRecBtPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRecBtPauseActionPerformed
         if ( belt != null ) {
-            if ( recStateActive == true) {
-                belt.sendBtGetStr("\nbuffer 1\n");  // Stop record
-            } else {
-                belt.sendBtGetStr("\nbuffer 2\n");  // Start record append
-            }
+            RecBtPauseDialog dialog = new RecBtPauseDialog(this, true, belt);
+            dialog.setLocationRelativeTo(this);
+            dialog.pack();
+            dialog.setVisible(true);
         }
-    }//GEN-LAST:event_jButtonRecActionPerformed
+    }//GEN-LAST:event_jButtonRecBtPauseActionPerformed
 
     private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlayActionPerformed
         if ( belt != null ) {
@@ -1084,9 +1092,54 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }//GEN-LAST:event_jButtonPlayActionPerformed
 
-    private void jButtonBtPausedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBtPausedActionPerformed
+    private void jButtonRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRecActionPerformed
+        if ( belt != null ) {
+            if ( recStateActive == true) {
+                belt.sendBtGetStr("\nbuffer 1\n");  // Stop record
+            } else {
+                belt.sendBtGetStr("\nbuffer 2\n");  // Start record append
+            }
+        }
+    }//GEN-LAST:event_jButtonRecActionPerformed
+
+    private void jButtonConsoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsoleActionPerformed
+        if (belt != null) {
+            ConsoleFrame form = new ConsoleFrame(belt, 50000, 1000);
+            form.setSize(600, 750);
+            form.setLocationRelativeTo(this);
+            form.setVisible(true);
+        }
+    }//GEN-LAST:event_jButtonConsoleActionPerformed
+
+    private void jButtonAlertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlertActionPerformed
+        int level = Integer.parseInt(jComboBoxAlertLevel.getSelectedItem().toString());
+        if (belt != null) {
+            belt.sendAlert(level);
+        }
+    }//GEN-LAST:event_jButtonAlertActionPerformed
+
+    private void jComboBoxAlertLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxAlertLevelActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonBtPausedActionPerformed
+    }//GEN-LAST:event_jComboBoxAlertLevelActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        if (belt != null) {
+            FileLoggerForm form = new FileLoggerForm(belt);
+            form.setLocationRelativeTo(this);
+            form.pack();
+            form.setVisible(true);
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButtonEraseRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEraseRecActionPerformed
+        if (belt != null) {
+            EraseRecConfirmDialog dialog = new EraseRecConfirmDialog(this, true, belt);
+            dialog.setLocationRelativeTo(this);
+            dialog.pack();
+            dialog.setVisible(true);
+        }
+ 
+    }//GEN-LAST:event_jButtonEraseRecActionPerformed
 
     int ECG_test_value = 0;
     int ECG_mismatch_cnt = 0;
@@ -1150,9 +1203,11 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JButton jButtonAlert;
     private javax.swing.JButton jButtonBtPaused;
     private javax.swing.JButton jButtonConsole;
+    private javax.swing.JButton jButtonEraseRec;
     private javax.swing.JButton jButtonPlay;
     private javax.swing.JButton jButtonRec;
-    private javax.swing.JButton jButtonVersion;
+    private javax.swing.JButton jButtonRecBtPause;
+    private javax.swing.JButton jButtonVersionNew;
     private javax.swing.JCheckBox jCheckBoxBTtrace;
     private javax.swing.JCheckBox jCheckBoxDebugCons;
     private javax.swing.JComboBox jComboBoxAlertLevel;
@@ -1256,10 +1311,19 @@ private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             }
             else if (value >=28 && value <=34) {
                 //jComboBoxMode.setSelectedItem(ChestBeltMode.fromCode(value));
+                jComboBoxMode.setSelectedItem(DliverMode.fromCode(value));
                 System.out.println("Indication : " + value);
             }
-            else if (value >=58 && value <=63) { // BT status
+            else if (value >=57 && value <=63) { // BT status
                 switch (value) {
+                    case 57 : 
+                        {
+                            EraseRecDoneDialog dialog = new EraseRecDoneDialog(this, true);
+                            dialog.setLocationRelativeTo(this);
+                            dialog.pack();
+                            dialog.setVisible(true);
+                        }
+                        break;
                     case 58 : 
                         setButtonColor(jButtonBtPaused, new java.awt.Color(255, 51, 51));
                         break;

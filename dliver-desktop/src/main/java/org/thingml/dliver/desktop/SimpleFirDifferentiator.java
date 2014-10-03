@@ -16,6 +16,7 @@ public class SimpleFirDifferentiator {
     private final int firZArrSize = 5;
     private int[] firZArr = new int[firZArrSize];
     private int   firZIdx = 0;
+    private boolean firZArrFull = false;
 
     private int deriv = 0;
 
@@ -24,6 +25,7 @@ public class SimpleFirDifferentiator {
         // Calculate next current position
         firZIdx--;
         if (firZIdx < 0) firZIdx = firZArrSize - 1;
+        if (firZIdx == 0) firZArrFull = true;
         
         // Put the ac sample into the FIR array
         firZArr[firZIdx] = newVal;
@@ -36,7 +38,10 @@ public class SimpleFirDifferentiator {
     }
     
     public int getDeriv() {
-        return deriv;
+        int ret = deriv;
+        
+        if (firZArrFull == false) ret = 0; // Surpress startup spikes
+        return ret;
     }
     
 }

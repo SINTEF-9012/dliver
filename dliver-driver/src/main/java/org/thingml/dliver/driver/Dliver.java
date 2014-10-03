@@ -109,6 +109,10 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         return lastFW;
     }
     
+    public int getLastMode() {
+        return lastMode;
+    }
+
     public boolean isConnected() {
         if (rxthread != null) return rxthread.isAlive();
         else return false;
@@ -384,9 +388,11 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         }
     }
 
+    int lastMode;
     synchronized void indicationDev(byte[] message) {
+        ArrayList<DliverListener> copyOfListeners = new ArrayList<DliverListener>(listeners); 
         int value = ((message[1] - 32) * 64 + (message[2] - 32));
-        for (DliverListener l : listeners) {
+        for (DliverListener l : copyOfListeners) {
             l.indicationDev(value);
         }
         if ( value == 58) btPause();
@@ -394,8 +400,11 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         if ( value == 62) playStart();
         if ( value == 63) playStop();
 
+        if (value >=28 && value <=34) {
+            lastMode = value;
+        }
     }
-
+    
     synchronized void measurementPatient(byte[] message) {
         int value = ((message[1] - 32) * 64 + (message[2] - 32));
         int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
@@ -889,6 +898,10 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         sendData(109, 32 + mode.getCode());
     }
 
+    public void setDataModeForce(DliverMode mode) {
+        sendDataForce(109, 32 + mode.getCode());
+    }
+
     public void setHRUpdateInterval(int value) {
         sendData(103, 32 + value);
     }
@@ -914,6 +927,11 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         sendData(99, 32 + (ch & 0x3f));
     }
     
+    public void sendBtGetCharForce(int ch) {
+        sendDataForce(100, 32 + ((ch >> 6) & 0x3f));
+        sendDataForce(99, 32 + (ch & 0x3f));
+    }
+    
     public void sendBtConStart() {
         sendBtGetChar(0x0f00);
     }
@@ -923,6 +941,14 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
             int ch = str.charAt(i);
             if (ch == 0x0a) ch = 0x0d;
             sendBtGetChar(ch);
+        }
+     }
+    
+    public void sendBtGetStrForce(String str) {
+        for ( int i = 0; i < str.length(); i++) {
+            int ch = str.charAt(i);
+            if (ch == 0x0a) ch = 0x0d;
+            sendBtGetCharForce(ch);
         }
      }
     
@@ -952,6 +978,19 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
             }
         } else {
             System.out.println("btPaused - sendData(" + code + "," + value + ") discarded");
+        }
+    }
+
+    protected void sendDataForce(int code, int value) {
+        try {
+            // send the code
+            out.write((int) code);
+            // send the value
+            out.write((int) value);
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 
