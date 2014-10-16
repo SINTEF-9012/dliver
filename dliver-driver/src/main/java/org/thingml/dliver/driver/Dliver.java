@@ -963,7 +963,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
 //        sendData(119, 32 + param);
 //    }
     
-    protected void sendData(int code, int value) {
+    synchronized protected void sendData(int code, int value) {
         if ( btPaused == false) {
             try {
                 // send the code
@@ -980,7 +980,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         }
     }
 
-    protected void sendDataForce(int code, int value) {
+    synchronized protected void sendDataForce(int code, int value) {
         try {
             // send the code
             out.write((int) code);
@@ -993,7 +993,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         }
     }
 
-    protected void sendDataArray(byte[] dataArray, int len) {
+    synchronized protected void sendDataArray(byte[] dataArray, int len) {
         if ( btPaused == false) {
             try {
                 out.write(dataArray, 0, len);

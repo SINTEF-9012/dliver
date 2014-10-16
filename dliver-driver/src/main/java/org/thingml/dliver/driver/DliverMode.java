@@ -19,12 +19,12 @@ import java.util.Hashtable;
 
 public enum DliverMode {
 	//EMGRawCh2 (28),
-	//RawGyroMode (29),
 	Extracted(30),
-	//FullECG_EMGRawCh1(31),
-	Raw(32),
-	Test(33),
-	//RawAccelerometer(34)
+	Extracted_PTT(31),
+	Raw_unfilt(32),
+	//Raw_filt(34),
+	//Raw_unfilt_filt (29),
+	Test(33)
         ;
 	
 	private final int code;
@@ -32,12 +32,12 @@ public enum DliverMode {
         public static DliverMode fromCode(int code) {
             switch(code) {
                 //case 28: return DliverMode.EMGRawCh2;
-                //case 29: return DliverMode.RawGyroMode;
+                //case 29: return DliverMode.Raw_unfilt_filt;
                 case 30: return DliverMode.Extracted;
-                //case 31: return DliverMode.FullECG_EMGRawCh1;
-                case 32: return DliverMode.Raw;
+                case 31: return DliverMode.Extracted_PTT;
+                case 32: return DliverMode.Raw_unfilt;
                 case 33: return DliverMode.Test;
-                //case 34: return DliverMode.RawAccelerometer;
+                //case 34: return DliverMode.Raw_filt;
                 default: return null;
             }
         }
