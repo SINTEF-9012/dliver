@@ -925,29 +925,29 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
 
 private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
     IMUGraphForm imuform = new IMUGraphForm(belt);
-    imuform.setLocationRelativeTo(this);
     imuform.setSize(600, 800);
+    imuform.setLocationRelativeTo(this);
     imuform.setVisible(true);
 }//GEN-LAST:event_jButton2ActionPerformed
 
 private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
     ECGGraphForm ecgform = new ECGGraphForm(belt);
-    ecgform.setLocationRelativeTo(this);
     ecgform.setSize(600, 300);
+    ecgform.setLocationRelativeTo(this);
     ecgform.setVisible(true);
 }//GEN-LAST:event_jButton5ActionPerformed
 
 private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
     SkinTempGraphFrame tempform = new SkinTempGraphFrame(belt);
-    tempform.setLocationRelativeTo(this);
     tempform.setSize(600, 200);
+    tempform.setLocationRelativeTo(this);
     tempform.setVisible(true);
 }//GEN-LAST:event_jButton6ActionPerformed
 
 private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
     BitRateGraphFrame tempform = new BitRateGraphFrame(counter);
-    tempform.setLocationRelativeTo(this);
     tempform.setSize(600, 200);
+    tempform.setLocationRelativeTo(this);
     tempform.setVisible(true);
 }//GEN-LAST:event_jButton8ActionPerformed
 
@@ -1018,8 +1018,8 @@ private void jComboBoxBTIntActionPerformed(java.awt.event.ActionEvent evt) {//GE
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         if (belt != null) {
             PTTGraphForm pttform = new PTTGraphForm(belt);
-            pttform.setLocationRelativeTo(this);
             pttform.setSize(600, 750);
+            pttform.setLocationRelativeTo(this);
             pttform.setVisible(true);
         }
     }//GEN-LAST:event_jButton12ActionPerformed

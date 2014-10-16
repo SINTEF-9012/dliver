@@ -214,6 +214,7 @@ private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event
 
     private void jButtonOscLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOscLogActionPerformed
         UDPLoggerForm form = new UDPLoggerForm(belt);
+        form.setLocationRelativeTo(this);
         form.pack();
         form.setVisible(true);
     }//GEN-LAST:event_jButtonOscLogActionPerformed
