@@ -63,7 +63,8 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         
         prop = version.GetVersionProperties("dliver-desktop");
         jButtonVersionNew.setText("Ver: " + prop.getProperty("Compiled"));
-        
+        setAdvancedMode(false);
+        jButtonAdvanced.setSelected(false);
     }
     
     public void disableConnection() {
@@ -77,9 +78,29 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
     private boolean activeTestMode = false;
     DebugConsole VerifyTestMode = null;
     
+    private boolean advancedMode = false;
+    
+    private void setAdvancedMode(boolean advanced) {
+        advancedMode = advanced;
+        jButton11.setVisible(advanced);
+        jButton8.setVisible(advanced);
+        jTextFieldTsErr.setVisible(advanced);
+        jCheckBoxDebugCons.setVisible(advanced);
+        jCheckBoxBTtrace.setVisible(advanced);
+        jLabel4.setVisible(advanced);
+        jComboBoxBTInt.setVisible(advanced);
+        jButton2.setVisible(advanced);
+        jComboBoxAlertLevel.setVisible(advanced);
+        jButtonAlert.setVisible(advanced);
+        jTextFieldStepCount.setVisible(advanced);
+        jLabel10.setVisible(advanced);
+        jButtonRec.setVisible(advanced);
+        
+    }
+    
     public Dliver connectDliver() {
     	
-        ConnectDialog d = new ConnectDialog(this, true);
+        ConnectDialog d = new ConnectDialog(this, true, advancedMode);
         d.setVisible(true);
         
         if (d.getSerialPort() != null) {
@@ -161,6 +182,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jCheckBoxDebugCons = new javax.swing.JCheckBox();
         jButtonBtPaused = new javax.swing.JButton();
         jButtonVersionNew = new javax.swing.JButton();
+        jButtonAdvanced = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel20 = new javax.swing.JLabel();
@@ -226,7 +248,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBarPTT, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
+                .addComponent(jProgressBarPTT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldPTTTime, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -396,7 +418,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                 .addContainerGap()
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jProgressBarBatt, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
+                .addComponent(jProgressBarBatt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jRadioButtonOn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -434,7 +456,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             }
         });
 
-        jLabel4.setText("BT update interval :");
+        jLabel4.setText("BT upd int :");
 
         jComboBoxBTInt.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "3", "5", "10", "15", "30", "60", "120" }));
         jComboBoxBTInt.addActionListener(new java.awt.event.ActionListener() {
@@ -474,6 +496,14 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             }
         });
 
+        jButtonAdvanced.setForeground(new java.awt.Color(102, 102, 102));
+        jButtonAdvanced.setText("+");
+        jButtonAdvanced.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAdvancedActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -495,6 +525,8 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBoxBTInt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonAdvanced)
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -509,7 +541,8 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
                     .addComponent(jCheckBoxBTtrace)
                     .addComponent(jCheckBoxDebugCons)
                     .addComponent(jButtonBtPaused)
-                    .addComponent(jButtonVersionNew))
+                    .addComponent(jButtonVersionNew)
+                    .addComponent(jButtonAdvanced))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -622,19 +655,17 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(39, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap(25, Short.MAX_VALUE)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jLabelActivity, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextFieldActTime, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)))
-                .addGap(1, 1, 1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2))
+                    .addComponent(jLabelActivity, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -700,7 +731,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBarHR, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
+                .addComponent(jProgressBarHR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldHRTime, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -739,7 +770,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBarT, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
+                .addComponent(jProgressBarT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldTTime, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -765,7 +796,7 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(75, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabelPosture1)
                 .addGap(32, 32, 32))
         );
@@ -1141,6 +1172,13 @@ private void jComboBoxBTIntActionPerformed(java.awt.event.ActionEvent evt) {//GE
  
     }//GEN-LAST:event_jButtonEraseRecActionPerformed
 
+    private void jButtonAdvancedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdvancedActionPerformed
+        boolean sel = jButtonAdvanced.isSelected();
+        sel = !sel;
+        jButtonAdvanced.setSelected(sel);
+        setAdvancedMode(sel);
+    }//GEN-LAST:event_jButtonAdvancedActionPerformed
+
     int ECG_test_value = 0;
     int ECG_mismatch_cnt = 0;
     int ECG_wrap_cnt = 0;
@@ -1200,6 +1238,7 @@ private void jComboBoxBTIntActionPerformed(java.awt.event.ActionEvent evt) {//GE
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButtonAdvanced;
     private javax.swing.JButton jButtonAlert;
     private javax.swing.JButton jButtonBtPaused;
     private javax.swing.JButton jButtonConsole;

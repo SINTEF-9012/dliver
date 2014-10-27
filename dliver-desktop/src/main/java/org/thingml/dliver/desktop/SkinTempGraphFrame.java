@@ -45,7 +45,7 @@ public class SkinTempGraphFrame extends javax.swing.JFrame implements DliverList
         if (b != null) b.addDliverListener(this);
         initComponents();
         ((GraphPanel)jPanel1).start();
-        ((GraphPanel)jPanel1).setAutoScale(true);
+        //((GraphPanel)jPanel1).setAutoScale(true);
         
     }
 

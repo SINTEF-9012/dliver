@@ -33,6 +33,13 @@ public class ConnectDialog extends javax.swing.JDialog {
         jTextFieldPort.setText(prefs.get("DliverSerial", "COM1"));
     }
 
+    public ConnectDialog(java.awt.Frame parent, boolean modal, boolean showBrowse) {
+        super(parent, modal);
+        initComponents();
+        setLocationRelativeTo(parent);
+        jTextFieldPort.setText(prefs.get("DliverSerial", "COM1"));
+        jButton1.setVisible(showBrowse);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

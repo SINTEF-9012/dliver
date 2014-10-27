@@ -51,9 +51,9 @@ public class ECGGraphForm extends javax.swing.JFrame implements DliverListener {
         ((GraphPanel)jPanel1).start();
         ((GraphPanel)jPanel2).start();
         ((GraphPanel)jPanel3).start();
-        ((GraphPanel)jPanel1).setAutoScale(true);
-        ((GraphPanel)jPanel2).setAutoScale(true);
-        ((GraphPanel)jPanel3).setAutoScale(true);
+        //((GraphPanel)jPanel1).setAutoScale(true);
+        //((GraphPanel)jPanel2).setAutoScale(true);
+        //((GraphPanel)jPanel3).setAutoScale(true);
     }
 
     /** This method is called from within the constructor to
