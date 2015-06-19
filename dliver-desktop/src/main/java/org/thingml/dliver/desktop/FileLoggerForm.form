@@ -41,6 +41,8 @@
                       <Component id="jCheckBoxEpoch" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jButtonOscLog" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jButtonMathLabLog" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="jButtonStop" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -65,7 +67,10 @@
                   <Component id="jButtonRecord" alignment="1" max="32767" attributes="0"/>
                   <Component id="jButtonStop" alignment="1" max="32767" attributes="0"/>
                   <Component id="jCheckBoxEpoch" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButtonOscLog" alignment="1" max="32767" attributes="0"/>
+                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                      <Component id="jButtonOscLog" alignment="3" max="32767" attributes="0"/>
+                      <Component id="jButtonMathLabLog" alignment="3" max="32767" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -126,6 +131,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonOscLogActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonMathLabLog">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="MathLabLog"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonMathLabLogActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

@@ -68,6 +68,7 @@ public class FileLoggerForm extends javax.swing.JFrame {
         jButtonStop = new javax.swing.JButton();
         jCheckBoxEpoch = new javax.swing.JCheckBox();
         jButtonOscLog = new javax.swing.JButton();
+        jButtonMathLabLog = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("d-LIVER File Logger");
@@ -116,6 +117,13 @@ public class FileLoggerForm extends javax.swing.JFrame {
             }
         });
 
+        jButtonMathLabLog.setText("MathLabLog");
+        jButtonMathLabLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMathLabLogActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -133,6 +141,8 @@ public class FileLoggerForm extends javax.swing.JFrame {
                         .addComponent(jCheckBoxEpoch)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButtonOscLog)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonMathLabLog)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonStop)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -152,7 +162,9 @@ public class FileLoggerForm extends javax.swing.JFrame {
                     .addComponent(jButtonRecord, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jCheckBoxEpoch, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButtonOscLog, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButtonOscLog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonMathLabLog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -223,9 +235,17 @@ private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBoxEpochActionPerformed
 
+    private void jButtonMathLabLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMathLabLogActionPerformed
+        MathLabLoggerForm form = new MathLabLoggerForm(belt);
+        form.setLocationRelativeTo(this);
+        form.pack();
+        form.setVisible(true);
+    }//GEN-LAST:event_jButtonMathLabLogActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonMathLabLog;
     private javax.swing.JButton jButtonOscLog;
     private javax.swing.JButton jButtonRecord;
     private javax.swing.JButton jButtonStop;
