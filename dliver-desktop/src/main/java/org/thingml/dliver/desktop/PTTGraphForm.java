@@ -57,12 +57,12 @@ public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
         ((GraphPanel)jPanel4).start();
         ((GraphPanel)jPanel5).start();
         ((GraphPanel)jPanel6).start();
-        ((GraphPanel)jPanel1).setAutoScale(true);
-        ((GraphPanel)jPanel2).setAutoScale(true);
-        ((GraphPanel)jPanel3).setAutoScale(true);
-        ((GraphPanel)jPanel4).setAutoScale(true);
-        ((GraphPanel)jPanel5).setAutoScale(true);
-        ((GraphPanel)jPanel6).setAutoScale(true);
+        //((GraphPanel)jPanel1).setAutoScale(true);
+        //((GraphPanel)jPanel2).setAutoScale(true);
+        //((GraphPanel)jPanel3).setAutoScale(true);
+        //((GraphPanel)jPanel4).setAutoScale(true);
+        //((GraphPanel)jPanel5).setAutoScale(true);
+        //((GraphPanel)jPanel6).setAutoScale(true);
     }
 
     /** This method is called from within the constructor to
