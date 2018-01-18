@@ -201,7 +201,6 @@ public class DliverMainFrame extends javax.swing.JFrame implements DliverListene
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("d-LIVER Test Application");
-        setPreferredSize(new java.awt.Dimension(950, 750));
 
         jPanel11.setPreferredSize(new java.awt.Dimension(901, 696));
 
