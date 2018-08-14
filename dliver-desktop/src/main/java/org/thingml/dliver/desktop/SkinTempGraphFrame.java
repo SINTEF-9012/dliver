@@ -35,7 +35,7 @@ import org.thingml.rtcharts.swing.*;
  */
 public class SkinTempGraphFrame extends javax.swing.JFrame implements DliverListener {
 
-    protected GraphBuffer btemp = new GraphBuffer(200);
+    protected GraphBuffer btemp = new GraphBuffer(800);
     
     protected Dliver belt;
     

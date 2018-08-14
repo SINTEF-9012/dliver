@@ -34,7 +34,7 @@ import org.thingml.rtcharts.swing.*;
  */
 public class BitRateGraphFrame extends javax.swing.JFrame implements BitRateListemer {
 
-    protected GraphBuffer brate = new GraphBuffer(100);
+    protected GraphBuffer brate = new GraphBuffer(400);
     
     protected BitRateCounter counter;
     

@@ -134,7 +134,7 @@ public class FileLogCombiner {
         //long delta = System.currentTimeMillis() - belt.getEpochTimestamp(belt_timestamp);
         //if ((delta > 2000) || (delta < -2000)) System.out.println("Large delta detected: " + delta);
         long epochTimestamp = belt.getEpochTimestamp(belt_timestamp);
-        return "" + timestampFormat.format(epochTimestamp) + SEPARATOR + epochTimestamp + SEPARATOR + belt_timestamp*4;
+        return "" + timestampFormat.format(epochTimestamp) + SEPARATOR + epochTimestamp + SEPARATOR + belt_timestamp;
     }
 
     private String calculatedAndRawEpoch(long epochTimestamp) {

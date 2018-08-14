@@ -36,7 +36,7 @@ import org.thingml.rtcharts.swing.*;
  */
 public class IMUGraphForm extends javax.swing.JFrame implements DliverListener {
 
-    protected static final int BUFFER_SIZE = 250;
+    protected static final int BUFFER_SIZE = 250*4;
     protected static final int AMAX = 500;
     protected static final int AMINOR = 200;
     protected static final int GMAX = 1800;

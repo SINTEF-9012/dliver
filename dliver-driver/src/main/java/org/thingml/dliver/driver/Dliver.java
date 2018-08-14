@@ -41,13 +41,13 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     }
     
     public long getEpochTimestamp(int belt_timestamp) {
-        // Mutiply by 4 to get a 14 bits timestamp in ms
-        if (rtsync.isRunning()) return rtsync.getSynchronizedEpochTime(belt_timestamp*4);
+        // Get a 14 bits timestamp in ms
+        if (rtsync.isRunning()) return rtsync.getSynchronizedEpochTime(belt_timestamp);
         else return 0;
     }
     
     public long getEpochTimestampFromMs(int ms_timestamp) {
-        // Mutiply by 4 to get a 14 bits timestamp in ms
+        // Get a 14 bits timestamp in ms
         if (rtsync.isRunning()) return rtsync.getSynchronizedEpochTime(ms_timestamp);
         else return 0;
     }
@@ -458,7 +458,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         
         if (timeSync) {
             int ts = (int) (value & 0x0FFF); // get the 12 bits timestamp
-            ts = ts*4; // Put the timestamp in ms (that makes a 14bits timestamp)
+            ts = ts; // Put the timestamp in ms (that makes a 14bits timestamp)
             rtsync.receive_TimeResponse(timeSyncSeqNum-2, ts);
             for (DliverListener l : listeners) {
               l.referenceClockTimeSync(timeSyncSeqNum-2, ts);

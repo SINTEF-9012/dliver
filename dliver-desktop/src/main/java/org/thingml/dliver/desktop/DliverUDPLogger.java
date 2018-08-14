@@ -200,7 +200,7 @@ public class DliverUDPLogger  implements DliverListener {
     private int ecg_timestamp = 0;
     @Override
     public void eCGData(int value) {
-        ecg_timestamp += 4;
+        ecg_timestamp += 1;
         if (logging) {
             long ts = belt.getEpochTimestampFromMs(ecg_timestamp);
 //            long rxEpoc = System.currentTimeMillis();
@@ -216,7 +216,7 @@ public class DliverUDPLogger  implements DliverListener {
 
     @Override
     public void eCGRaw(int value, int timestamp) {
-        ecg_timestamp = timestamp*4;
+        ecg_timestamp = timestamp;
         //System.out.println("ecgRaw" + logging);
         if (logging) {
             long ts = belt.getEpochTimestampFromMs(ecg_timestamp);

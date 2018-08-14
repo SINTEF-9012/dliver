@@ -37,9 +37,9 @@ import org.thingml.rtcharts.swing.*;
 public class ECGGraphForm extends javax.swing.JFrame implements DliverListener {
 
     
-    protected GraphBuffer becg = new GraphBuffer(1000);
-    protected GraphBuffer bhr = new GraphBuffer(200);
-    protected GraphBuffer bhri = new GraphBuffer(200);
+    protected GraphBuffer becg = new GraphBuffer(4000);
+    protected GraphBuffer bhr = new GraphBuffer(800);
+    protected GraphBuffer bhri = new GraphBuffer(800);
     
      protected Dliver belt;
     

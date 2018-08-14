@@ -37,12 +37,12 @@ import org.thingml.rtcharts.swing.*;
 public class PTTGraphForm extends javax.swing.JFrame implements DliverListener {
 
     
-    protected GraphBuffer becg = new GraphBuffer(1000);
-    protected GraphBuffer bppg = new GraphBuffer(1000);
-    protected GraphBuffer bppgDer = new GraphBuffer(1000);
-    protected GraphBuffer bicgAbsDer = new GraphBuffer(1000);
-    protected GraphBuffer bicgAbsAc = new GraphBuffer(1000);
-    protected GraphBuffer bptt = new GraphBuffer(200);
+    protected GraphBuffer becg = new GraphBuffer(4000);
+    protected GraphBuffer bppg = new GraphBuffer(4000);
+    protected GraphBuffer bppgDer = new GraphBuffer(4000);
+    protected GraphBuffer bicgAbsDer = new GraphBuffer(4000);
+    protected GraphBuffer bicgAbsAc = new GraphBuffer(4000);
+    protected GraphBuffer bptt = new GraphBuffer(800);
     
      protected Dliver belt;
     

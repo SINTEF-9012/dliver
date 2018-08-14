@@ -321,7 +321,7 @@ public class DliverMathLabLogger implements DliverListener, ActionListener {
         //long delta = System.currentTimeMillis() - belt.getEpochTimestamp(belt_timestamp);
         //if ((delta > 2000) || (delta < -2000)) System.out.println("Large delta detected: " + delta);
         long epochTimestamp = belt.getEpochTimestamp(belt_timestamp);
-        return "" + timestampFormat.format(epochTimestamp) + SEPARATOR + epochTimestamp + SEPARATOR + belt_timestamp*4;
+        return "" + timestampFormat.format(epochTimestamp) + SEPARATOR + epochTimestamp + SEPARATOR + belt_timestamp;
     }
 
     @Override
@@ -424,7 +424,7 @@ public class DliverMathLabLogger implements DliverListener, ActionListener {
     private int ecg_timestamp = 0;
     @Override
     public void eCGData(int value) {
-        ecg_timestamp += 4;
+        ecg_timestamp += 1;
         if (logging) {
             if(!eCGEpoch) {
                 // This can be used to log without timestamp for each sample to keep the file smaller.
@@ -434,7 +434,7 @@ public class DliverMathLabLogger implements DliverListener, ActionListener {
                 //long ts = belt.getEpochTimestampFromMs(ecg_timestamp);
                 //ecg.println(currentTimeStampEpoch() + SEPARATOR + timestampFormat.format(ts) + SEPARATOR + ts + SEPARATOR + ecg_timestamp + SEPARATOR + 0 + SEPARATOR + value);
             }
-            comLog.newLogEntryTs(ecg_timestamp/4);
+            comLog.newLogEntryTs(ecg_timestamp);
             comLog.data[comIdxEcg] = "" + value;
         }
 
@@ -448,7 +448,7 @@ public class DliverMathLabLogger implements DliverListener, ActionListener {
     long oldTs = 0;
     @Override
     public void eCGRaw(int value, int timestamp) {
-        ecg_timestamp = timestamp*4;
+        ecg_timestamp = timestamp;
         if (logging) {
             if(!eCGEpoch) {
                 // This can be used to log without timestamp for each sample to keep the file smaller.
@@ -457,12 +457,12 @@ public class DliverMathLabLogger implements DliverListener, ActionListener {
                 // This can be used to log the timestamp for each sample but it makes the file really big.
                 long ts = belt.getEpochTimestampFromMs(ecg_timestamp);
                 
-                if ((ts-oldTs) != 4) System.out.println("ECG epoch timestamp diff is " + (ts-oldTs));
+                if ((ts-oldTs) != 1) System.out.println("ECG epoch timestamp diff is " + (ts-oldTs));
                 oldTs = ts;
                 
                 //ecg.println(currentTimeStampEpoch() + SEPARATOR + timestampFormat.format(ts) + SEPARATOR + ts + SEPARATOR + ecg_timestamp + SEPARATOR + 1 + SEPARATOR + value);
             }
-            comLog.newLogEntryTs(ecg_timestamp/4);
+            comLog.newLogEntryTs(ecg_timestamp);
             comLog.data[comIdxEcg] = "" + value;
         }
     }
