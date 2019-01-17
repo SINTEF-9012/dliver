@@ -815,6 +815,11 @@ public class DliverMathLabLogger implements DliverListener, ActionListener {
         //event = eventRt;
     }
 
+    @Override
+    public void fmtReceived(byte[] message, int size) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     
     
 }

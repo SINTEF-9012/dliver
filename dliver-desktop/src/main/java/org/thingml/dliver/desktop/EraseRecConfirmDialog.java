@@ -133,6 +133,11 @@ public class EraseRecConfirmDialog extends javax.swing.JDialog  implements Dlive
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public void fmtReceived(byte[] message, int size) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     private enum TimerMode {TIMER_NONE, TIMER_ERASE_COMPLETE};
     private TimerMode timerFunc = TimerMode.TIMER_NONE;
     

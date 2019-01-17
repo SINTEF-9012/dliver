@@ -88,7 +88,8 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         } else if (code == 115) {
             return 9;
         } else if (code == 120) {
-            return 18;
+            //return 18;
+            return 21;
         } else if (code == 127) {
             return 16;
         } else {
@@ -140,18 +141,19 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
 
     public void run() {
 
-        byte[] buffer = new byte[32];
+        byte[] buffer = new byte[80];
         int len = -1;
 
         int code = 0;
         int target_length = 0;
         int msg_index = 0;
-        byte[] message = new byte[32];
+        byte[] message = new byte[80];
 
-        byte[] last_message = new byte[32];
+        byte[] last_message = new byte[80];
         int last_target_length = 0;
         
         TraceConsole traceCons = null;
+        TraceConsole debugCons = null;
 
         try {
             while (!terminate && ((len = this.in.read(buffer)) > -1)) {
@@ -167,174 +169,232 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
                     }
                 }
 
+                if (debugCons == null ) {
+                    if (activeTrace == true) {
+                        debugCons = new TraceConsole(500000,1000);
+                        debugCons.setSize(600, 750);
+                        debugCons.setVisible(true);
+                        debugCons.putString("Open debug console\n");
+                    }
+                }
+
                 for (int i = 0; i < len; i++) {
                     byte c = buffer[i];
-                    // Check if this is the code for the start of a message
-                    if (c > 95) {
-                        // check if it was something in the buffer
-                        if (msg_index != 0) {
-                            System.err.println("Dliver: Received incomplete message (code = " + code + " len = " + msg_index + ") Expected len = " + target_length);
-                            System.err.print("Dliver: Msg [ ");
-                            for (int ix = 0; ix < msg_index; ix++) {
-                                System.err.print(message[ix] + " ");
-                            }
-                            if (traceCons != null) {
-                                traceCons.putString(" Too short message ");
-                                traceCons.putInt(target_length);
-                                traceCons.putInt(msg_index);
-                            }
-                            System.err.println("]");
-                            System.err.println("New message staring has code = " + c);
+                    
+                    // This is the payload of a file transfer message
+                    if (code == 96) {
+                        
+                        if (msg_index == message.length-1) {
+                            // Buffer is full. Abort for next message
+                            code = 0;
+                            msg_index = 0;
+                            target_length = 0;
+                            if (debugCons != null ) 
+                                debugCons.putString("\nABORT code 96 = 0x60. Buffer full!!!\n");
+                            System.out.println("\nABORT code 96 = 0x60. Buffer full!!!");
                         }
-                        if (traceCons != null) {
-                            traceCons.putChar('\n');
-                            traceCons.putInt(c);
-                        }
-
-                        code = c;
-                        msg_index = 0;
-                        target_length = msg_size(c);
+                        
                         message[msg_index++] = c;
-                    } else {
-                        if (msg_index > 0 && msg_index < target_length) {
-                            if (traceCons != null) {
-                                traceCons.putInt(c);
+ 
+                        // Find the message length
+                        if (msg_index == 2) {
+                            target_length = message[1];
+                        }
+                        
+                        // End of message
+                        if (target_length == msg_index) {
+                            if (debugCons != null) {
+                                debugCons.putString("\nMessage " + code + ", Lenght = " + target_length + "\n");
+                                for (int k=0; k<msg_index;k++)
+                                    debugCons.putString(String.format("%02X ", message[k]));
+                                debugCons.putString("\nEnd Of Message\n");
                             }
-                            message[msg_index++] = c;
-                            if (msg_index == target_length) {
-                                last_message = message;  // For debug
-                                last_target_length = target_length; // For debug
-                                // We got a complete message: Forward to listeners
-                                switch (code) {
-                                    case 110:
-                                        cUSerialNumber(message);
-                                        break;
-                                    case 117:
-                                        cUFWRevision(message);
-                                        break;
-                                    case 98:
-                                        batteryStatus(message);
-                                        break;
-                                    case 105:
-                                        indicationDev(message);
-                                        break;
-                                    case 109:
-                                        measurementPatient(message);
-                                        break;
-                                    case 100:
-                                        messageOverrun(message);
-                                        break;
-                                    case 106:
-                                        referenceClockTime(message);
-                                        break;
-                                    case 107:
-                                        fullClockTimeSync(message);
-                                        break;
-                                    case 104:
-                                        heartRate(message);
-                                        break;
-                                    case 99:
-                                        heartRateInterval(message);
-                                        break;
-                                    case 101:
-                                        eCGData(message);
-                                        break;
-                                    case 102:
-                                        iCGAbs(message);
-                                        // Not supported by d-LIVER    
-                                        //eCGSignalQuality(message);
-                                        break;
-                                    case 103:
-                                        eCGRaw(message);
-                                        break;
-                                    case 112:
-                                        // Not supported by d-LIVER    
-                                        //gyroPitch(message);
-                                        break;
-                                    case 114:
-                                        // Not supported by d-LIVER    
-                                        //gyroRoll(message);
-                                        break;
-                                    case 121:
-                                        combinedPpg(message);
-                                        // Not supported by d-LIVER    
-                                        //gyroYaw(message);
-                                        break;
-                                    case 115:
-                                        combinedEcgIcgPpg(message);
-                                        // Not supported by d-LIVER    
-                                        //accLateral(message);
-                                        break;
-                                    case 119:
-                                        iCGAbsAc(message);
-                                        // Not supported by d-LIVER    
-                                        //accLongitudinal(message);
-                                        break;
-                                    case 118:
-                                        ppgRaw(message);
-                                        // Not supported by d-LIVER    
-                                        //accVertical(message);
-                                        break;
-                                    case 97:
-                                        rawActivityLevel(message);
-                                        break;
-                                    case 116:
-                                        skinTemperature(message);
-                                        break;
-                                    case 120:
-                                        combinedIMU(message);
-                                        break;
-                                    case 122:
-                                        combinedICG(message);
-                                        // Not supported by d-LIVER    
-                                        //eMGData(message);
-                                        break;
-                                    case 123:
-                                        btPutChar(message);
-                                        // Not supported by d-LIVER    
-                                        //eMGSignalQuality(message);
-                                        break;
-                                    case 124:
-                                        ptt(message);
-                                        // Not supported by d-LIVER    
-                                        //eMGRaw(message);
-                                        break;
-                                    case 125:
-                                        commonTimestamp(message);
-                                        // Not supported by d-LIVER    
-                                        //eMGRMS(message);
-                                        break;
-                                    case 126:
-                                        stepCount(message);
-                                        break;
-                                    case 127:
-                                        eventEpoch(message);
-                                        break;
-                                     
-                                    default:
-                                        break;
-                                        //System.err.println("Dliver: Received unknown message (code = " + code + ").");
-                                }
-                                // Re-initialize for the next message
-                                code = 0;
-                                msg_index = 0;
-                                target_length = 0;
-                            }
-                        } else {
-                            char ch = (char) c;
+                            fmtReceived(message, msg_index);
                             
-                            System.err.println("Dliver: Received Corrupted Data.");
-                            System.err.print("Last msg len = " + last_target_length + " data = ");
+                            // Re-initialize for the next message
+                            code = 0;
+                            msg_index = 0;
+                            target_length = 0;
+                        }                        
+                    }
+                    else {
+                    
+                        // Check if this is the code for the start of a message
+                        if (c > 95) {
+                            // check if there was something in the buffer
+                            if (c == 96) {
+                                // This is a file transfer message
+                                if (debugCons != null) {
+                                    debugCons.putString(String.format("Code 0x%02X ", c));
+                                }
+                            }
+
+                            if (msg_index != 0) {
+                                System.err.println("Dliver: Received incomplete message (code = " + code + " len = " + msg_index + ") Expected len = " + target_length);
+                                System.err.print("Dliver: Msg [ ");
+                                for (int ix = 0; ix < msg_index; ix++) {
+                                    System.err.print(message[ix] + " ");
+                                }
+                                if (traceCons != null) {
+                                    traceCons.putString(" Too short message ");
+                                    traceCons.putInt(target_length);
+                                    traceCons.putInt(msg_index);
+                                }
+                                System.err.println("]");
+                                System.err.println("New message staring has code = " + c);
+                            }
                             if (traceCons != null) {
-                                traceCons.putString(" Additional");
+                                traceCons.putChar('\n');
                                 traceCons.putInt(c);
-                                traceCons.putString(" (" + ch + ")"); 
                             }
-                            int idx;
-                            for (idx = 0; idx<last_target_length; idx++) {
-                                System.err.print("" + last_message[idx] + " ");
+
+                            code = c;
+                            msg_index = 0;
+                            target_length = msg_size(c);
+                            message[msg_index++] = c;
+
+                        } else {
+                            if (msg_index > 0 && msg_index < target_length) {
+                                if (traceCons != null) {
+                                    traceCons.putInt(c);
+                                }
+                                message[msg_index++] = c;
+                                if (msg_index == target_length) {
+                                    last_message = message;  // For debug
+                                    last_target_length = target_length; // For debug
+                                    // We got a complete message: Forward to listeners
+                                    switch (code) {
+                                        case 110:
+                                            cUSerialNumber(message);
+                                            break;
+                                        case 117:
+                                            cUFWRevision(message);
+                                            break;
+                                        case 98:
+                                            batteryStatus(message);
+                                            break;
+                                        case 105:
+                                            indicationDev(message);
+                                            break;
+                                        case 109:
+                                            measurementPatient(message);
+                                            break;
+                                        case 100:
+                                            messageOverrun(message);
+                                            break;
+                                        case 106:
+                                            referenceClockTime(message);
+                                            break;
+                                        case 107:
+                                            fullClockTimeSync(message);
+                                            break;
+                                        case 104:
+                                            heartRate(message);
+                                            break;
+                                        case 99:
+                                            heartRateInterval(message);
+                                            break;
+                                        case 101:
+                                            eCGData(message);
+                                            break;
+                                        case 102:
+                                            iCGAbs(message);
+                                            // Not supported by d-LIVER    
+                                            //eCGSignalQuality(message);
+                                            break;
+                                        case 103:
+                                            eCGRaw(message);
+                                            break;
+                                        case 112:
+                                            // Not supported by d-LIVER    
+                                            //gyroPitch(message);
+                                            break;
+                                        case 114:
+                                            // Not supported by d-LIVER    
+                                            //gyroRoll(message);
+                                            break;
+                                        case 121:
+                                            combinedPpg(message);
+                                            // Not supported by d-LIVER    
+                                            //gyroYaw(message);
+                                            break;
+                                        case 115:
+                                            combinedEcgIcgPpg(message);
+                                            // Not supported by d-LIVER    
+                                            //accLateral(message);
+                                            break;
+                                        case 119:
+                                            iCGAbsAc(message);
+                                            // Not supported by d-LIVER    
+                                            //accLongitudinal(message);
+                                            break;
+                                        case 118:
+                                            ppgRaw(message);
+                                            // Not supported by d-LIVER    
+                                            //accVertical(message);
+                                            break;
+                                        case 97:
+                                            rawActivityLevel(message);
+                                            break;
+                                        case 116:
+                                            // Not supported by d-LIVER    
+                                            //skinTemperature(message);
+                                            break;
+                                        case 120:
+                                            combinedIMU(message);
+                                            break;
+                                        case 122:
+                                            combinedICG(message);
+                                            // Not supported by d-LIVER    
+                                            //eMGData(message);
+                                            break;
+                                        case 123:
+                                            btPutChar(message);
+                                            // Not supported by d-LIVER    
+                                            //eMGSignalQuality(message);
+                                            break;
+                                        case 124:
+                                            ptt(message);
+                                            // Not supported by d-LIVER    
+                                            //eMGRaw(message);
+                                            break;
+                                        case 125:
+                                            commonTimestamp(message);
+                                            // Not supported by d-LIVER    
+                                            //eMGRMS(message);
+                                            break;
+                                        case 126:
+                                            stepCount(message);
+                                            break;
+                                        case 127:
+                                            eventEpoch(message);
+                                            break;
+
+                                        default:
+                                            break;
+                                            //System.err.println("Dliver: Received unknown message (code = " + code + ").");
+                                    }
+                                    // Re-initialize for the next message
+                                    code = 0;
+                                    msg_index = 0;
+                                    target_length = 0;
+                                }
+                            } else {
+                                char ch = (char) c;
+
+                                System.err.println("Dliver: Received Corrupted Data.");
+                                System.err.print("Last msg len = " + last_target_length + " data = ");
+                                if (traceCons != null) {
+                                    traceCons.putString(" Additional");
+                                    traceCons.putInt(c);
+                                    traceCons.putString(" (" + ch + ")"); 
+                                }
+                                int idx;
+                                for (idx = 0; idx<last_target_length; idx++) {
+                                    System.err.print("" + last_message[idx] + " ");
+                                }
+                                System.err.println("Additional received = " + c + " (" + ch + ")"); 
                             }
-                            System.err.println("Additional received = " + c + " (" + ch + ")"); 
                         }
                     }
                 }
@@ -363,6 +423,12 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         return result;
     }
 
+    synchronized void fmtReceived(byte[] message, int msg_index) {
+        for (DliverListener l : listeners) {
+            l.fmtReceived(message, msg_index);
+        }
+    }
+    
     String lastSID = "";
     String lastFW = "";
     
@@ -656,16 +722,17 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         }
     }
 
-    // IR Temperature sensor messages
-    synchronized void skinTemperature(byte[] message) {
-        // TODO: This will not handle negative temperatures
-        int value = ((message[1] - 32) * 64 + (message[2] - 32));
-        int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
-        for (DliverListener l : listeners) {
-            l.skinTemperature(value, timestamp);
-        }
-    }
-
+// Not supported by d-LIVER
+//    // IR Temperature sensor messages
+//    synchronized void skinTemperature(byte[] message) {
+//        // TODO: This will not handle negative temperatures
+//        int value = ((message[1] - 32) * 64 + (message[2] - 32));
+//        int timestamp = ((message[3] - 32) * 64 + (message[4] - 32));
+//        for (DliverListener l : listeners) {
+//            l.skinTemperature(value, timestamp);
+//        }
+//    }
+    
     synchronized int decodeGyro(byte d1, byte d2, byte d3) {
         int result = 0;
         result += ((d1 - 32) & 0x3F) << 12;
@@ -768,13 +835,16 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
     }
     
     synchronized void combinedIMU(byte[] message) {
-        int ax = decodeAcc(message[1], message[2]);
-        int ay = decodeAcc(message[3], message[4]);
-        int az = decodeAcc(message[5], message[6]);
-        int gx = decodeGyro(message[7], message[8], message[9]);
-        int gy = decodeGyro(message[10], message[11], message[12]);
-        int gz = decodeGyro(message[13], message[14], message[15]);
-        int timestamp = ((message[16] - 32) * 64 + (message[17] - 32));
+//        int ax = decodeAcc(message[1], message[2]);
+//        int ay = decodeAcc(message[3], message[4]);
+//        int az = decodeAcc(message[5], message[6]);
+        int ax = decodeGyro(message[1], message[2], message[3]);
+        int ay = decodeGyro(message[4], message[5], message[6]);
+        int az = decodeGyro(message[7], message[8], message[9]);
+        int gx = decodeGyro(message[10], message[11], message[12]);
+        int gy = decodeGyro(message[13], message[14], message[15]);
+        int gz = decodeGyro(message[16], message[17], message[18]);
+        int timestamp = ((message[19] - 32) * 64 + (message[20] - 32));
         for (DliverListener l : listeners) {
             l.combinedIMU(ax, ay, az, gx, gy, gz, timestamp);
         }
@@ -993,7 +1063,7 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         }
     }
 
-    synchronized protected void sendDataArray(byte[] dataArray, int len) {
+    synchronized public void sendDataArray(byte[] dataArray, int len) {
         if ( btPaused == false) {
             try {
                 out.write(dataArray, 0, len);
@@ -1031,7 +1101,11 @@ public class Dliver implements Runnable, TimeSynchronizableV2 {
         dataArray[idx++] = (byte) (32 + (int)((currentOffset >>  6) & 0x3f));
         dataArray[idx++] = (byte) (32 + (int) (currentOffset        & 0x3f));
         sendDataArray(dataArray, idx);
-        //System.out.println("sendEpochCorr("+currentOffset+")");
+        //System.out.println("sendEpochCorr("+currentOffset+") ");
+        //System.out.print(String.format("= 0x%08X: ", currentOffset));
+        //for (int i=0; i<idx; i++)
+        //    System.out.print(String.format("%02X ", dataArray[i]));
+        //System.out.println();
     }
 }
 

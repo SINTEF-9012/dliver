@@ -37,9 +37,9 @@ import org.thingml.rtcharts.swing.*;
 public class ECGGraphForm extends javax.swing.JFrame implements DliverListener {
 
     
-    protected GraphBuffer becg = new GraphBuffer(4000);
-    protected GraphBuffer bhr = new GraphBuffer(800);
-    protected GraphBuffer bhri = new GraphBuffer(800);
+    protected GraphBuffer becg = new GraphBuffer(1000);
+    protected GraphBuffer bhr = new GraphBuffer(200);
+    protected GraphBuffer bhri = new GraphBuffer(200);
     
      protected Dliver belt;
     
@@ -280,6 +280,11 @@ private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_win
 
     @Override
     public void stepCount(long step, int timestamp) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void fmtReceived(byte[] message, int size) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

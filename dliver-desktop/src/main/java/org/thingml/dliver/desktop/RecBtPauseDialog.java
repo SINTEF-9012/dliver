@@ -158,6 +158,11 @@ public class RecBtPauseDialog extends javax.swing.JDialog implements DliverListe
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public void fmtReceived(byte[] message, int size) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     private enum TimerMode {TIMER_NONE, TIMER_REC_START, TIMER_BT_PAUSE_END, TIMER_REC_END};
     private TimerMode timerFunc = TimerMode.TIMER_NONE;
     

@@ -23,7 +23,7 @@ public enum DliverMode {
 	Extracted_PTT(31),
 	Raw_unfilt(32),
 	//Raw_filt(34),
-	//Raw_unfilt_filt (29),
+	Raw_unfilt_filt (29),
 	Test(33)
         ;
 	
@@ -32,7 +32,7 @@ public enum DliverMode {
         public static DliverMode fromCode(int code) {
             switch(code) {
                 //case 28: return DliverMode.EMGRawCh2;
-                //case 29: return DliverMode.Raw_unfilt_filt;
+                case 29: return DliverMode.Raw_unfilt_filt;
                 case 30: return DliverMode.Extracted;
                 case 31: return DliverMode.Extracted_PTT;
                 case 32: return DliverMode.Raw_unfilt;

@@ -93,4 +93,6 @@ public interface DliverListener {
                 void playStart(long epoch);
                 void playStop();
                 
+                // @code "96"; FMT message
+                void fmtReceived(byte[] message, int size);
 }
